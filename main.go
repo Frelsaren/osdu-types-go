@@ -168,9 +168,10 @@ func processFolder(source, item string, wg *sync.WaitGroup) {
 	i = 0
 	for _, lang := range languages {
 		os.MkdirAll(lang.FolderPath+strings.ReplaceAll(item, "-", ""), os.ModePerm)
-		cmd := exec.Command("quicktype", "--package", strings.ReplaceAll(item, "-", ""), "-s", "schema", "-o", lang.FolderPath+strings.ReplaceAll(item, "-", "")+"/"+strings.ReplaceAll(item, "-", "_")+"."+lang.FileExtension, "--lang", lang.Name)
-		cmd.Args = append(cmd.Args, lang.ExtraArgs...)
+		cmd := exec.Command("quicktype", "--package", strings.ReplaceAll(item, "-", ""), "-s", "schema", "--multi-file-output", "--out", lang.FolderPath+strings.ReplaceAll(item, "-", ""), "--lang", lang.Name)
+		cmd.Dir = lang.FolderPath + strings.ReplaceAll(item, "-", "")
 
+		cmd.Args = append(cmd.Args, lang.ExtraArgs...)
 		cmd.Args = append(cmd.Args, schemaFiles...)
 		cmds[i] = cmd
 		i++
