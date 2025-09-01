@@ -3783,6 +3783,12 @@ type AbstractFacet struct {
 //
 // A nested object holding the relationship to a PropertyType by id (uuid) and a derived,
 // human-readable name.
+//
+// It holds the PropertyType associated with this reference property type, further defining
+// the semantics of the value. It contains a relationship to PropertyType record and its
+// (de-normalized) name. String or number values can represent e.g. A date or a time by
+// referring to the respective PropertyType record id. If `PropertyType` is provided,
+// `UnitQuantityID` is expected to be omitted.
 type AbstractPropertyType struct {
 	// The name of the PropertyType, de-normalized, derived from the record referenced in               
 	// PropertyTypeID.                                                                                  
@@ -4249,7 +4255,9 @@ type DocumentData struct {
 	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                                        
 	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                                          
+	// DEPRECATED: This security classification is merely decorative; the security                                                             
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                                    
+	// instead. Previously:  Classifies the security level of the resource.                                                                    
 	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                                          
 	// organization, agency, system, internal team, or individual. For informational purposes                                                  
@@ -4337,35 +4345,38 @@ type DocumentData struct {
 	DatePublished                                                                               *time.Time                                     `json:"DatePublished,omitempty"`
 	// Date when a next review/revision of the document is due.                                                                                
 	DateReviewDue                                                                               *string                                        `json:"DateReviewDue,omitempty"`
-	// Document language as listed in the ISO 639-3 https://en.wikipedia.org/wiki/ISO_639,                                                     
-	// https://en.wikipedia.org/wiki/List_of_ISO_639-3_codes                                                                                   
-	DocumentLanguage                                                                            *string                                        `json:"DocumentLanguage,omitempty"`
-	// A description text or an array of subjects covered by the document. If present this                                                     
-	// information must compliment the Tag and SubTitle                                                                                        
-	DocumentSubject                                                                             *string                                        `json:"DocumentSubject,omitempty"`
-	// The Document Taxonomy provides a structured taxonomy for categorising document types.                                                   
-	// This taxonomy adheres to a consistent naming convention of a DISCIPLINE followed by a                                                   
-	// relevant DocumentType. In the practical implementation it uses a dot-based nomenclature                                                 
-	// e.g., <DISCIPLINE>.<DocumentType>, allowing for a two level hierarchy of the document                                                   
-	// type to support classification and search. This a recommended property.                                                                 
-	DocumentTaxonomyID                                                                          *string                                        `json:"DocumentTaxonomyID,omitempty"`
-	// DEPRECATED: Use the DocumentTaxonomyID. The kind of document--from a business standpoint,                                               
-	// e.g., seismic processing report, etc.                                                                                                   
-	DocumentTypeID                                                                              *string                                        `json:"DocumentTypeID,omitempty"`
 	// Array of key words describing the document                                                                                              
 	Keywords                                                                                    []string                                       `json:"Keywords,omitempty"`
+	// The language(s) in which the document is written, provided as one or more three letter                                                  
+	// language codes as listed in ISO 639-3. https://en.wikipedia.org/wiki/ISO_639,                                                           
+	// https://en.wikipedia.org/wiki/List_of_ISO_639-3_codes                                                                                   
+	Languages                                                                                   []string                                       `json:"Languages,omitempty"`
 	// Number of pages in the document, useful in cases where if it was described in the                                                       
 	// acquired manifest as opposed to a derived/calculated value                                                                              
 	NumberOfPages                                                                               *int64                                         `json:"NumberOfPages,omitempty"`
+	// The organisation or institution that produced this document                                                                             
+	ProducedByOrganisationID                                                                    *string                                        `json:"ProducedByOrganisationID,omitempty"`
+	// The organisation or institution that this document was produced this for                                                                
+	ProducedForOrganisationID                                                                   *string                                        `json:"ProducedForOrganisationID,omitempty"`
 	// Number of years the document needs to be retained after the last modification (see                                                      
 	// data.DataModified property).                                                                                                            
 	RetentionPeriod                                                                             *float64                                       `json:"RetentionPeriod,omitempty"`
+	// A description text or an array of subjects covered by the document. If present this                                                     
+	// information must complement the Tag and SubTitle                                                                                        
+	Subject                                                                                     *string                                        `json:"Subject,omitempty"`
 	// The sub-title of the document.                                                                                                          
 	SubTitle                                                                                    *string                                        `json:"SubTitle,omitempty"`
 	// Summary of document contents                                                                                                            
 	Summary                                                                                     *string                                        `json:"Summary,omitempty"`
 	// Table of contents of the document                                                                                                       
 	TableOfContents                                                                             *string                                        `json:"TableOfContents,omitempty"`
+	// The Document Taxonomy provides a structured taxonomy for categorising document types.                                                   
+	// This taxonomy adheres to a consistent naming convention of a DISCIPLINE followed by a                                                   
+	// document type, using a dot-based nomenclature e.g., <DISCIPLINE>.<Document Type>. This                                                  
+	// creates a two level hierarchy of the document type to support classification and search.                                                
+	// This a recommended property. A Document may have one or more document types (for example,                                               
+	// End of Well Reports may contain a wide range of information).                                                                           
+	TaxonomyIDs                                                                                 []string                                       `json:"TaxonomyIDs,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
 }
 
@@ -6129,7 +6140,9 @@ type GenericPropertyData struct {
 	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                                        
 	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                                          
+	// DEPRECATED: This security classification is merely decorative; the security                                                             
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                                    
+	// instead. Previously:  Classifies the security level of the resource.                                                                    
 	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                                          
 	// organization, agency, system, internal team, or individual. For informational purposes                                                  
@@ -6209,6 +6222,9 @@ type GenericPropertyData struct {
 	SubmitterName                                                                               *string                                        `json:"SubmitterName,omitempty"`
 	// Array of key words to identify the work product, especially to help in search.                                                          
 	Tags                                                                                        []string                                       `json:"Tags,omitempty"`
+	// When describing a table column, e.g., in an associated dataset, this optional property                                                  
+	// allows the association of the record column definition(s) to dataset table column(s).                                                   
+	ColumnName                                                                                  *string                                        `json:"ColumnName,omitempty"`
 	// Ordered array with: FacetType, FacetRole, both calling specific references                                                              
 	//                                                                                                                                         
 	// FacetType: Enumerations of the type of additional context about the nature of a property                                                
@@ -6222,22 +6238,30 @@ type GenericPropertyData struct {
 	// It holds the PropertyType associated with this reference property type, further defining                                                
 	// the semantics of the value. It contains a relationship to PropertyType record and its                                                   
 	// (de-normalized) name. String or number values can represent e.g. A date or a time by                                                    
-	// referring to the respective PropertyType record id.                                                                                     
+	// referring to the respective PropertyType record id. If `PropertyType` is provided,                                                      
+	// `UnitQuantityID` is expected to be omitted.                                                                                             
 	PropertyType                                                                                *AbstractPropertyType                          `json:"PropertyType,omitempty"`
 	// Only populated if ValueType=="string" and the values are expected to represent record                                                   
 	// ids, e.g. to a reference-data type, then this value holds the kind (optionally without                                                  
 	// the semantic version number).                                                                                                           
 	RelationshipTargetKind                                                                      *string                                        `json:"RelationshipTargetKind,omitempty"`
-	// Only populated of the ValueType is "number". It holds the UnitQuantity associated with                                                  
-	// this reference property type. It is a relationship to UnitQuantity record.                                                              
+	// Only populated if the ValueType is "number". It holds the UnitOfMeasure associated with                                                 
+	// this reference property type. It is a relationship to a UnitOfMeasure record. If the                                                    
+	// UnitQuantityID and/or PropertyType.PropertyTypeID are populated in addition to                                                          
+	// UnitOfMeasureID, the referenced records must finally share the same dimension code. See                                                 
+	// Schema Usage Guide 'Unit of Measure Foundation'.                                                                                        
+	UnitOfMeasureID                                                                             *string                                        `json:"UnitOfMeasureID,omitempty"`
+	// Only populated if the ValueType is "number". It holds the UnitQuantity associated with                                                  
+	// this reference property type. It is a relationship to UnitQuantity record. If                                                           
+	// `UnitQuantityID` is provided, `PropertyType` is expected to be omitted.                                                                 
 	UnitQuantityID                                                                              *string                                        `json:"UnitQuantityID,omitempty"`
 	// The number of values in a tuple, e.g. For coordinates. The default is 1.                                                                
 	ValueCount                                                                                  *int64                                         `json:"ValueCount,omitempty"`
 	// The type of value to expect for this reference property, either "number" (floating point                                                
 	// number), "integer",  "string", or "boolean".                                                                                            
 	ValueType                                                                                   *string                                        `json:"ValueType,omitempty"`
-	// The srn of the Column Based Table associated to a categorical property. Can be based on a                                               
-	// defined dictionary of rock types                                                                                                        
+	// The relationship to the Column Based Table associated to a categorical property. Can be                                                 
+	// based on a defined dictionary of rock types                                                                                             
 	ClassificationTableID                                                                       *string                                        `json:"ClassificationTableID,omitempty"`
 	// Indexable elements are used to link property values and geometry to a representation -                                                  
 	// for instance a property could be attached to a flow grid's cell or face, or to a                                                        
@@ -6249,9 +6273,11 @@ type GenericPropertyData struct {
 	MeanValue                                                                                   *float64                                       `json:"MeanValue,omitempty"`
 	// Minimum value of the Property                                                                                                           
 	MinValue                                                                                    *float64                                       `json:"MinValue,omitempty"`
-	// The srn of the topology the property refers to (WPC srn)                                                                                
+	// Relationship to the topology that the property refers to. These are typed relationships                                                 
+	// to particular objects, typically work product components                                                                                
 	PropertyTopologyID                                                                          *string                                        `json:"PropertyTopologyID,omitempty"`
-	// Unit of Measure of the property                                                                                                         
+	// DEPRECATED: Please use the `AbstractReferencePropertyType.UnitOfMeasureID` instead. Unit                                                
+	// of Measure of the property                                                                                                              
 	PropertyUnitID                                                                              *string                                        `json:"PropertyUnitID,omitempty"`
 	// Optional element indicating the realization index (metadata). Used if the property is the                                               
 	// result of a multi-realization process.                                                                                                  
@@ -6261,7 +6287,7 @@ type GenericPropertyData struct {
 	// When using time series, allow to associate a single stamp to the property, if not present                                               
 	// the property contains all time stamps of the time series.                                                                               
 	TimeIndices                                                                                 *float64                                       `json:"TimeIndices,omitempty"`
-	// Time series the property is associated to (srn)                                                                                         
+	// Relationship to the time series that the property refers to                                                                             
 	TimeSeriesID                                                                                *string                                        `json:"TimeSeriesID,omitempty"`
 	// Always present when attached to time values, even when time values defined through time                                                 
 	// series (array of date-times). If the property is attached to a time-series object,                                                      
