@@ -2398,6 +2398,9 @@ type BHARunData struct {
 	DrillingStartDateTime                                                                       *time.Time                           `json:"DrillingStartDateTime,omitempty"`
 	// Start off bottom - date and time.                                                                                             
 	DrillingStopDateTime                                                                        *time.Time                           `json:"DrillingStopDateTime,omitempty"`
+	// Used to reference the FluidsProgram object containing a list of fluid intervals for the                                       
+	// Wellbore.                                                                                                                     
+	FluidsProgramReference                                                                      *FluidsProgramReference              `json:"FluidsProgramReference,omitempty"`
 	// Diameter of the hole drilled by the BHA. Note that Hole Size determine by the diameter of                                     
 	// the Drill Bit and/or a Hole Opener/Under-reamer                                                                               
 	HoleDiameter                                                                                *float64                             `json:"HoleDiameter,omitempty"`
@@ -2580,6 +2583,20 @@ type DrillingParameters struct {
 	WeightBelowJar                                                                    *float64   `json:"WeightBelowJar,omitempty"`
 	// Drilling fluid density.                                                                   
 	WeightMud                                                                         *float64   `json:"WeightMud,omitempty"`
+}
+
+// Used to reference the FluidsProgram object containing a list of fluid intervals for the
+// Wellbore.
+type FluidsProgramReference struct {
+	// A set of reference to the Fluid intervals  used durning this run. This optional                   
+	// relationship requires that the FluidsProgram object is referenced AND that the                    
+	// FluidsIntervals contained within the FluidsProgram have their FluidIntervalIdentifier             
+	// populated. (See the FluidsProgram schema for more information on FluidIntervalIdentifiers         
+	// ).                                                                                                
+	FluidIntervalIdentifiers                                                                    []string `json:"FluidIntervalIdentifiers,omitempty"`
+	// An optional relationship to a FluidsProgram object containing the Fluid Intervals. This           
+	// is required to support the reference to specific FluidIntervals.                                  
+	FluidsProgramID                                                                             *string  `json:"FluidsProgramID,omitempty"`
 }
 
 // Operating parameters of a drill string run
@@ -6369,6 +6386,10 @@ type FluidsProgramData struct {
 type FluidsInterval struct {
 	// Comments and remarks.                                                                                
 	Comments                                                                                    *string     `json:"Comments,omitempty"`
+	// An identifier of a specific Fluid Interval that can be used by another object to                     
+	// reference the interval For example may be used by BHARun  to reference the fluid                     
+	// interval(s) planned to be used during a drilling run.                                                
+	FluidIntervalIdentifier                                                                     *string     `json:"FluidIntervalIdentifier,omitempty"`
 	// Provides the overall description of the drilling fluids system.                                      
 	FluidsSystem                                                                                FluidSystem `json:"FluidsSystem"`
 	// A fixed list of reference values describing the high level type of the drilling fluid                
@@ -6393,6 +6414,9 @@ type FluidsInterval struct {
 	IntervalTopMeasuredDepth                                                                    float64     `json:"IntervalTopMeasuredDepth"`
 	// A reference number allowing traceability back to the analysis of the fluid in a lab                  
 	LabReferenceNumber                                                                          *float64    `json:"LabReferenceNumber,omitempty"`
+	// A list of reference values defining the status of the fluid, e.g., water based, oil                  
+	// based, etc.)                                                                                         
+	MudClassID                                                                                  *string     `json:"MudClassID,omitempty"`
 	// Funnel viscosity in seconds.                                                                         
 	ViscosityFunnel                                                                             *float64    `json:"ViscosityFunnel,omitempty"`
 }
@@ -6410,6 +6434,8 @@ type FluidSystem struct {
 	FluidSystemName                                                                        *string             `json:"FluidSystemName,omitempty"`
 	// Type of polymers present in mud system.                                                                 
 	PolymerType                                                                            *string             `json:"PolymerType,omitempty"`
+	// Identifies the Rheological model used for calculating pressure losses.                                  
+	RheologicalModelID                                                                     *string             `json:"RheologicalModelID,omitempty"`
 }
 
 // Description of the formulation of the barrel that will be part of the drilling mud
@@ -6782,8 +6808,11 @@ type RheometerViscosity struct {
 	Viscosity                                                                               float64 `json:"Viscosity"`
 }
 
-// A generic facility, which is not one of the explicitly modelled 'facilities', like Well,
-// Wellbore, StorageFacility , IsolatedInterval, Rig, etc.
+// A facility is a grouping of equipment that is located within a specific geographic
+// boundary or site and that is used in the context of energy-related activities such as
+// exploration, extraction, generation, storage, processing, disposal, supply, or transfer.
+// A generic facility identifies a facility that is not defined by a specialized data schema
+// such as Well, Wellbore, StorageFacility , IsolatedInterval, Rig, etc.
 type GenericFacility struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -6993,8 +7022,10 @@ type AbstractFacilityState struct {
 	TerminationDateTime                                                                         *time.Time `json:"TerminationDateTime,omitempty"`
 }
 
-// A location of interest classified by a site type, for example an outcrop, where a sample
-// has been acquired.
+// A non-facility location that can be used for energy industry related activities, such as
+// the collection of a rock or fluid sample. In contrast with a facility, a generic site is
+// usually a natural location (e.g. beach, oil seep, outcrop, sinkhole), not a man-made
+// structure or a grouping of equipment. It is classified by Site Type.
 type GenericSite struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11436,8 +11467,8 @@ type PreventionElement struct {
 	UpdateDate                                                                                *float64          `json:"UpdateDate,omitempty"`
 }
 
-// A rock sample retrieved from an outcrop or Well.  It can be core, sample cut from core,
-// cutting, outcrop, slide etc.
+// DEPRECATED: Please use master-data--Sample instead. A rock sample retrieved from an
+// outcrop or Well.  It can be core, sample cut from core, cutting, outcrop, slide etc.
 type RockSample struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11737,10 +11768,10 @@ type RockVolumeFeatureData struct {
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
-// This object captures attributes of a sample/ specimen (rock or fluid) acquired either
-// through an original acquisition event, sub-sampling event, generated from recombination
-// of other samples /specimens or derived through the application of some laboratory process
-// on the parent sample.
+// This object captures attributes of a sample/ specimen (rocks, fluids, or other materials)
+// acquired either through an original acquisition event, sub-sampling event, generated from
+// recombination of other samples /specimens or derived through the application of some
+// laboratory process on the parent sample.
 type Sample struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11873,8 +11904,12 @@ type SampleData struct {
 	SamplePreparation                                                                           []SamplePreparation          `json:"SamplePreparation,omitempty"`
 	// This captures information pertaining to the observed physical properties of the sample.                               
 	SampleProperties                                                                            *AbstractSampleProperties    `json:"SampleProperties,omitempty"`
-	// This is the OSDU record ID from the reference list of the type of rock or fluid sample                                
-	// e.g. Fluid, Core, Cuttings, Core Slab, Core Plug, Core Chip, Slides.                                                  
+	// The classification of the type of specimen/sample (e.g. whole core, cuttings, rock chip,                              
+	// oil extract, headspace gas), which is identified for the purpose of analysing the                                     
+	// specimen or a subsample of it. In partnership with other reference data, the sample type                              
+	// may indicate the general substance type, size, shape, general source, and in certain                                  
+	// cases, the retrieval method. In rare cases, the special purpose of a specimen might                                   
+	// contribute to its sample type classification.                                                                         
 	SampleTypeID                                                                                *string                      `json:"SampleTypeID,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
@@ -11886,7 +11921,7 @@ type SampleData struct {
 type RecombinationSpecification struct {
 	// The prevailing operating conditions (Pressure and Temperature)  for the recombination                                      
 	// operation.                                                                                                                 
-	RecombinationCondition                                                                      AbstractPTCondition               `json:"RecombinationCondition"`
+	RecombinationCondition                                                                      OperatingConditionRatingClass     `json:"RecombinationCondition"`
 	// The gas-oil ratio recorded for this sample recombination process as well as the                                            
 	// volumetric reference conditions for both the oil and gas phases. This is typically                                         
 	// required for fluid sample types.                                                                                           
@@ -11986,23 +12021,9 @@ type RecombinationSpecification struct {
 // Used to describe the pressure and temperature conditions at which the sample preparation
 // took place
 //
-// The pressure and temperature conditions recorded when the current sample container is
-// closed for the current chain of custody event.
-//
-// The pressure and temperature conditions recorded when the previous sample container is
-// opened for the current chain of custody event.
-//
-// The pressure and temperature conditions recorded during the sample transfer operation
-// between containers for the current chain of custody event.
-// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:
-// TransferCondition.Pressure =
-// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferPressure
-// TransferCondition.Temperature =
-// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature
-//
 // This provides the recommended operating conditions (Pressure and Temperature) rating for
 // the sample container.
-type AbstractPTCondition struct {
+type OperatingConditionRatingClass struct {
 	// The recorded absolute pressure condition. The unit of measure context is defined via              
 	// meta[] in the Storage record while the Search responses return the value in base SI unit          
 	// Pa (Pascal).                                                                                      
@@ -12016,13 +12037,13 @@ type AbstractPTCondition struct {
 // volumetric reference conditions for both the oil and gas phases. This is typically
 // required for fluid sample types.
 type RecombinationGasOilRatio struct {
-	// The Gas Oil Ratio calculated at the reference conditions specified for each stream (Oil                    
-	// or Gas)                                                                                                    
-	GasOilRatio                                                                               float64             `json:"GasOilRatio"`
-	// The pressure and temperature reference values for the gas stream.                                          
-	VolumeReferenceConditionGas                                                               AbstractPTCondition `json:"VolumeReferenceConditionGas"`
-	// The pressure and temperature reference values for the oil stream.                                          
-	VolumeReferenceConditionOil                                                               AbstractPTCondition `json:"VolumeReferenceConditionOil"`
+	// The Gas Oil Ratio calculated at the reference conditions specified for each stream (Oil                              
+	// or Gas)                                                                                                              
+	GasOilRatio                                                                               float64                       `json:"GasOilRatio"`
+	// The pressure and temperature reference values for the gas stream.                                                    
+	VolumeReferenceConditionGas                                                               OperatingConditionRatingClass `json:"VolumeReferenceConditionGas"`
+	// The pressure and temperature reference values for the oil stream.                                                    
+	VolumeReferenceConditionOil                                                               OperatingConditionRatingClass `json:"VolumeReferenceConditionOil"`
 }
 
 // This object holds information about a sample or component of a sample and its
@@ -12106,7 +12127,7 @@ type SampleAcquisitionDetail struct {
 	// AcquisitionCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition|DownholeSampleAcquisition                                                
 	// | FormationSampleAcquisition | SeparatorSampleAcquisition | WellheadSampleAcquisition                                                                                                           
 	// >[].Item.AcquisitionTemperature                                                                                                                                                                 
-	AcquisitionCondition                                                                                                                                          *AbstractPTCondition                 `json:"AcquisitionCondition,omitempty"`
+	AcquisitionCondition                                                                                                                                          *OperatingConditionRatingClass       `json:"AcquisitionCondition,omitempty"`
 	// This captures the gas oil ratio (GOR) for the sample acquired during the sample                                                                                                                 
 	// acquisition event. The property applies to ALL FLUID sampling acquisition events.                                                                                                               
 	// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped                                                                                                         
@@ -12116,6 +12137,12 @@ type SampleAcquisitionDetail struct {
 	// | FormationSampleAcquisition | SeparatorSampleAcquisition | WellheadSampleAcquisition                                                                                                           
 	// >[].Item.AcquisitionGOR                                                                                                                                                                         
 	AcquisitionGOR                                                                                                                                                *float64                             `json:"AcquisitionGOR,omitempty"`
+	// Identifies the category of the tool type used to acquire the sample/specimen, such as                                                                                                           
+	// rotary or percussive sidewall tooling, or the inner barrel type for conventional coring.                                                                                                        
+	// Note that other relevant facets of tool identification are captured by other reference                                                                                                          
+	// lists, such as core catcher type, inner sleeve material type, drill bit, and sample                                                                                                             
+	// container.                                                                                                                                                                                      
+	AcquisitionToolFamilyID                                                                                                                                       *string                              `json:"AcquisitionToolFamilyID,omitempty"`
 	// The depth of the base of the target interval from which the sample was acquired. The                                                                                                            
 	// reference and kind of depth (e.g. driller's depth versus logger's depth) is described in                                                                                                        
 	// data.VerticalMeasurement.  The property is always used except with                                                                                                                              
@@ -12138,6 +12165,13 @@ type SampleAcquisitionDetail struct {
 	// WellboreOpeningIDs[0]=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition                                                                                     
 	// | SeparatorSampleAcquisition>[].Item.WellboreCompletion                                                                                                                                         
 	ContributingWellboreOpeningIDs                                                                                                                                []string                             `json:"ContributingWellboreOpeningIDs,omitempty"`
+	// Identifies the category of the core catcher used in core acquisition. A core catcher is a                                                                                                       
+	// device located in the core barrel of drilling tools that securely retains the core sample                                                                                                       
+	// during its extraction from the subsurface.                                                                                                                                                      
+	ConventionalCoreCatcherTypeID                                                                                                                                 *string                              `json:"ConventionalCoreCatcherTypeID,omitempty"`
+	// Identifies the category of material of the cylindrical sleeve that lines the inside of                                                                                                          
+	// the inner core barrel during coring operations.                                                                                                                                                 
+	ConventionalCoreInnerSleeveMaterialID                                                                                                                         *string                              `json:"ConventionalCoreInnerSleeveMaterialID,omitempty"`
 	// The value accounts for the application of correction procedures to the gas flow rate                                                                                                            
 	// observed / measured during the sample acquisition event. The property is typically only                                                                                                         
 	// used in conjunction with SeparatorSampleAcquisition.                                                                                                                                            
@@ -12178,7 +12212,7 @@ type SampleAcquisitionDetail struct {
 	// FacilityOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityPressure                                              
 	//                                                                                                                                                                                                 
 	// FacilityOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityTemperature                                        
-	FacilityEquipmentOperatingCondition                                                                                                                           *AbstractPTCondition                 `json:"FacilityEquipmentOperatingCondition,omitempty"`
+	FacilityEquipmentOperatingCondition                                                                                                                           *OperatingConditionRatingClass       `json:"FacilityEquipmentOperatingCondition,omitempty"`
 	// This captures the operating conditions (prevailing pressure and temperatures) on the                                                                                                            
 	// target formation during the sample acquisition event.  This attribute is provided in the                                                                                                        
 	// event that the acquisition pressure and temperature recorded at the downhole sampling                                                                                                           
@@ -12191,7 +12225,7 @@ type SampleAcquisitionDetail struct {
 	// FormationCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.FormationPressure                                                     
 	//                                                                                                                                                                                                 
 	// FormationCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.FormationTemperature                                               
-	FormationCondition                                                                                                                                            *AbstractPTCondition                 `json:"FormationCondition,omitempty"`
+	FormationCondition                                                                                                                                            *OperatingConditionRatingClass       `json:"FormationCondition,omitempty"`
 	// This is the OSDU record ID for the predominant fluid kind obtained from the formation                                                                                                           
 	// during the acquisition event. The property is only used in conjunction with                                                                                                                     
 	// FormationTestSampleAcquisition                                                                                                                                                                  
@@ -12200,6 +12234,9 @@ type SampleAcquisitionDetail struct {
 	//                                                                                                                                                                                                 
 	// GrossFluidKind=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FormationTestSampleAcquisition>[].Item.GrossFluidKind                                                                
 	GrossFluidKindID                                                                                                                                              *string                              `json:"GrossFluidKindID,omitempty"`
+	// Indicates whether the fluid sample consists of fluids from multiple reservoir zones                                                                                                             
+	// and/or wellbore openings mixed into one production flow stream before being collected.                                                                                                          
+	IsCommingledProductionFluid                                                                                                                                   *bool                                `json:"IsCommingledProductionFluid,omitempty"`
 	// This is the observed/ measured gas rate for this sample acquisition event. The property                                                                                                         
 	// is only used in conjunction with SeparatorSampleAcquisition                                                                                                                                     
 	// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped                                                                                                         
@@ -12221,11 +12258,10 @@ type SampleAcquisitionDetail struct {
 	//                                                                                                                                                                                                 
 	// MeasuredWaterRate=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.MeasuredWaterRate                                                              
 	MeasuredWaterRate                                                                                                                                             *float64                             `json:"MeasuredWaterRate,omitempty"`
-	// This is the OSDU record ID for the type of mud base used  during the acquisition event or                                                                                                       
-	// present in the sample required. The property is always used except with Outcrop                                                                                                                 
+	// Identifies the type of fluid in the wellbore annulus used during the acquisition event or                                                                                                       
+	// present in the sample required.                                                                                                                                                                 
 	MudBaseTypeID                                                                                                                                                 *string                              `json:"MudBaseTypeID,omitempty"`
-	// This property is used in capturing the type of tracer used during the sample acquisition                                                                                                        
-	// event.The property is always used except with Outcrop                                                                                                                                           
+	// Identifies the type of tracer used during the sample acquisition event.                                                                                                                         
 	MudTracerTypeID                                                                                                                                               *string                              `json:"MudTracerTypeID,omitempty"`
 	// The kind of preservation applied to this sample if applied at the time of acquisition.                                                                                                          
 	// The property is only used in conjunction with ConventionalCore, Sidewall Core, Cuttings,                                                                                                        
@@ -12278,8 +12314,11 @@ type SampleAcquisitionDetail struct {
 	// SeparatorOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorPressure                                           
 	//                                                                                                                                                                                                 
 	// SeparatorOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorTemperature                                     
-	SeparatorOperatingCondition                                                                                                                                   *AbstractPTCondition                 `json:"SeparatorOperatingCondition,omitempty"`
-	// This is the OSDU ID for the Site where the the sample acquisition event occurred.                                                                                                               
+	SeparatorOperatingCondition                                                                                                                                   *OperatingConditionRatingClass       `json:"SeparatorOperatingCondition,omitempty"`
+	// Identifies the type of non-facility location (e.g. beach, oil seep, outcrop, sinkhole)                                                                                                          
+	// that can be where the acquisition event occurred to collect a rock or fluid sample. Being                                                                                                       
+	// different from a facility (which includes wells), a generic site is usually a natural                                                                                                           
+	// location, not a man-made structure or a grouping of equipment.                                                                                                                                  
 	SiteID                                                                                                                                                        *string                              `json:"SiteID,omitempty"`
 	// This references the kind of tool used in acquiring the sample. The property is always                                                                                                           
 	// used except with WellheadSampleAcquisition, SeparatorSampleAcquisition,                                                                                                                         
@@ -12312,6 +12351,11 @@ type SampleAcquisitionDetail struct {
 	// depth, KB elevation. The property is always used except with WellheadSampleAcquisition,                                                                                                         
 	// SeparatorSampleAcquisition, FacilitySampleAcquisition                                                                                                                                           
 	VerticalMeasurement                                                                                                                                           *AbstractFacilityVerticalMeasurement `json:"VerticalMeasurement,omitempty"`
+	// Indicates whether the rock was cryogenically frozen when it was acquired. In this                                                                                                               
+	// process, the drilling fluid is pushed aside from the coring zone, liquid nitrogen or                                                                                                            
+	// similar cryogenic agent is injected through a specialized cryogenic coring tool, and then                                                                                                       
+	// a core barrel retrieves the stabilized core sample.                                                                                                                                             
+	WasCryogenicallyAcquired                                                                                                                                      *bool                                `json:"WasCryogenicallyAcquired,omitempty"`
 	// This refers to the OSDU record ID of the wellbore object from which the sample was                                                                                                              
 	// acquired. It typically applies in scenarios where the acquisition event only pertains to                                                                                                        
 	// a single wellbore object. The property is always used except with                                                                                                                               
@@ -12333,7 +12377,7 @@ type SampleAcquisitionDetail struct {
 	// wellheadOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadPressure                                              
 	//                                                                                                                                                                                                 
 	// wellheadOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadTemperature                                        
-	WellheadOperatingCondition                                                                                                                                    *AbstractPTCondition                 `json:"WellheadOperatingCondition,omitempty"`
+	WellheadOperatingCondition                                                                                                                                    *OperatingConditionRatingClass       `json:"WellheadOperatingCondition,omitempty"`
 }
 
 // A free-form reference to the flow port on the Facility where this sample was acquired.
@@ -12357,25 +12401,34 @@ type SamplingPoint struct {
 // This captures information about the preparation process executed after the sample
 // acquisition event.
 type SamplePreparation struct {
-	// This captures other pertinent information regarding the sample preparation process.                          
-	Remarks                                                                                    []AbstractRemark     `json:"Remarks,omitempty"`
-	// Used to describe the pressure and temperature conditions at which the sample preparation                     
-	// took place                                                                                                   
-	SamplePreparationCondition                                                                 *AbstractPTCondition `json:"SamplePreparationCondition,omitempty"`
-	// This represents the end date for the sample preparation process.                                             
-	SamplePreparationEndDate                                                                   *time.Time           `json:"SamplePreparationEndDate,omitempty"`
-	// Provide additional details on which industrial/lab method used to conduct the sample                         
-	// preparation                                                                                                  
-	SamplePreparationMethodID                                                                  *string              `json:"SamplePreparationMethodID,omitempty"`
-	// This represents the start date for the sample preparation process.                                           
-	SamplePreparationStartDate                                                                 *time.Time           `json:"SamplePreparationStartDate,omitempty"`
-	// Provides extra details on any processes applied after the sample has been acquired                           
-	SamplePreparationTypeID                                                                    *string              `json:"SamplePreparationTypeID,omitempty"`
+	// This captures other pertinent information regarding the sample preparation process.                                    
+	Remarks                                                                                    []AbstractRemark               `json:"Remarks,omitempty"`
+	// Used to describe the pressure and temperature conditions at which the sample preparation                               
+	// took place                                                                                                             
+	SamplePreparationCondition                                                                 *OperatingConditionRatingClass `json:"SamplePreparationCondition,omitempty"`
+	// This represents the end date for the sample preparation process.                                                       
+	SamplePreparationEndDate                                                                   *time.Time                     `json:"SamplePreparationEndDate,omitempty"`
+	// Provide additional details on which industrial/lab method used to conduct the sample                                   
+	// preparation                                                                                                            
+	SamplePreparationMethodID                                                                  *string                        `json:"SamplePreparationMethodID,omitempty"`
+	// This represents the start date for the sample preparation process.                                                     
+	SamplePreparationStartDate                                                                 *time.Time                     `json:"SamplePreparationStartDate,omitempty"`
+	// Provides extra details on any processes applied after the sample has been acquired                                     
+	SamplePreparationTypeID                                                                    *string                        `json:"SamplePreparationTypeID,omitempty"`
 }
 
 // This captures information pertaining to the observed physical properties of the sample.
 //
 // A nested object definition for ordinary sample properties.
+//
+// The initial sample properties observed in the source container at the start of this chain
+// of custody event.
+//
+// The difference in sample properties observed due to losses incurred while transferring
+// between containers during this chain of custody event.
+//
+// The remaining sample properties observed in the target container at the end of this chain
+// of custody event.
 type AbstractSampleProperties struct {
 	// This captures the diameter of the sample. This is mostly applicable in core samples.              
 	SampleDiameter                                                                              *float64 `json:"SampleDiameter,omitempty"`
@@ -12605,7 +12658,9 @@ type SampleChainOfCustodyEventData struct {
 	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                      
 	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
 	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                        
 	// organization, agency, system, internal team, or individual. For informational purposes                                
@@ -12650,7 +12705,7 @@ type SampleChainOfCustodyEventData struct {
 	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
 	// The pressure and temperature conditions recorded when the current sample container is                                 
 	// closed for the current chain of custody event.                                                                        
-	ClosingCondition                                                                            *AbstractPTCondition         `json:"ClosingCondition,omitempty"`
+	ClosingCondition                                                                            *ClosingConditionClass       `json:"ClosingCondition,omitempty"`
 	// The OSDU ID of the current container used to hold the sample at the end of the chain of                               
 	// custody event.                                                                                                        
 	// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:                                       
@@ -12678,15 +12733,15 @@ type SampleChainOfCustodyEventData struct {
 	CustodyEventTypeID                                                                          *string                      `json:"CustodyEventTypeID,omitempty"`
 	// The initial sample properties observed in the source container at the start of this chain                             
 	// of custody event.                                                                                                     
-	InitialSampleProperties                                                                     map[string]interface{}       `json:"InitialSampleProperties,omitempty"`
+	InitialSampleProperties                                                                     *AbstractSampleProperties    `json:"InitialSampleProperties,omitempty"`
 	// The difference in sample properties observed due to losses incurred while transferring                                
 	// between containers during this chain of custody event.                                                                
-	LostSampleProperties                                                                        map[string]interface{}       `json:"LostSampleProperties,omitempty"`
+	LostSampleProperties                                                                        *AbstractSampleProperties    `json:"LostSampleProperties,omitempty"`
 	// The name of this 'chain of custody' event.                                                                            
 	Name                                                                                        *string                      `json:"Name,omitempty"`
 	// The pressure and temperature conditions recorded when the previous sample container is                                
 	// opened for the current chain of custody event.                                                                        
-	OpeningCondition                                                                            *AbstractPTCondition         `json:"OpeningCondition,omitempty"`
+	OpeningCondition                                                                            *ClosingConditionClass       `json:"OpeningCondition,omitempty"`
 	// The OSDU record ID of the previous container used to hold the sample at the start of the                              
 	// chain of custody event.                                                                                               
 	// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:                                       
@@ -12698,7 +12753,7 @@ type SampleChainOfCustodyEventData struct {
 	PreviousStorageLocation                                                                     *AbstractStorageLocation     `json:"PreviousStorageLocation,omitempty"`
 	// The remaining sample properties observed in the target container at the end of this chain                             
 	// of custody event.                                                                                                     
-	RemainingSampleProperties                                                                   map[string]interface{}       `json:"RemainingSampleProperties,omitempty"`
+	RemainingSampleProperties                                                                   *AbstractSampleProperties    `json:"RemainingSampleProperties,omitempty"`
 	// Pertinent information about this object stored alongside other attributes of this object.                             
 	// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:                                       
 	// Remarks = PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].Remark                                              
@@ -12712,8 +12767,43 @@ type SampleChainOfCustodyEventData struct {
 	// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferPressure                                              
 	// TransferCondition.Temperature =                                                                                       
 	// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature                                           
-	TransferCondition                                                                           *AbstractPTCondition         `json:"TransferCondition,omitempty"`
+	TransferCondition                                                                           *ClosingConditionClass       `json:"TransferCondition,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// The pressure and temperature conditions recorded when the current sample container is
+// closed for the current chain of custody event.
+//
+// The pair of absolute pressure and temperature values describing the condition for a
+// particular volume measurement or estimation. The unit of measure context is defined via
+// the meta[] block in the record. Search responses will return pressure in Pa (Pascal) and
+// temperature in K (Kelvin).
+//
+// The pressure and temperature conditions recorded when the previous sample container is
+// opened for the current chain of custody event.
+//
+// The pressure and temperature conditions recorded during the sample transfer operation
+// between containers for the current chain of custody event.
+// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:
+// TransferCondition.Pressure =
+// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferPressure
+// TransferCondition.Temperature =
+// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature
+type ClosingConditionClass struct {
+	// To capture when Measurement have been made at Standard Conditions (25°C / 100 kPa)                
+	// Mutually Exclusive with Pressure/Temperature.                                                     
+	// Capture                                                                                           
+	IsStandardConditions                                                                         *bool   `json:"IsStandardConditions,omitempty"`
+	// Open Text Box to capture the P & T Reference when measurements are made at non standard           
+	// conditions (such as "Reservoir", "Tank",…)                                                        
+	NonStandardConditionsReference                                                               *string `json:"NonStandardConditionsReference,omitempty"`
+	// The recorded absolute pressure condition. The unit of measure context is defined via              
+	// meta[] in the Storage record while the Search responses return the value in base SI unit          
+	// Pa (Pascal).                                                                                      
+	Pressure                                                                                     float64 `json:"Pressure"`
+	// The recorded temperature condition. The unit of measure context is defined via meta[] in          
+	// the Storage record while the Search responses return the value in base SI unit K (Kelvin).        
+	Temperature                                                                                  float64 `json:"Temperature"`
 }
 
 // Information on the sample container used in storing the sample.
@@ -12760,92 +12850,92 @@ type SampleContainer struct {
 //
 // Properties shared with all master-data schema instances.
 type SampleContainerData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                        
-	ExistenceKind                                                                                *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                 
-	ResourceCurationStatus                                                                       *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                         
-	ResourceHomeRegionID                                                                         *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                      
-	ResourceHostRegionIDs                                                                        []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                       
-	ResourceLifecycleStatus                                                                      *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                         
-	ResourceSecurityClassification                                                               *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                         
-	// organization, agency, system, internal team, or individual. For informational purposes                                 
-	// only, the list of sources is not governed.                                                                             
-	Source                                                                                       *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                  
-	// based on data quality. Clarifications: Since Certified is the highest classification of                                
-	// suitable quality, any further change or versioning of a Certified record should be                                     
-	// carefully considered and justified. If a Technical Assurance value is not populated then                               
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                               
-	// Technical Assurance values are not intended to be used for the identification of a single                              
-	// "preferred" or "definitive" record by comparison with other records.                                                   
-	TechnicalAssuranceID                                                                         *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                 
-	// multiple types or multiple values of the same type.                                                                    
-	GeoContexts                                                                                  []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                               
-	// should include all the identifiers).                                                                                   
-	NameAliases                                                                                  []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                 
-	// not appropriate).                                                                                                      
-	SpatialLocation                                                                              *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                                
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                         
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                 
-	// further change or versioning of a Certified record should be carefully considered and                                  
-	// justified. If a Technical Assurance value is not populated then one can assume the data                                
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                   
-	// values are not intended to be used for the identification of a single "preferred" or                                   
-	// "definitive" record by comparison with other records.                                                                  
-	TechnicalAssurances                                                                          []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                         
-	// master-data record's overall suitability for general business consumption based on data                                
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                     
-	// quality, any further change or versioning of a Certified record should be carefully                                    
-	// considered and justified. If a Technical Assurance value is not populated then one can                                 
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                       
-	// Technical Assurance values are not intended to be used for the identification of a single                              
-	// "preferred" or "definitive" record by comparison with other records.                                                   
-	TechnicalAssuranceTypeID                                                                     *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                               
-	VersionCreationReason                                                                        *string                      `json:"VersionCreationReason,omitempty"`
-	// Volume of the sample container.                                                                                        
-	Capacity                                                                                     float64                      `json:"Capacity"`
-	// List of certifications performed on the sample container over time.                                                    
-	ContainerCertifications                                                                      []ContainerCertification     `json:"ContainerCertifications,omitempty"`
-	// This refers to an alternate identifier for the sample container available in a system of                               
-	// record external to the OSDU platform and managed by the organization.                                                  
-	ContainerIdentifier                                                                          string                       `json:"ContainerIdentifier"`
-	// The date the sample container reached end of life and should be taken out of commission.                               
-	ExpirationDate                                                                               *time.Time                   `json:"ExpirationDate,omitempty"`
-	// The make or manufacturer of the sample container.                                                                      
-	ManufacturerID                                                                               *string                      `json:"ManufacturerID,omitempty"`
-	// Material used in constructing the sample container.                                                                    
-	MaterialConstruction                                                                         *string                      `json:"MaterialConstruction,omitempty"`
-	// The model of the sample container as defined by the manufacturer.                                                      
-	Model                                                                                        *string                      `json:"Model,omitempty"`
-	// The name of the container.                                                                                             
-	Name                                                                                         *string                      `json:"Name,omitempty"`
-	// This provides the recommended operating conditions (Pressure and Temperature) rating for                               
-	// the sample container.                                                                                                  
-	OperatingConditionRating                                                                     AbstractPTCondition          `json:"OperatingConditionRating"`
-	// The OSDU Record ID for the organization obtained from a reference list.                                                
-	OwnerID                                                                                      *string                      `json:"OwnerID,omitempty"`
-	// Remarks or comments about this sample container.                                                                       
-	Remarks                                                                                      *AbstractRemark              `json:"Remarks,omitempty"`
-	// The list of substances, certified by the manufacturer, that the sample container can hold.                             
-	SampleContainerServiceTypeIDs                                                                []string                     `json:"SampleContainerServiceTypeIDs"`
-	// The type or kind of the sample container used.                                                                         
-	SampleContainerTypeID                                                                        *string                      `json:"SampleContainerTypeID,omitempty"`
-	// Unique identifier given by manufacturer for the sample container.                                                      
-	SerialNumber                                                                                 *string                      `json:"SerialNumber,omitempty"`
-	// The date the sample container was commisioned and put in service.                                                      
-	StartDate                                                                                    *time.Time                   `json:"StartDate,omitempty"`
-	ExtensionProperties                                                                          map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                         
+	ExistenceKind                                                                                *string                       `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                  
+	ResourceCurationStatus                                                                       *string                       `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                          
+	ResourceHomeRegionID                                                                         *string                       `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                       
+	ResourceHostRegionIDs                                                                        []string                      `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                        
+	ResourceLifecycleStatus                                                                      *string                       `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                          
+	ResourceSecurityClassification                                                               *string                       `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                          
+	// organization, agency, system, internal team, or individual. For informational purposes                                  
+	// only, the list of sources is not governed.                                                                              
+	Source                                                                                       *string                       `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                   
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                 
+	// suitable quality, any further change or versioning of a Certified record should be                                      
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                
+	// Technical Assurance values are not intended to be used for the identification of a single                               
+	// "preferred" or "definitive" record by comparison with other records.                                                    
+	TechnicalAssuranceID                                                                         *string                       `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                  
+	// multiple types or multiple values of the same type.                                                                     
+	GeoContexts                                                                                  []AbstractGeoContext          `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                
+	// should include all the identifiers).                                                                                    
+	NameAliases                                                                                  []AbstractAliasNames          `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                  
+	// not appropriate).                                                                                                       
+	SpatialLocation                                                                              *AbstractSpatialLocation      `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                 
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                          
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                  
+	// further change or versioning of a Certified record should be carefully considered and                                   
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                 
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                    
+	// values are not intended to be used for the identification of a single "preferred" or                                    
+	// "definitive" record by comparison with other records.                                                                   
+	TechnicalAssurances                                                                          []AbstractTechnicalAssurance  `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                          
+	// master-data record's overall suitability for general business consumption based on data                                 
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                      
+	// quality, any further change or versioning of a Certified record should be carefully                                     
+	// considered and justified. If a Technical Assurance value is not populated then one can                                  
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                        
+	// Technical Assurance values are not intended to be used for the identification of a single                               
+	// "preferred" or "definitive" record by comparison with other records.                                                    
+	TechnicalAssuranceTypeID                                                                     *string                       `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                
+	VersionCreationReason                                                                        *string                       `json:"VersionCreationReason,omitempty"`
+	// Volume of the sample container.                                                                                         
+	Capacity                                                                                     float64                       `json:"Capacity"`
+	// List of certifications performed on the sample container over time.                                                     
+	ContainerCertifications                                                                      []ContainerCertification      `json:"ContainerCertifications,omitempty"`
+	// This refers to an alternate identifier for the sample container available in a system of                                
+	// record external to the OSDU platform and managed by the organization.                                                   
+	ContainerIdentifier                                                                          string                        `json:"ContainerIdentifier"`
+	// The date the sample container reached end of life and should be taken out of commission.                                
+	ExpirationDate                                                                               *time.Time                    `json:"ExpirationDate,omitempty"`
+	// The make or manufacturer of the sample container.                                                                       
+	ManufacturerID                                                                               *string                       `json:"ManufacturerID,omitempty"`
+	// Material used in constructing the sample container.                                                                     
+	MaterialConstruction                                                                         *string                       `json:"MaterialConstruction,omitempty"`
+	// The model of the sample container as defined by the manufacturer.                                                       
+	Model                                                                                        *string                       `json:"Model,omitempty"`
+	// The name of the container.                                                                                              
+	Name                                                                                         *string                       `json:"Name,omitempty"`
+	// This provides the recommended operating conditions (Pressure and Temperature) rating for                                
+	// the sample container.                                                                                                   
+	OperatingConditionRating                                                                     OperatingConditionRatingClass `json:"OperatingConditionRating"`
+	// The OSDU Record ID for the organization obtained from a reference list.                                                 
+	OwnerID                                                                                      *string                       `json:"OwnerID,omitempty"`
+	// Remarks or comments about this sample container.                                                                        
+	Remarks                                                                                      *AbstractRemark               `json:"Remarks,omitempty"`
+	// The list of substances, certified by the manufacturer, that the sample container can hold.                              
+	SampleContainerServiceTypeIDs                                                                []string                      `json:"SampleContainerServiceTypeIDs"`
+	// The type or kind of the sample container used.                                                                          
+	SampleContainerTypeID                                                                        *string                       `json:"SampleContainerTypeID,omitempty"`
+	// Unique identifier given by manufacturer for the sample container.                                                       
+	SerialNumber                                                                                 *string                       `json:"SerialNumber,omitempty"`
+	// The date the sample container was commisioned and put in service.                                                       
+	StartDate                                                                                    *time.Time                    `json:"StartDate,omitempty"`
+	ExtensionProperties                                                                          map[string]interface{}        `json:"ExtensionProperties,omitempty"`
 }
 
 // This provides information pertaining to the certification process conducted on a fluid
@@ -14249,11 +14339,11 @@ type TubularAssemblyStatusClass struct {
 	StatusTypeID                                                                      *string    `json:"StatusTypeID,omitempty"`
 }
 
-// Well Tubular data contains information on the tubular assemblies and their components for
-// the well, wellbore, or wellbore completion (as appropriate). The tubulars can be tubing,
-// casing or liners or other related equipment which is installed into the well. Tubulars
-// can also be equipment which is lowered into the well in the context of drilling, which is
-// then pulled back out.
+// Well Tubular data contains information on the tubular assemblies installed into the well,
+// wellbore, or wellbore completion (as appropriate). Tubulars can be tubing, casing or
+// liners or other related equipment which is installed into the well. Tubulars can also be
+// equipment which is lowered into the well e.g. a drillstring, which is then pulled back
+// out.
 type TubularComponent struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -14297,191 +14387,297 @@ type TubularComponent struct {
 //
 // Properties shared with all master-data schema instances.
 type TubularComponentData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                               
-	ExistenceKind                                                                               *string                              `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                        
-	ResourceCurationStatus                                                                      *string                              `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                                
-	ResourceHomeRegionID                                                                        *string                              `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                             
-	ResourceHostRegionIDs                                                                       []string                             `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                              
-	ResourceLifecycleStatus                                                                     *string                              `json:"ResourceLifecycleStatus,omitempty"`
-	// DEPRECATED: This security classification is merely decorative; the security                                                   
-	// classification associated to the legal.legaltags[] is evaluated by platform services                                          
-	// instead. Previously:  Classifies the security level of the resource.                                                          
-	ResourceSecurityClassification                                                              *string                              `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                                
-	// organization, agency, system, internal team, or individual. For informational purposes                                        
-	// only, the list of sources is not governed.                                                                                    
-	Source                                                                                      *string                              `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                         
-	// based on data quality. Clarifications: Since Certified is the highest classification of                                       
-	// suitable quality, any further change or versioning of a Certified record should be                                            
-	// carefully considered and justified. If a Technical Assurance value is not populated then                                      
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                                     
-	// "preferred" or "definitive" record by comparison with other records.                                                          
-	TechnicalAssuranceID                                                                        *string                              `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                        
-	// multiple types or multiple values of the same type.                                                                           
-	GeoContexts                                                                                 []AbstractGeoContext                 `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                                      
-	// should include all the identifiers).                                                                                          
-	NameAliases                                                                                 []AbstractAliasNames                 `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                        
-	// not appropriate).                                                                                                             
-	SpatialLocation                                                                             *AbstractSpatialLocation             `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                                       
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                                
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                        
-	// further change or versioning of a Certified record should be carefully considered and                                         
-	// justified. If a Technical Assurance value is not populated then one can assume the data                                       
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                          
-	// values are not intended to be used for the identification of a single "preferred" or                                          
-	// "definitive" record by comparison with other records.                                                                         
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance         `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                                
-	// master-data record's overall suitability for general business consumption based on data                                       
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                            
-	// quality, any further change or versioning of a Certified record should be carefully                                           
-	// considered and justified. If a Technical Assurance value is not populated then one can                                        
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                              
-	// Technical Assurance values are not intended to be used for the identification of a single                                     
-	// "preferred" or "definitive" record by comparison with other records.                                                          
-	TechnicalAssuranceTypeID                                                                    *string                              `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                                      
-	VersionCreationReason                                                                       *string                              `json:"VersionCreationReason,omitempty"`
-	// Axial Load Capacity of component                                                                                              
-	AxialLoadCapacity                                                                           *float64                             `json:"AxialLoadCapacity,omitempty"`
-	// Bottom Connection Outer Length                                                                                                
-	BotConnLength                                                                               *float64                             `json:"BotConnLength,omitempty"`
-	// Bottom Connection Outer Diameter                                                                                              
-	BotConnOD                                                                                   *float64                             `json:"BotConnOD,omitempty"`
-	// Burst Pressure                                                                                                                
-	BurstPressure                                                                               *float64                             `json:"BurstPressure,omitempty"`
-	// Closed End Displacement volume/length                                                                                         
-	ClosedEndDisplacement                                                                       *float64                             `json:"ClosedEndDisplacement,omitempty"`
-	// Collapse Pressure                                                                                                             
-	CollapsePressure                                                                            *float64                             `json:"CollapsePressure,omitempty"`
-	// Top and/or Bottom Connection information                                                                                      
-	Connections                                                                                 []AbstractTubularComponentConnection `json:"Connections,omitempty"`
-	// Density                                                                                                                       
-	Density                                                                                     *float64                             `json:"Density,omitempty"`
-	// The drift diameter is the inside diameter (ID) that the pipe manufacturer guarantees per                                      
-	// specifications. Note that the nominal inside diameter is not the same as the drift                                            
-	// diameter but is always slightly larger. The drift diameter is used by the well planner to                                     
-	// determine what size tools or casing strings can later be run through the casing, whereas                                      
-	// the nominal inside diameter is used for fluid volume calculations such as mud circulating                                     
-	// times and cement slurry placement calculations.                                                                               
-	DriftDiameter                                                                               *float64                             `json:"DriftDiameter,omitempty"`
-	// Nominal inner diameter 'ID' of the component.                                                                                 
-	InnerDiameter                                                                               *float64                             `json:"InnerDiameter,omitempty"`
-	// Internal Reference name/description                                                                                           
-	InternalReference                                                                           *string                              `json:"InternalReference,omitempty"`
-	// Is Radioactive                                                                                                                
-	IsRadioActive                                                                               *bool                                `json:"IsRadioActive,omitempty"`
-	// Is thread lock used when making up the pipe?                                                                                  
-	IsThreadLockUsed                                                                            *bool                                `json:"IsThreadLockUsed,omitempty"`
-	// Average Joint Length                                                                                                          
-	JointLengthAverage                                                                          *float64                             `json:"JointLengthAverage,omitempty"`
-	// Linear Capacity volume/length inside component                                                                                
-	LinearCapacity                                                                              *float64                             `json:"LinearCapacity,omitempty"`
-	// Actual Make Up Torque                                                                                                         
-	MakeUpTorqueAct                                                                             *float64                             `json:"MakeUpTorqueAct,omitempty"`
-	// Maximum Make Up Torque                                                                                                        
-	MakeUpTorqueMax                                                                             *float64                             `json:"MakeUpTorqueMax,omitempty"`
-	// Minimum Make Up Torque                                                                                                        
-	MakeUpTorqueMin                                                                             *float64                             `json:"MakeUpTorqueMin,omitempty"`
-	// Optimum Make Up Torque                                                                                                        
-	MakeUpTorqueOpt                                                                             *float64                             `json:"MakeUpTorqueOpt,omitempty"`
-	// Unique identifier for the manufacturer of this equipment.                                                                     
-	ManufacturerID                                                                              *string                              `json:"ManufacturerID,omitempty"`
-	// This is the maximum hard outer diameter of the component.                                                                     
-	MaximumOuterDiameter                                                                        *float64                             `json:"MaximumOuterDiameter,omitempty"`
-	// Name of the component Model as defined per the operating company                                                              
-	Model                                                                                       *string                              `json:"Model,omitempty"`
-	// The name of this tubular component.                                                                                           
-	Name                                                                                        *string                              `json:"Name,omitempty"`
-	// Description of the Size (ID) of the Nozzle used in the Tubular Component                                                      
-	Nozzles                                                                                     []Nozzle                             `json:"Nozzles,omitempty"`
-	// Number of Joints per pipe section                                                                                             
-	NumJoints                                                                                   *int64                               `json:"NumJoints,omitempty"`
-	// Outside Coupling Length                                                                                                       
-	OutsideCouplingLength                                                                       *float64                             `json:"OutsideCouplingLength,omitempty"`
-	// The depth the packer equipment was set to seal the casing or tubing.                                                          
-	PackerSetDepthTVD                                                                           *float64                             `json:"PackerSetDepthTVD,omitempty"`
-	// Identifier of the Assembly the component is part of.                                                                          
-	ParentAssemblyID                                                                            *string                              `json:"ParentAssemblyID,omitempty"`
-	// Identifier of the wellbore the Component is installed/run into.                                                               
-	ParentWellboreID                                                                            *string                              `json:"ParentWellboreID,omitempty"`
-	// Vendor part number                                                                                                            
-	PartNumber                                                                                  *string                              `json:"PartNumber,omitempty"`
-	// Size/diameter of the Pilot Hole when assembly is a drillstring                                                                
-	PilotHoleSize                                                                               *float64                             `json:"PilotHoleSize,omitempty"`
-	// Poissons Ratio                                                                                                                
-	PoissonsRatio                                                                               *float64                             `json:"PoissonsRatio,omitempty"`
-	// Identifier of the Section Type.                                                                                               
-	SectionTypeID                                                                               *string                              `json:"SectionTypeID,omitempty"`
-	// Description of the type of Sensor(s) for the Tubular Components e.g. for MWD/LWD tools                                        
-	Sensors                                                                                     []Sensor                             `json:"Sensors,omitempty"`
-	// Serial Number of the component as provided by the manufacturer and/or the supplier                                            
-	SerialNumber                                                                                *string                              `json:"SerialNumber,omitempty"`
-	// True vertical depth of the casing/tubing shoe measured from the surface.                                                      
-	ShoeDepthTVD                                                                                *float64                             `json:"ShoeDepthTVD,omitempty"`
-	// Unique identifier for the supplier of this equipment.                                                                         
-	SupplierID                                                                                  *string                              `json:"SupplierID,omitempty"`
-	// Top Connection Outer Length                                                                                                   
-	TopConnLength                                                                               *float64                             `json:"TopConnLength,omitempty"`
-	// Top Connection Outer Diameter                                                                                                 
-	TopConnOD                                                                                   *float64                             `json:"TopConnOD,omitempty"`
-	// TFA of all Nozzles                                                                                                            
-	TotalFlowArea                                                                               *float64                             `json:"TotalFlowArea,omitempty"`
-	// The installed measured depth of the base of the specific component                                                            
-	TubularComponentBaseMD                                                                      *float64                             `json:"TubularComponentBaseMD,omitempty"`
-	// True Vertical Depth of the base of the component measured from the Wellhead                                                   
-	TubularComponentBaseReportedTVD                                                             *float64                             `json:"TubularComponentBaseReportedTVD,omitempty"`
-	// Identifier of the Bottom Connection Type                                                                                      
-	TubularComponentBottomConnectionTypeID                                                      *string                              `json:"TubularComponentBottomConnectionTypeID,omitempty"`
-	// Box / Pin configuration Identifier                                                                                            
-	TubularComponentBoxPinConfigID                                                              *string                              `json:"TubularComponentBoxPinConfigID,omitempty"`
-	// Total Length of the component(s)                                                                                              
-	TubularComponentLength                                                                      *float64                             `json:"TubularComponentLength,omitempty"`
-	// Specifies the material type constituting the component.                                                                       
-	TubularComponentMaterialTypeID                                                              *string                              `json:"TubularComponentMaterialTypeID,omitempty"`
-	// Nominal size (outer diameter 'OD') of the component, e.g. 9.625", 12.25"                                                      
-	TubularComponentNominalSize                                                                 *float64                             `json:"TubularComponentNominalSize,omitempty"`
-	// Nominal size description e.g. 8-1/2" x 9-5/8"                                                                                 
-	TubularComponentNominalSizeDescription                                                      *string                              `json:"TubularComponentNominalSizeDescription,omitempty"`
-	// Nominal weight of the component.                                                                                              
-	TubularComponentNominalWeight                                                               *float64                             `json:"TubularComponentNominalWeight,omitempty"`
-	// The sequence within which the components entered the hole. That is, a sequence number of                                      
-	// 1 entered first, 2 entered 2nd, etc.                                                                                          
-	TubularComponentSequence                                                                    *int64                               `json:"TubularComponentSequence,omitempty"`
-	// Identifier of the Top Connection Type                                                                                         
-	TubularComponentTopConnectionTypeID                                                         *string                              `json:"TubularComponentTopConnectionTypeID,omitempty"`
-	// The installed measured depth of the top of the specific component                                                             
-	TubularComponentTopMD                                                                       *float64                             `json:"TubularComponentTopMD,omitempty"`
-	// True Vertical Depth of the top of the component measured from the Wellhead                                                    
-	TubularComponentTopReportedTVD                                                              *float64                             `json:"TubularComponentTopReportedTVD,omitempty"`
-	// Id of tubing grade - eg. the tensile strength of the tubing material. A system of                                             
-	// classifying the material specifications for steel alloys used in the manufacture of                                           
-	// tubing.                                                                                                                       
-	TubularComponentTubingGradeID                                                               *string                              `json:"TubularComponentTubingGradeID,omitempty"`
-	// The tensile strength of the tubing material. A system of classifying the material                                             
-	// specifications for steel alloys used in the manufacture of tubing.                                                            
-	TubularComponentTubingGradeStrength                                                         *float64                             `json:"TubularComponentTubingGradeStrength,omitempty"`
-	// The axial load required to yield the pipe.                                                                                    
-	TubularComponentTubingStrength                                                              *float64                             `json:"TubularComponentTubingStrength,omitempty"`
-	// Specifies the types of components that can be used in a tubular string. These are used to                                     
-	// specify the type of component and multiple components are used to define a tubular string                                     
-	// (Tubular).                                                                                                                    
-	TubularComponentTypeID                                                                      *string                              `json:"TubularComponentTypeID,omitempty"`
-	// Vendor number or other reference identifier                                                                                   
-	VendorNumber                                                                                *string                              `json:"VendorNumber,omitempty"`
-	// Youngs Modulus of Elasticity                                                                                                  
-	YoungsModulus                                                                               *float64                             `json:"YoungsModulus,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}               `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                
+	ExistenceKind                                                                               *string                               `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                         
+	ResourceCurationStatus                                                                      *string                               `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                 
+	ResourceHomeRegionID                                                                        *string                               `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                              
+	ResourceHostRegionIDs                                                                       []string                              `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                               
+	ResourceLifecycleStatus                                                                     *string                               `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                    
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                           
+	// instead. Previously:  Classifies the security level of the resource.                                                           
+	ResourceSecurityClassification                                                              *string                               `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                 
+	// organization, agency, system, internal team, or individual. For informational purposes                                         
+	// only, the list of sources is not governed.                                                                                     
+	Source                                                                                      *string                               `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                          
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                        
+	// suitable quality, any further change or versioning of a Certified record should be                                             
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                       
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                       
+	// Technical Assurance values are not intended to be used for the identification of a single                                      
+	// "preferred" or "definitive" record by comparison with other records.                                                           
+	TechnicalAssuranceID                                                                        *string                               `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                         
+	// multiple types or multiple values of the same type.                                                                            
+	GeoContexts                                                                                 []AbstractGeoContext                  `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                       
+	// should include all the identifiers).                                                                                           
+	NameAliases                                                                                 []AbstractAliasNames                  `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                         
+	// not appropriate).                                                                                                              
+	SpatialLocation                                                                             *AbstractSpatialLocation              `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                        
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                                 
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                         
+	// further change or versioning of a Certified record should be carefully considered and                                          
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                        
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                           
+	// values are not intended to be used for the identification of a single "preferred" or                                           
+	// "definitive" record by comparison with other records.                                                                          
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance          `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                                 
+	// master-data record's overall suitability for general business consumption based on data                                        
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                             
+	// quality, any further change or versioning of a Certified record should be carefully                                            
+	// considered and justified. If a Technical Assurance value is not populated then one can                                         
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                               
+	// Technical Assurance values are not intended to be used for the identification of a single                                      
+	// "preferred" or "definitive" record by comparison with other records.                                                           
+	TechnicalAssuranceTypeID                                                                    *string                               `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                       
+	VersionCreationReason                                                                       *string                               `json:"VersionCreationReason,omitempty"`
+	// Axial Load Capacity of component                                                                                               
+	AxialLoadCapacity                                                                           *float64                              `json:"AxialLoadCapacity,omitempty"`
+	// Bend specific information                                                                                                      
+	Bend                                                                                        *AbstractTubularComponentBend         `json:"Bend,omitempty"`
+	// Bit Record specific information                                                                                                
+	BitRecord                                                                                   *AbstractTubularComponentBitRecord    `json:"BitRecord,omitempty"`
+	// Bottom Connection Outer Length                                                                                                 
+	BotConnLength                                                                               *float64                              `json:"BotConnLength,omitempty"`
+	// Bottom Connection Outer Diameter                                                                                               
+	BotConnOD                                                                                   *float64                              `json:"BotConnOD,omitempty"`
+	// Burst Pressure                                                                                                                 
+	BurstPressure                                                                               *float64                              `json:"BurstPressure,omitempty"`
+	// Closed End Displacement volume/length                                                                                          
+	ClosedEndDisplacement                                                                       *float64                              `json:"ClosedEndDisplacement,omitempty"`
+	// Collapse Pressure                                                                                                              
+	CollapsePressure                                                                            *float64                              `json:"CollapsePressure,omitempty"`
+	// Top and/or Bottom Connection information                                                                                       
+	Connections                                                                                 []AbstractTubularComponentConnection  `json:"Connections,omitempty"`
+	// Density                                                                                                                        
+	Density                                                                                     *float64                              `json:"Density,omitempty"`
+	// The drift diameter is the inside diameter (ID) that the pipe manufacturer guarantees per                                       
+	// specifications. Note that the nominal inside diameter is not the same as the drift                                             
+	// diameter but is always slightly larger. The drift diameter is used by the well planner to                                      
+	// determine what size tools or casing strings can later be run through the casing, whereas                                       
+	// the nominal inside diameter is used for fluid volume calculations such as mud circulating                                      
+	// times and cement slurry placement calculations.                                                                                
+	DriftDiameter                                                                               *float64                              `json:"DriftDiameter,omitempty"`
+	// Hole Opener specific information                                                                                               
+	HoleOpener                                                                                  *AbstractTubularComponentHoleOpener   `json:"HoleOpener,omitempty"`
+	// Nominal inner diameter 'ID' of the component.                                                                                  
+	InnerDiameter                                                                               *float64                              `json:"InnerDiameter,omitempty"`
+	// Internal Reference name/description                                                                                            
+	InternalReference                                                                           *string                               `json:"InternalReference,omitempty"`
+	// Is Radioactive                                                                                                                 
+	IsRadioActive                                                                               *bool                                 `json:"IsRadioActive,omitempty"`
+	// Is thread lock used when making up the pipe?                                                                                   
+	IsThreadLockUsed                                                                            *bool                                 `json:"IsThreadLockUsed,omitempty"`
+	// Drilling Jar specific information                                                                                              
+	Jar                                                                                         *AbstractTubularComponentJar          `json:"Jar,omitempty"`
+	// Average Joint Length                                                                                                           
+	JointLengthAverage                                                                          *float64                              `json:"JointLengthAverage,omitempty"`
+	// Linear Capacity volume/length inside component                                                                                 
+	LinearCapacity                                                                              *float64                              `json:"LinearCapacity,omitempty"`
+	// Actual Make Up Torque                                                                                                          
+	MakeUpTorqueAct                                                                             *float64                              `json:"MakeUpTorqueAct,omitempty"`
+	// Maximum Make Up Torque                                                                                                         
+	MakeUpTorqueMax                                                                             *float64                              `json:"MakeUpTorqueMax,omitempty"`
+	// Minimum Make Up Torque                                                                                                         
+	MakeUpTorqueMin                                                                             *float64                              `json:"MakeUpTorqueMin,omitempty"`
+	// Optimum Make Up Torque                                                                                                         
+	MakeUpTorqueOpt                                                                             *float64                              `json:"MakeUpTorqueOpt,omitempty"`
+	// Unique identifier for the manufacturer of this equipment.                                                                      
+	ManufacturerID                                                                              *string                               `json:"ManufacturerID,omitempty"`
+	// This is the maximum hard outer diameter of the component.                                                                      
+	MaximumOuterDiameter                                                                        *float64                              `json:"MaximumOuterDiameter,omitempty"`
+	// Name of the component Model as defined per the operating company                                                               
+	Model                                                                                       *string                               `json:"Model,omitempty"`
+	// Mud Motor specific information                                                                                                 
+	Motor                                                                                       *AbstractTubularComponentMotor        `json:"Motor,omitempty"`
+	// MWD Tool specific information                                                                                                  
+	MWDTool                                                                                     *AbstractTubularComponentJar          `json:"MWDTool,omitempty"`
+	// The name of this tubular component.                                                                                            
+	Name                                                                                        *string                               `json:"Name,omitempty"`
+	// Description of the Size (ID) of the Nozzle (Jet) used in the Tubular Component                                                 
+	Nozzles                                                                                     []Nozzle                              `json:"Nozzles,omitempty"`
+	// Number of Joints per pipe section                                                                                              
+	NumJoints                                                                                   *int64                                `json:"NumJoints,omitempty"`
+	// Outside Coupling Length                                                                                                        
+	OutsideCouplingLength                                                                       *float64                              `json:"OutsideCouplingLength,omitempty"`
+	// The depth the packer equipment was set to seal the casing or tubing.                                                           
+	PackerSetDepthTVD                                                                           *float64                              `json:"PackerSetDepthTVD,omitempty"`
+	// Identifier of the Assembly the component is part of.                                                                           
+	ParentAssemblyID                                                                            *string                               `json:"ParentAssemblyID,omitempty"`
+	// Identifier of the wellbore the Component is installed/run into.                                                                
+	ParentWellboreID                                                                            *string                               `json:"ParentWellboreID,omitempty"`
+	// Vendor part number                                                                                                             
+	PartNumber                                                                                  *string                               `json:"PartNumber,omitempty"`
+	// Size/diameter of the Pilot Hole when assembly is a drillstring                                                                 
+	PilotHoleSize                                                                               *float64                              `json:"PilotHoleSize,omitempty"`
+	// Poissons Ratio                                                                                                                 
+	PoissonsRatio                                                                               *float64                              `json:"PoissonsRatio,omitempty"`
+	// Pressure v flow rate curve data for Hydraulics Pressure Loss calculations                                                      
+	PressureLoss                                                                                *AbstractTubularComponentPressureLoss `json:"PressureLoss,omitempty"`
+	// Rotary Steerable System (RSS) tool specific information                                                                        
+	RotarySteerableSystem                                                                       *AbstractTubularComponentRSS          `json:"RotarySteerableSystem,omitempty"`
+	// Identifier of the Section Type.                                                                                                
+	SectionTypeID                                                                               *string                               `json:"SectionTypeID,omitempty"`
+	// Description of the type of Sensor(s) for the Tubular Components e.g. for MWD/LWD tools                                         
+	Sensors                                                                                     []Sensor                              `json:"Sensors,omitempty"`
+	// Serial Number of the component as provided by the manufacturer and/or the supplier                                             
+	SerialNumber                                                                                *string                               `json:"SerialNumber,omitempty"`
+	// True vertical depth of the casing/tubing shoe measured from the surface.                                                       
+	ShoeDepthTVD                                                                                *float64                              `json:"ShoeDepthTVD,omitempty"`
+	// Stabiliser specific information                                                                                                
+	Stabiliser                                                                                  *AbstractTubularComponentStabiliser   `json:"Stabiliser,omitempty"`
+	// Unique identifier for the supplier of this equipment.                                                                          
+	SupplierID                                                                                  *string                               `json:"SupplierID,omitempty"`
+	// Top Connection Outer Length                                                                                                    
+	TopConnLength                                                                               *float64                              `json:"TopConnLength,omitempty"`
+	// Top Connection Outer Diameter                                                                                                  
+	TopConnOD                                                                                   *float64                              `json:"TopConnOD,omitempty"`
+	// TFA of all Nozzles                                                                                                             
+	TotalFlowArea                                                                               *float64                              `json:"TotalFlowArea,omitempty"`
+	// The installed measured depth of the base of the specific component                                                             
+	TubularComponentBaseMD                                                                      *float64                              `json:"TubularComponentBaseMD,omitempty"`
+	// True Vertical Depth of the base of the component measured from the Wellhead                                                    
+	TubularComponentBaseReportedTVD                                                             *float64                              `json:"TubularComponentBaseReportedTVD,omitempty"`
+	// Identifier of the Bottom Connection Type                                                                                       
+	TubularComponentBottomConnectionTypeID                                                      *string                               `json:"TubularComponentBottomConnectionTypeID,omitempty"`
+	// Box / Pin configuration Identifier                                                                                             
+	TubularComponentBoxPinConfigID                                                              *string                               `json:"TubularComponentBoxPinConfigID,omitempty"`
+	// Total Length of the component(s)                                                                                               
+	TubularComponentLength                                                                      *float64                              `json:"TubularComponentLength,omitempty"`
+	// Specifies the material type constituting the component.                                                                        
+	TubularComponentMaterialTypeID                                                              *string                               `json:"TubularComponentMaterialTypeID,omitempty"`
+	// Nominal size (outer diameter 'OD') of the component, e.g. 9.625", 12.25"                                                       
+	TubularComponentNominalSize                                                                 *float64                              `json:"TubularComponentNominalSize,omitempty"`
+	// Nominal size description e.g. 8-1/2" x 9-5/8"                                                                                  
+	TubularComponentNominalSizeDescription                                                      *string                               `json:"TubularComponentNominalSizeDescription,omitempty"`
+	// Nominal weight of the component.                                                                                               
+	TubularComponentNominalWeight                                                               *float64                              `json:"TubularComponentNominalWeight,omitempty"`
+	// The sequence within which the components entered the hole. That is, a sequence number of                                       
+	// 1 entered first, 2 entered 2nd, etc.                                                                                           
+	TubularComponentSequence                                                                    *int64                                `json:"TubularComponentSequence,omitempty"`
+	// Identifier of the Top Connection Type                                                                                          
+	TubularComponentTopConnectionTypeID                                                         *string                               `json:"TubularComponentTopConnectionTypeID,omitempty"`
+	// The installed measured depth of the top of the specific component                                                              
+	TubularComponentTopMD                                                                       *float64                              `json:"TubularComponentTopMD,omitempty"`
+	// True Vertical Depth of the top of the component measured from the Wellhead                                                     
+	TubularComponentTopReportedTVD                                                              *float64                              `json:"TubularComponentTopReportedTVD,omitempty"`
+	// Id of tubing grade - eg. the tensile strength of the tubing material. A system of                                              
+	// classifying the material specifications for steel alloys used in the manufacture of                                            
+	// tubing.                                                                                                                        
+	TubularComponentTubingGradeID                                                               *string                               `json:"TubularComponentTubingGradeID,omitempty"`
+	// The tensile strength of the tubing material. A system of classifying the material                                              
+	// specifications for steel alloys used in the manufacture of tubing.                                                             
+	TubularComponentTubingGradeStrength                                                         *float64                              `json:"TubularComponentTubingGradeStrength,omitempty"`
+	// The axial load required to yield the pipe.                                                                                     
+	TubularComponentTubingStrength                                                              *float64                              `json:"TubularComponentTubingStrength,omitempty"`
+	// Specifies the types of components that can be used in a tubular string. These are used to                                      
+	// specify the type of component and multiple components are used to define a tubular string                                      
+	// (Tubular).                                                                                                                     
+	TubularComponentTypeID                                                                      *string                               `json:"TubularComponentTypeID,omitempty"`
+	// Vendor number or other reference identifier                                                                                    
+	VendorNumber                                                                                *string                               `json:"VendorNumber,omitempty"`
+	// Youngs Modulus of Elasticity                                                                                                   
+	YoungsModulus                                                                               *float64                              `json:"YoungsModulus,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                `json:"ExtensionProperties,omitempty"`
+}
+
+// Bend specific information
+//
+// Tubular Component Bend specific properties. Based on WITSML Tubular  Component 'Bend'
+// ComplexType.
+type AbstractTubularComponentBend struct {
+	// Bend Angle                                                     
+	BendAngle                                                *float64 `json:"BendAngle,omitempty"`
+	// Offset distance from the bottom connection to the bend         
+	BendOffset                                               *float64 `json:"BendOffset,omitempty"`
+}
+
+// Bit Record specific information
+//
+// Tubular Component Bit Record specific properties. Based on WITSML Tubular  Component
+// 'BitRecord' ComplexType.
+type AbstractTubularComponentBitRecord struct {
+	// N = new, U = used.                                                                               
+	BitClass                                                                                   *string  `json:"BitClass,omitempty"`
+	// Any other Bit Dull comments/description, older T-B-G code or full formatted dull grade           
+	// e.g.  0-2-WT-N/S-X-I-LN-TD                                                                       
+	BitDullComments                                                                            *string  `json:"BitDullComments,omitempty"`
+	// Bit cost in local currency.                                                                      
+	Cost                                                                                       *float64 `json:"Cost,omitempty"`
+	// Diameter of drilled hole.                                                                        
+	DiameterBit                                                                                *float64 `json:"DiameterBit,omitempty"`
+	// Minimum hole or tubing which bit will pass through (for bi-centre bits).                         
+	DiameterPassThrough                                                                        *float64 `json:"DiameterPassThrough,omitempty"`
+	// Diameter of pilot bit (for bi-centre bits).                                                      
+	DiameterPilot                                                                              *float64 `json:"DiameterPilot,omitempty"`
+	// Bit drive type (Motor, rotary table etc).                                                        
+	DriveType                                                                                  *string  `json:"DriveType,omitempty"`
+	// Pulled bit IADC Dull Grade (B) Condition of bit Bearings (integer 0-8 or E, F, N or X).          
+	FinalConditionBearingID                                                                    *string  `json:"FinalConditionBearingID,omitempty"`
+	// Pulled bit IADC Dull Grade (D) Overall Dull condition from IADC bit wear 2 character             
+	// codes.                                                                                           
+	FinalConditionDullID                                                                       *string  `json:"FinalConditionDullID,omitempty"`
+	// Pulled bit IADC Dull Grade (G) Condition of bit Gauge in 1/16 of a inch. I = in gauge,           
+	// else number of 16ths out of gauge.                                                               
+	FinalConditionGaugeID                                                                      *string  `json:"FinalConditionGaugeID,omitempty"`
+	// Pulled bit IADC Dull Grade (I) Condition of Inner tooth rows (inner 2/3 of bit) (0-8).           
+	FinalConditionInnerID                                                                      *string  `json:"FinalConditionInnerID,omitempty"`
+	// Pulled bit IADC Dull Grade (L) Location Row and cone numbers where wear located (e.g.            
+	// Cracked Cone, Lost Cone etc).                                                                    
+	FinalConditionLocationID                                                                   *string  `json:"FinalConditionLocationID,omitempty"`
+	// Pulled bit IADC Dull Grade (O) Other comments on bit condition.                                  
+	FinalConditionOtherID                                                                      *string  `json:"FinalConditionOtherID,omitempty"`
+	// Pulled bit IADC Dull Grade (O) Condition of Outer tooth rows (outer 1/3 of bit) (0-8).           
+	FinalConditionOuterID                                                                      *string  `json:"FinalConditionOuterID,omitempty"`
+	// Pulled bit  IADC Dull Grade (R) Reason bit was pulled.                                           
+	FinalConditionReasonID                                                                     *string  `json:"FinalConditionReasonID,omitempty"`
+	// Hard/Abrasive Formation                                                                          
+	HardAbrasiveFormationID                                                                    *string  `json:"HardAbrasiveFormationID,omitempty"`
+	// Cumulative Hours on Bit                                                                          
+	HoursOnBit                                                                                 *float64 `json:"HoursOnBit,omitempty"`
+	// IADC bit code for PDC/Roller Cone Bits                                                           
+	IADCCode                                                                                   *string  `json:"IADCCode,omitempty"`
+	// As run bit IADC Dull Grade (B) Condition of bit Bearings (integer 0-8 or E, F, N or X)).         
+	InitialConditionBearingID                                                                  *string  `json:"InitialConditionBearingID,omitempty"`
+	// As run bit IADC Dull Grade (D) Overall dull condition from IADC bit wear 2 character             
+	// codes.                                                                                           
+	InitialConditionDullID                                                                     *string  `json:"InitialConditionDullID,omitempty"`
+	// As run bit IADC Dull Grade (G) Condition of bit Gauge in 1/16 of an inch. I = in gauge,          
+	// else number of 16ths out of gauge.                                                               
+	InitialConditionGaugeID                                                                    *string  `json:"InitialConditionGaugeID,omitempty"`
+	// As run bit IADC Dull Grade (I) Condition of Inner tooth rows (inner 2/3 of bit) (0-8).           
+	InitialConditionInnerID                                                                    *string  `json:"InitialConditionInnerID,omitempty"`
+	// As run bit IADC Dull Grade (L) Location Row and cone numbers where wear located (e.g.            
+	// Cracked Cone, Lost Cone etc).                                                                    
+	InitialConditionLocationID                                                                 *string  `json:"InitialConditionLocationID,omitempty"`
+	// As run bit IADC Dull Grade (O) Other comments on bit condition from IADC list                    
+	// (BitDullCode in standard list).                                                                  
+	InitialConditionOtherID                                                                    *string  `json:"InitialConditionOtherID,omitempty"`
+	// As run bit IADC Dull Grade (O) Condition of Outer tooth rows (outer 1/3 of bit) (0-8).           
+	InitialConditionOuterID                                                                    *string  `json:"InitialConditionOuterID,omitempty"`
+	// As run bit IADC Dull Grade (R) Reason bit was pulled                                             
+	InitialConditionReasonID                                                                   *string  `json:"InitialConditionReasonID,omitempty"`
+	// The manufacturer's code for the bit e.g. model number                                            
+	MfgCode                                                                                    *string  `json:"MfgCode,omitempty"`
+	// Bit number and rerun number e.g. "4.1" for the first rerun of bit 4.                             
+	NumBit                                                                                     *string  `json:"NumBit,omitempty"`
+	// Remarks                                                                                          
+	Remarks                                                                                    *string  `json:"Remarks,omitempty"`
+	// Re-run Bit Number to describe bit number when previously run                                     
+	ReRunBitNumber                                                                             *string  `json:"ReRunBitNumber,omitempty"`
+	// Type of bit.                                                                                     
+	TypeBitID                                                                                  *string  `json:"TypeBitID,omitempty"`
 }
 
 // Tubular Connection specific properties. Based on WITSML Tubular  Component 'Connection'
@@ -14513,6 +14709,112 @@ type AbstractTubularComponentConnection struct {
 	YieldTorque                                                  *float64 `json:"YieldTorque,omitempty"`
 }
 
+// Hole Opener specific information
+//
+// Hole Opener Component Schema. Describes the hole-opener tool (often called a ‘reamer’)
+// used on the tubular string. Based on the WITSML Tubular 'HoleOpener' ComplexType
+type AbstractTubularComponentHoleOpener struct {
+	// Fishneck length of the hole opener. Dimension supplied by manufacturer. This dimension is         
+	// used with the retrieval tool in case item is lost in hole.                                        
+	FishneckLength                                                                              *float64 `json:"FishneckLength,omitempty"`
+	// Flow rate percent across the tool                                                                 
+	FlowRatePercent                                                                             *float64 `json:"FlowRatePercent,omitempty"`
+	// Diameter of the reamer.                                                                           
+	HoleOpenerDiameter                                                                          *float64 `json:"HoleOpenerDiameter,omitempty"`
+	// Maximum extended size of the hole opener when the arms are extended.                              
+	HoleOpenerDiameterMaximum                                                                   *float64 `json:"HoleOpenerDiameterMaximum,omitempty"`
+	// Type of hole opener - Under reamer or fixed blade.                                                
+	HoleOpenerTypeID                                                                            *string  `json:"HoleOpenerTypeID,omitempty"`
+	// Number of cutters on the tool.                                                                    
+	NumCutters                                                                                  *int64   `json:"NumCutters,omitempty"`
+	// % of the Hole Opener Nozzles plugged on retrieval of the tool                                     
+	PluggedPercent                                                                              *float64 `json:"PluggedPercent,omitempty"`
+	// Total Flow Area across the nozzles (jets)                                                         
+	TotalFlowArea                                                                               *float64 `json:"TotalFlowArea,omitempty"`
+}
+
+// Drilling Jar specific information
+//
+// Captures information about drilling jars, which are mechanical or hydraulic devices used
+// in the drill stem to deliver an impact load to another component of the drill stem,
+// especially when that component is stuck.
+//
+// MWD Tool specific information
+type AbstractTubularComponentJar struct {
+	// Specifies the force required to set the springs inside a mechanical jar into a position         
+	// to trip the jar in a downward direction.                                                        
+	DownSetForce                                                                              *float64 `json:"DownSetForce,omitempty"`
+	// Specifies the force required to trip the jar downward.                                          
+	DownTripForce                                                                             *float64 `json:"DownTripForce,omitempty"`
+	// Specifies the type of jar action.                                                               
+	JarActionTypeID                                                                           *string  `json:"JarActionTypeID,omitempty"`
+	// Specifies the type of jar.                                                                      
+	JarTypeID                                                                                 *string  `json:"JarTypeID,omitempty"`
+	// Specifies the force present when jarring while circulating, and if pressure is trapped          
+	// below the bit.                                                                                  
+	PumpOpenForce                                                                             *float64 `json:"PumpOpenForce,omitempty"`
+	// Specifies the force required to move a hydraulic jar from the tripped position to the           
+	// reset position so it can be tripped again. .                                                    
+	SealFrictionForce                                                                         *float64 `json:"SealFrictionForce,omitempty"`
+	// Specifies the force required to set the springs inside a mechanical jar into a position         
+	// to trip the jar in an upward direction.                                                         
+	UpSetForce                                                                                *float64 `json:"UpSetForce,omitempty"`
+	// Specifies the force required to trip the jar upwards.                                           
+	UpTripForce                                                                               *float64 `json:"UpTripForce,omitempty"`
+}
+
+// Mud Motor specific information
+//
+// Mud Motor Tubular Component specific properties. Based on WITSML Tubular  Component
+// 'Motor' ComplexType.
+type AbstractTubularComponentMotor struct {
+	// Clearance inside the bearing box.                                                                                             
+	BearingBoxClearance                                                                       *float64                               `json:"BearingBoxClearance,omitempty"`
+	// Bearing Type Identifier                                                                                                       
+	BearingTypeID                                                                             *string                                `json:"BearingTypeID,omitempty"`
+	// Maximum bend angle setting                                                                                                    
+	BendSettingAngleMaximum                                                                   *float64                               `json:"BendSettingAngleMaximum,omitempty"`
+	// Minimum bend angle setting                                                                                                    
+	BendSettingAngleMinimum                                                                   *float64                               `json:"BendSettingAngleMinimum,omitempty"`
+	// Maximum flow rate for tool operation.                                                                                         
+	FlowRateMaximum                                                                           *float64                               `json:"FlowRateMaximum,omitempty"`
+	// Minimum flow rate for tool operation.                                                                                         
+	FlowRateMinimum                                                                           *float64                               `json:"FlowRateMinimum,omitempty"`
+	// Is Dump Valve Present                                                                                                         
+	IsDumpValvePresent                                                                        *bool                                  `json:"IsDumpValvePresent,omitempty"`
+	// Is Motor Rotatable                                                                                                            
+	IsMotorRotatable                                                                          *bool                                  `json:"IsMotorRotatable,omitempty"`
+	// Is Rotor Catcher Present                                                                                                      
+	IsRotorCatcherPresent                                                                     *bool                                  `json:"IsRotorCatcherPresent,omitempty"`
+	// Nozzle Diameter                                                                                                               
+	NozzleDiameter                                                                            *float64                               `json:"NozzleDiameter,omitempty"`
+	// Number of Rotor Lobes                                                                                                         
+	NumberRotorLobes                                                                          *int64                                 `json:"NumberRotorLobes,omitempty"`
+	// Number of Stator Lobes                                                                                                        
+	NumberStatorLobes                                                                         *int64                                 `json:"NumberStatorLobes,omitempty"`
+	// Maximum operating temperature for the mud motor                                                                               
+	OperatingTemperatureMaximum                                                               *float64                               `json:"OperatingTemperatureMaximum,omitempty"`
+	// Array of one or more flow rate versus measured pressure loss points used to interpolate                                       
+	// pressure loss across the MWD/LWD tool for a given flowrate                                                                    
+	PressureLossCurve                                                                         []AbstractTubularComponentPressureLoss `json:"PressureLossCurve,omitempty"`
+	// Pressure drop across the tool.                                                                                                
+	PressureLossFactor                                                                        *float64                               `json:"PressureLossFactor,omitempty"`
+	// Diameter of the rotor at the nozzle.                                                                                          
+	RotorNozzleDiameter                                                                       *float64                               `json:"RotorNozzleDiameter,omitempty"`
+	// Tool offset distance from bottom of Tubular Assembly.                                                                         
+	ToolOffset                                                                                *float64                               `json:"ToolOffset,omitempty"`
+}
+
+// Tubular Component Measured Pressure Losses - Flow rate versus Pressure
+//
+// Pressure v flow rate curve data for Hydraulics Pressure Loss calculations
+type AbstractTubularComponentPressureLoss struct {
+	// Flow rate when pressure loss measured.                      
+	FlowRate                                              *float64 `json:"FlowRate,omitempty"`
+	// Measured pressure loss for corresponding flow rate.         
+	PressureLoss                                          *float64 `json:"PressureLoss,omitempty"`
+}
+
 // number and size of nozzles / jets in a Tubular Component
 type Nozzle struct {
 	// Inside Diameter of the nozzle                                      
@@ -14527,6 +14829,54 @@ type Nozzle struct {
 	NozzleTypeID                                                  string  `json:"NozzleTypeID"`
 	// Nozzle Orientation                                                 
 	Orientation                                                   float64 `json:"Orientation"`
+}
+
+// Rotary Steerable System (RSS) tool specific information
+//
+// Rotary Steerable Tool Tubular Component specific properties. Based on WITSML Tubular
+// Component 'RotarySteerableTool' ComplexType.
+type AbstractTubularComponentRSS struct {
+	// Bend Angle.                                                                                                                  
+	BendAngle                                                                                *float64                               `json:"BendAngle,omitempty"`
+	// Offset distance from the bottom connection to the bend,                                                                      
+	BendOffset                                                                               *float64                               `json:"BendOffset,omitempty"`
+	// Outside diameter of the tool when the pads are closed.                                                                       
+	ClosePadOuterDiameter                                                                    *float64                               `json:"ClosePadOuterDiameter,omitempty"`
+	// Method used to direct the deviation of the trajectory: point bit or push bit                                                 
+	DeflectionMethodID                                                                       *string                                `json:"DeflectionMethodID,omitempty"`
+	// Maximum flow rate for programming the tool.                                                                                  
+	DownlinkFlowrateMaximum                                                                  *float64                               `json:"DownlinkFlowrateMaximum,omitempty"`
+	// Minimum flow rate for programming the tool.                                                                                  
+	DownlinkFlowrateMinimum                                                                  *float64                               `json:"DownlinkFlowrateMinimum,omitempty"`
+	// Maximum flow rate for tool operation.                                                                                        
+	FlowRateMaximum                                                                          *float64                               `json:"FlowRateMaximum,omitempty"`
+	// Minimum flow rate for tool operation.                                                                                        
+	FlowRateMinimum                                                                          *float64                               `json:"FlowRateMinimum,omitempty"`
+	// Maximum size of the hole in which the tool can operate.                                                                      
+	HoleSizeMaximum                                                                          *float64                               `json:"HoleSizeMaximum,omitempty"`
+	// Minimum size of the hole in which the tool can operate.                                                                      
+	HoleSizeMininum                                                                          *float64                               `json:"HoleSizeMininum,omitempty"`
+	// Outside diameter of the tool when the pads are activated.                                                                    
+	OpenPadOuterDiameter                                                                     *float64                               `json:"OpenPadOuterDiameter,omitempty"`
+	// Suggested operating speed.                                                                                                   
+	OperatingSpeed                                                                           *float64                               `json:"OperatingSpeed,omitempty"`
+	// The number of contact pads.                                                                                                  
+	PadCount                                                                                 *int64                                 `json:"PadCount,omitempty"`
+	// Length of the contact pad.                                                                                                   
+	PadLength                                                                                *float64                               `json:"PadLength,omitempty"`
+	// Offset distance from the bottom of the pad to the bottom connector.                                                          
+	PadOffset                                                                                *float64                               `json:"PadOffset,omitempty"`
+	// Width of the contact pad.                                                                                                    
+	PadWidth                                                                                 *float64                               `json:"PadWidth,omitempty"`
+	// Array of one or more pressure loss versus flowrate points used to interpolate pressure                                       
+	// loss across the MWD/LWD tool.                                                                                                
+	PressureLossCurve                                                                        []AbstractTubularComponentPressureLoss `json:"PressureLossCurve,omitempty"`
+	// Pressure drop across the tool.                                                                                               
+	PressureLossFactor                                                                       *float64                               `json:"PressureLossFactor,omitempty"`
+	// Maximum rotation speed.                                                                                                      
+	SpeedMaximum                                                                             *float64                               `json:"SpeedMaximum,omitempty"`
+	// Maximum weight on the bit.                                                                                                   
+	WobMaximum                                                                               *float64                               `json:"WobMaximum,omitempty"`
 }
 
 // Tubular Sensor Component Schema
@@ -14545,6 +14895,33 @@ type Sensor struct {
 	ToolClassIDs                                                    []string `json:"ToolClassIDs,omitempty"`
 	// An array of PWLS tool mnemonics used in this Log Run.                 
 	ToolCodeIDs                                                     []string `json:"ToolCodeIDs,omitempty"`
+}
+
+// Stabiliser specific information
+//
+// Stabiliser Tubular Component specific properties. Based on the WITSML Tubular schema
+// 'Stabiliser' ComplexType.
+type AbstractTubularComponentStabiliser struct {
+	// Maximum Outer Diameter of the Blades.                                                             
+	BladeOuterDiameterMaximum                                                                   *float64 `json:"BladeOuterDiameterMaximum,omitempty"`
+	// Minimum Outer Diameter of the Blades.                                                             
+	BladeOuterDiameterMinimum                                                                   *float64 `json:"BladeOuterDiameterMinimum,omitempty"`
+	// Width of the blade at the contact interval of the pad.                                            
+	BladePadDiameter                                                                            *float64 `json:"BladePadDiameter,omitempty"`
+	// Coefficient of Friction 0 - 1.                                                                    
+	FictionFactor                                                                               *float64 `json:"FictionFactor,omitempty"`
+	// Length of the blade.                                                                              
+	LengthBlade                                                                                 *float64 `json:"LengthBlade,omitempty"`
+	// Gauge Length of the blade. That is, the length of the blade measured at the OD Blade Max.         
+	LengthBladeGauge                                                                            *float64 `json:"LengthBladeGauge,omitempty"`
+	// Number of blades on the Stabiliser.                                                               
+	NumberBlades                                                                                *int64   `json:"NumberBlades,omitempty"`
+	// Blade type classification.                                                                        
+	StabiliserBladeDesignTypeID                                                                 *string  `json:"StabiliserBladeDesignTypeID,omitempty"`
+	// Stabiliser operating design classification.                                                       
+	StabiliserOperatingDesignID                                                                 *string  `json:"StabiliserOperatingDesignID,omitempty"`
+	// Stabiliser design classification.                                                                 
+	StabiliserTypeID                                                                            *string  `json:"StabiliserTypeID,omitempty"`
 }
 
 // An External Component aka Jewellery is any equipment attached to the outside of a tubular
@@ -17024,7 +17401,10 @@ type WellPlanningWellboreData struct {
 	TechnicalAssuranceTypeID                                                                    *string                              `json:"TechnicalAssuranceTypeID,omitempty"`
 	// This describes the reason that caused the creation of a new version of this master data.                                      
 	VersionCreationReason                                                                       *string                              `json:"VersionCreationReason,omitempty"`
-	// The definitive description of the hole section associated with this wellbore                                                  
+	// A reference to the Fluids Program that holds the planned fluids for the wellbore                                              
+	FluidsProgramID                                                                             *string                              `json:"FluidsProgramID,omitempty"`
+	// The definitive description of the hole section associated with this wellbore. If the                                          
+	// wellbore has more than  one hole section please use the PlannedHoleSections array.                                            
 	HoleSectionID                                                                               *string                              `json:"HoleSectionID,omitempty"`
 	// Name of Well Planning wellbore. Derived from the record identified by WellboreID.                                             
 	Name                                                                                        *string                              `json:"Name,omitempty"`
@@ -17238,42 +17618,50 @@ type WellPressureTestAcquisitionJobData struct {
 // string - meaning a single run has necessarily the same probes and gauges installed. A run
 // is made of multiple (at least 2) passes.
 type AcquisitionRun struct {
-	// Identifiers of he conveyance method used to acquire the pressure test data - if not an                                        
-	// acquired log leave empty/absent.                                                                                              
-	// Mainly a unique ID - but can be multiple in case of stuck pipe,…                                                              
-	ConveyanceMethodIDs                                                                         []string                             `json:"ConveyanceMethodIDs,omitempty"`
-	// The vertical measurement reference for this well testing acquisition activity. This                                           
-	// object defines the vertical reference datum for the measured depths.                                                          
-	DepthReferenceSystem                                                                        *AbstractFacilityVerticalMeasurement `json:"DepthReferenceSystem,omitempty"`
-	// Type of gauge used for the test                                                                                               
-	InstalledGaugeTypeIDs                                                                       []string                             `json:"InstalledGaugeTypeIDs,omitempty"`
-	// Type of probe used for the test                                                                                               
-	InstalledProbeTypeIDs                                                                       []string                             `json:"InstalledProbeTypeIDs"`
-	// Main Category of the Presssure Test - could be Formation Test, Transient Test,                                                
-	// Interference Transient Tests,…                                                                                                
-	PressureTestCategoryID                                                                      []string                             `json:"PressureTestCategoryID,omitempty"`
-	// Array of unitary Acquisition Stations - which is defined as a depth constant, stop, of                                        
-	// the acquisition string, within a hole - where one or many tests can be tried out                                              
-	PressureTestsAcquisitionStations                                                            []AcquisitionStation                 `json:"PressureTestsAcquisitionStations"`
-	// Identifier of the tubular assembly this run went through                                                                      
-	RunAssemblyID                                                                               *string                              `json:"RunAssemblyID,omitempty"`
-	// Date and Time of the end of this specific run                                                                                 
-	RunEndDate                                                                                  *time.Time                           `json:"RunEndDate,omitempty"`
-	// Identifier of this specific run within the Job. (Can be a Sequential Number, a GUID,… but                                     
-	// must be unique)                                                                                                               
-	RunIdentifier                                                                               *int64                               `json:"RunIdentifier,omitempty"`
-	// Alphanumeric Name of the Run as captured in the acquisition report                                                            
-	RunName                                                                                     *string                              `json:"RunName,omitempty"`
-	// Date and Time of the start of this specific run                                                                               
-	RunStartDate                                                                                *time.Time                           `json:"RunStartDate,omitempty"`
-	// Identifier of the Tool Name (Branded Model Name) in the associated reference data list                                        
-	ToolNameID                                                                                  string                               `json:"ToolNameID"`
-	// Tool String Description - a long concatenation of the tools used for testing services                                         
-	// such as MDT                                                                                                                   
-	ToolStringDescription                                                                       *string                              `json:"ToolStringDescription,omitempty"`
-	// The type of fluid in the wellbore at time of logging                                                                          
-	// e.g. oil based mud, water based mud, water.                                                                                   
-	WellboreFluidTypeID                                                                         *string                              `json:"WellboreFluidTypeID,omitempty"`
+	// Identifiers of he conveyance method used to acquire the pressure test data - if not an                                         
+	// acquired log leave empty/absent.                                                                                               
+	// Mainly a unique ID - but can be multiple in case of stuck pipe,…                                                               
+	ConveyanceMethodIDs                                                                          []string                             `json:"ConveyanceMethodIDs,omitempty"`
+	// The vertical measurement reference for this well testing acquisition activity. This                                            
+	// object defines the vertical reference datum for the measured depths.                                                           
+	DepthReferenceSystem                                                                         *AbstractFacilityVerticalMeasurement `json:"DepthReferenceSystem,omitempty"`
+	// Array describing the whole set of gauges being installed (active or inactive) on the                                           
+	// acquisition string for this run.                                                                                               
+	InstalledGaugeTypeIDs                                                                        []string                             `json:"InstalledGaugeTypeIDs,omitempty"`
+	// Array describing the whole set of probes being installed (active or inactive) on the                                           
+	// acquisition string for this run.                                                                                               
+	InstalledProbeTypeIDs                                                                        []string                             `json:"InstalledProbeTypeIDs"`
+	// DEPRECATED- Use Correct Spelling Instead:Main Category of the Presssure Test - could be                                        
+	// Formation Test, Transient Test, Interference Transient Tests,…                                                                 
+	PressureTestCategoryID                                                                       []string                             `json:"PressureTestCategoryID,omitempty"`
+	// Array of Identifier from the main category(ies) of the Presssure Test - could be                                               
+	// Formation Test, Transient Test, Interference Transient Tests,…                                                                 
+	// Most of the time - might be an individual value - but available as array for broader usage                                     
+	PressureTestCategoryIDs                                                                      []string                             `json:"PressureTestCategoryIDs,omitempty"`
+	// Array of unitary Acquisition Stations - which is defined as a depth constant, stop, of                                         
+	// the acquisition string, within a hole - where one or many tests can be tried out                                               
+	PressureTestsAcquisitionStations                                                             []AcquisitionStation                 `json:"PressureTestsAcquisitionStations"`
+	// Remarks associated with the Run activity.                                                                                      
+	Remarks                                                                                      *string                              `json:"Remarks,omitempty"`
+	// Identifier of the tubular assembly this run went through                                                                       
+	RunAssemblyID                                                                                *string                              `json:"RunAssemblyID,omitempty"`
+	// Date and Time of the end of this specific run                                                                                  
+	RunEndDate                                                                                   *time.Time                           `json:"RunEndDate,omitempty"`
+	// Identifier of this specific run within the Job. (Can be a Sequential Number, a GUID,… but                                      
+	// must be unique)                                                                                                                
+	RunIdentifier                                                                                *int64                               `json:"RunIdentifier,omitempty"`
+	// Alphanumeric Name of the Run as captured in the acquisition report                                                             
+	RunName                                                                                      *string                              `json:"RunName,omitempty"`
+	// Date and Time of the start of this specific run                                                                                
+	RunStartDate                                                                                 *time.Time                           `json:"RunStartDate,omitempty"`
+	// Identifier of the Tool Name (Branded Model Name) in the associated reference data list                                         
+	ToolNameID                                                                                   string                               `json:"ToolNameID"`
+	// Tool String Description - a long concatenation of the tools used for testing services                                          
+	// such as MDT                                                                                                                    
+	ToolStringDescription                                                                        *string                              `json:"ToolStringDescription,omitempty"`
+	// The type of fluid in the wellbore at time of logging                                                                           
+	// e.g. oil based mud, water based mud, water.                                                                                    
+	WellboreFluidTypeID                                                                          *string                              `json:"WellboreFluidTypeID,omitempty"`
 }
 
 // A Station is defined as a static point within the pass - where one or many tests can be
@@ -17281,6 +17669,9 @@ type AcquisitionRun struct {
 type AcquisitionStation struct {
 	// / Isolated Interval) present at this test station                                                 
 	CompletionID                                                                                *string  `json:"CompletionID,omitempty"`
+	// The status of the hole's condition while conducting test, whether cemented and cased or           
+	// open hole.                                                                                        
+	HoleConditionTypeID                                                                         *string  `json:"HoleConditionTypeID,omitempty"`
 	// Measured Depth of the station                                                                     
 	PressurePointMeasuredDepth                                                                  *float64 `json:"PressurePointMeasuredDepth,omitempty"`
 	// List of Names - in the reference InterpretationSet (Marker or Interval) array - of the            
@@ -17289,6 +17680,8 @@ type AcquisitionStation struct {
 	// Array of Identifier of the reservoir units (Reservoir, Segment, Sectors,…) expected to be         
 	// tested at this station                                                                            
 	PrognosedReservoirUnitsIDs                                                                  []string `json:"PrognosedReservoirUnitsIDs,omitempty"`
+	// Unique identifier of the station within the run (must be a sequential number,…) - it must         
+	// be unique within the run                                                                          
 	StationIdentifier                                                                           *int64   `json:"StationIdentifier,omitempty"`
 }
 
