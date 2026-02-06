@@ -157,8 +157,14 @@
 //    calculationMethodType, err := UnmarshalCalculationMethodType(bytes)
 //    bytes, err = calculationMethodType.Marshal()
 //
+//    casingComponentCatalog, err := UnmarshalCasingComponentCatalog(bytes)
+//    bytes, err = casingComponentCatalog.Marshal()
+//
 //    catalogMapStateType, err := UnmarshalCatalogMapStateType(bytes)
 //    bytes, err = catalogMapStateType.Marshal()
+//
+//    catalogMaterialGrade, err := UnmarshalCatalogMaterialGrade(bytes)
+//    bytes, err = catalogMaterialGrade.Marshal()
 //
 //    cellShapeType, err := UnmarshalCellShapeType(bytes)
 //    bytes, err = cellShapeType.Marshal()
@@ -364,6 +370,9 @@
 //    depositionalSubEnvironment, err := UnmarshalDepositionalSubEnvironment(bytes)
 //    bytes, err = depositionalSubEnvironment.Marshal()
 //
+//    depthMeasurementType, err := UnmarshalDepthMeasurementType(bytes)
+//    bytes, err = depthMeasurementType.Marshal()
+//
 //    desaturationMethod, err := UnmarshalDesaturationMethod(bytes)
 //    bytes, err = desaturationMethod.Marshal()
 //
@@ -409,6 +418,9 @@
 //    drainageCondition, err := UnmarshalDrainageCondition(bytes)
 //    bytes, err = drainageCondition.Marshal()
 //
+//    driftType, err := UnmarshalDriftType(bytes)
+//    bytes, err = driftType.Marshal()
+//
 //    drillingActivityClassType, err := UnmarshalDrillingActivityClassType(bytes)
 //    bytes, err = drillingActivityClassType.Marshal()
 //
@@ -420,6 +432,9 @@
 //
 //    edsExternalProcessType, err := UnmarshalEdsExternalProcessType(bytes)
 //    bytes, err = edsExternalProcessType.Marshal()
+//
+//    edsNotificationPolicy, err := UnmarshalEdsNotificationPolicy(bytes)
+//    bytes, err = edsNotificationPolicy.Marshal()
 //
 //    elementalAnalysisMethod, err := UnmarshalElementalAnalysisMethod(bytes)
 //    bytes, err = elementalAnalysisMethod.Marshal()
@@ -634,6 +649,12 @@
 //    headerKeyName, err := UnmarshalHeaderKeyName(bytes)
 //    bytes, err = headerKeyName.Marshal()
 //
+//    holdUpDepthCategory, err := UnmarshalHoldUpDepthCategory(bytes)
+//    bytes, err = holdUpDepthCategory.Marshal()
+//
+//    holdUpDepthType, err := UnmarshalHoldUpDepthType(bytes)
+//    bytes, err = holdUpDepthType.Marshal()
+//
 //    holeOpenerType, err := UnmarshalHoleOpenerType(bytes)
 //    bytes, err = holeOpenerType.Marshal()
 //
@@ -744,6 +765,9 @@
 //
 //    markerType, err := UnmarshalMarkerType(bytes)
 //    bytes, err = markerType.Marshal()
+//
+//    materialGradeStandardType, err := UnmarshalMaterialGradeStandardType(bytes)
+//    bytes, err = materialGradeStandardType.Marshal()
 //
 //    materialType, err := UnmarshalMaterialType(bytes)
 //    bytes, err = materialType.Marshal()
@@ -864,6 +888,9 @@
 //
 //    parentMatchingRuleSets, err := UnmarshalParentMatchingRuleSets(bytes)
 //    bytes, err = parentMatchingRuleSets.Marshal()
+//
+//    payloadTemplate, err := UnmarshalPayloadTemplate(bytes)
+//    bytes, err = payloadTemplate.Marshal()
 //
 //    perforationCentralizationMethodType, err := UnmarshalPerforationCentralizationMethodType(bytes)
 //    bytes, err = perforationCentralizationMethodType.Marshal()
@@ -2248,6 +2275,16 @@ func (r *CalculationMethodType) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalCasingComponentCatalog(data []byte) (CasingComponentCatalog, error) {
+	var r CasingComponentCatalog
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *CasingComponentCatalog) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalCatalogMapStateType(data []byte) (CatalogMapStateType, error) {
 	var r CatalogMapStateType
 	err := json.Unmarshal(data, &r)
@@ -2255,6 +2292,16 @@ func UnmarshalCatalogMapStateType(data []byte) (CatalogMapStateType, error) {
 }
 
 func (r *CatalogMapStateType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalCatalogMaterialGrade(data []byte) (CatalogMaterialGrade, error) {
+	var r CatalogMaterialGrade
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *CatalogMaterialGrade) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -2938,6 +2985,16 @@ func (r *DepositionalSubEnvironment) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalDepthMeasurementType(data []byte) (DepthMeasurementType, error) {
+	var r DepthMeasurementType
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *DepthMeasurementType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalDesaturationMethod(data []byte) (DesaturationMethod, error) {
 	var r DesaturationMethod
 	err := json.Unmarshal(data, &r)
@@ -3088,6 +3145,16 @@ func (r *DrainageCondition) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalDriftType(data []byte) (DriftType, error) {
+	var r DriftType
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *DriftType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalDrillingActivityClassType(data []byte) (DrillingActivityClassType, error) {
 	var r DrillingActivityClassType
 	err := json.Unmarshal(data, &r)
@@ -3125,6 +3192,16 @@ func UnmarshalEdsExternalProcessType(data []byte) (EdsExternalProcessType, error
 }
 
 func (r *EdsExternalProcessType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalEdsNotificationPolicy(data []byte) (EdsNotificationPolicy, error) {
+	var r EdsNotificationPolicy
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *EdsNotificationPolicy) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -3838,6 +3915,26 @@ func (r *HeaderKeyName) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalHoldUpDepthCategory(data []byte) (HoldUpDepthCategory, error) {
+	var r HoldUpDepthCategory
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *HoldUpDepthCategory) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalHoldUpDepthType(data []byte) (HoldUpDepthType, error) {
+	var r HoldUpDepthType
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *HoldUpDepthType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalHoleOpenerType(data []byte) (HoleOpenerType, error) {
 	var r HoleOpenerType
 	err := json.Unmarshal(data, &r)
@@ -4205,6 +4302,16 @@ func UnmarshalMarkerType(data []byte) (MarkerType, error) {
 }
 
 func (r *MarkerType) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalMaterialGradeStandardType(data []byte) (MaterialGradeStandardType, error) {
+	var r MaterialGradeStandardType
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *MaterialGradeStandardType) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -4605,6 +4712,16 @@ func UnmarshalParentMatchingRuleSets(data []byte) (ParentMatchingRuleSets, error
 }
 
 func (r *ParentMatchingRuleSets) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalPayloadTemplate(data []byte) (PayloadTemplate, error) {
+	var r PayloadTemplate
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *PayloadTemplate) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -13017,6 +13134,213 @@ type CalculationMethodTypeData struct {
 	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
 }
 
+// The reference collection of lookup casing products with its respective specifications and
+// properties.  To be used for populating other objects such as TubularComponents.
+type CasingComponentCatalog struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *CasingComponentCatalogData    `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type CasingComponentCatalogData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                     
+	// classification associated to the legal.legaltags[] is evaluated by platform services                            
+	// instead. Previously:  Classifies the security level of the resource.                                            
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	//                                                                                                                 
+	// Meaningful description of the catalog item.                                                                     
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	//                                                                                                                 
+	// Name of the catalog component.                                                                                  
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	// Axial Load Capacity of component                                                                                
+	AxialLoadCapacity                                                                           *float64               `json:"AxialLoadCapacity,omitempty"`
+	// Burst Pressure                                                                                                  
+	BurstPressure                                                                               *float64               `json:"BurstPressure,omitempty"`
+	// Closed End Displacement volume/length                                                                           
+	ClosedEndDisplacement                                                                       *float64               `json:"ClosedEndDisplacement,omitempty"`
+	// Collapse Pressure                                                                                               
+	CollapsePressure                                                                            *float64               `json:"CollapsePressure,omitempty"`
+	// Connection's external resistance pressure                                                                       
+	ConnectionExternalResistancePressure                                                        *float64               `json:"ConnectionExternalResistancePressure,omitempty"`
+	// Inner diameter of the connection                                                                                
+	ConnectionInnerDiameter                                                                     *float64               `json:"ConnectionInnerDiameter,omitempty"`
+	// Connection length of the male thread connector.                                                                 
+	ConnectionLength                                                                            *float64               `json:"ConnectionLength,omitempty"`
+	// Connection makeup loss is the decrease in overall length after the individual type are                          
+	// assembled with couplings to their power-tight position.                                                         
+	ConnectionMakeupLoss                                                                        *float64               `json:"ConnectionMakeupLoss,omitempty"`
+	// Connection's maximum compression loading                                                                        
+	ConnectionMaxCompressiveLoading                                                             *float64               `json:"ConnectionMaxCompressiveLoading,omitempty"`
+	// Outer diameter of the connection                                                                                
+	ConnectionOuterDiameter                                                                     *float64               `json:"ConnectionOuterDiameter,omitempty"`
+	// Connection tensile strength                                                                                     
+	ConnectionTensileStrength                                                                   *float64               `json:"ConnectionTensileStrength,omitempty"`
+	// Dogleg capacity at zero axial stress                                                                            
+	DoglegCapacity                                                                              *float64               `json:"DoglegCapacity,omitempty"`
+	// The drift diameter is the inside diameter (ID) that the pipe manufacturer guarantees per                        
+	// specifications. Note that the nominal inside diameter is not the same as the drift                              
+	// diameter but is always slightly larger. The drift diameter is used by the well planner to                       
+	// determine what size tools or casing strings can later be run through the casing, whereas                        
+	// the nominal inside diameter is used for fluid volume calculations such as mud circulating                       
+	// times and cement slurry placement calculations.                                                                 
+	DriftDiameter                                                                               *float64               `json:"DriftDiameter,omitempty"`
+	// Standard drift or special drift.                                                                                
+	DriftTypeID                                                                                 *string                `json:"DriftTypeID,omitempty"`
+	// Nominal inner diameter 'ID' of the component.                                                                   
+	InnerDiameter                                                                               *float64               `json:"InnerDiameter,omitempty"`
+	// Internal Reference name/description                                                                             
+	InternalReference                                                                           *string                `json:"InternalReference,omitempty"`
+	// Linear Capacity volume/length inside component                                                                  
+	LinearCapacity                                                                              *float64               `json:"LinearCapacity,omitempty"`
+	// Maximum Make Up Torque                                                                                          
+	MakeUpTorqueMax                                                                             *float64               `json:"MakeUpTorqueMax,omitempty"`
+	// Minimum Make Up Torque                                                                                          
+	MakeUpTorqueMin                                                                             *float64               `json:"MakeUpTorqueMin,omitempty"`
+	// Optimum Make Up Torque                                                                                          
+	MakeUpTorqueOpt                                                                             *float64               `json:"MakeUpTorqueOpt,omitempty"`
+	// Unique identifier for the manufacturer of this equipment.                                                       
+	ManufacturerID                                                                              *string                `json:"ManufacturerID,omitempty"`
+	// Unique identifier to the material Grade specification reference list.                                           
+	MaterialGradeTypeID                                                                         *string                `json:"MaterialGradeTypeID,omitempty"`
+	// Maximum load on square shoulder                                                                                 
+	MaximumLoad                                                                                 *float64               `json:"MaximumLoad,omitempty"`
+	// This is the maximum hard outer diameter of the component.                                                       
+	MaximumOuterDiameter                                                                        *float64               `json:"MaximumOuterDiameter,omitempty"`
+	// Minimum wall thickness                                                                                          
+	MinimumWallThickness                                                                        *float64               `json:"MinimumWallThickness,omitempty"`
+	// Name of the component Model as defined per the operating company                                                
+	Model                                                                                       *string                `json:"Model,omitempty"`
+	// Vendor part number                                                                                              
+	PartNumber                                                                                  *string                `json:"PartNumber,omitempty"`
+	// Premium or non-premium (Gas-tight or non-Gas-tight).                                                            
+	Premium                                                                                     *bool                  `json:"Premium,omitempty"`
+	// Comment or notes additional to the description.                                                                 
+	Remarks                                                                                     []AbstractRemark       `json:"Remarks,omitempty"`
+	// Unique identifier for the supplier of this equipment.                                                           
+	SupplierID                                                                                  *string                `json:"SupplierID,omitempty"`
+	// Identifier of the Connection Type                                                                               
+	TubularComponentConnectionTypeID                                                            *string                `json:"TubularComponentConnectionTypeID,omitempty"`
+	// Length of the component.                                                                                        
+	TubularComponentLength                                                                      *float64               `json:"TubularComponentLength,omitempty"`
+	// Nominal size (outer diameter 'OD') of the component, e.g. 9.625, 12.25                                          
+	TubularComponentNominalSize                                                                 *float64               `json:"TubularComponentNominalSize,omitempty"`
+	// String description of the Nominal size e.g. 8-1/2" x 9-5/8"                                                     
+	TubularComponentNominalSizeDescription                                                      *string                `json:"TubularComponentNominalSizeDescription,omitempty"`
+	// Nominal weight of the component.                                                                                
+	TubularComponentNominalWeight                                                               *float64               `json:"TubularComponentNominalWeight,omitempty"`
+	// Tubular component yield strength                                                                                
+	TubularComponentYieldStrength                                                               *float64               `json:"TubularComponentYieldStrength,omitempty"`
+	// Vendor number or other reference identifier                                                                     
+	VendorNumber                                                                                *string                `json:"VendorNumber,omitempty"`
+	// Wall thickness of the casing component.                                                                         
+	WallThickness                                                                               *float64               `json:"WallThickness,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// A remark object, pairing a remark text with a source, e.g. an author, and a date, which
+// is typically included in an array. The RemarkSequenceNumber acts as unique key in this
+// case.
+type AbstractRemark struct {
+	// A descriptive comment for this remark.                                                          
+	Remark                                                                                     *string `json:"Remark,omitempty"`
+	// The date the remark was issued.                                                                 
+	RemarkDate                                                                                 *string `json:"RemarkDate,omitempty"`
+	// A unique identifier for each remark record. This identifier is used to uniquely identify        
+	// a member in an array of remarks.                                                                
+	RemarkSequenceNumber                                                                       *int64  `json:"RemarkSequenceNumber,omitempty"`
+	// The person, vendor, interpreter or other provider of information.                               
+	RemarkSource                                                                               *string `json:"RemarkSource,omitempty"`
+}
+
 // A qualification of a mapping between catalog items. Mappings can be between 'identical'
 // items, similar but not identical items or not supported.
 type CatalogMapStateType struct {
@@ -13119,6 +13443,176 @@ type CatalogMapStateTypeData struct {
 	// Alternative names, including historical, by which this entity instance is/has been known.                       
 	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// Material grade specifications for tubular products.
+type CatalogMaterialGrade struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *CatalogMaterialGradeData      `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type CatalogMaterialGradeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                     
+	// classification associated to the legal.legaltags[] is evaluated by platform services                            
+	// instead. Previously:  Classifies the security level of the resource.                                            
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	//                                                                                                                 
+	// Meaningful description that describes the grade specification.                                                  
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	//                                                                                                                 
+	// The short description to identify the tubular grade.                                                            
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	// Anisotropy hoop.                                                                                                
+	AnisotropyHoop                                                                              *float64               `json:"AnisotropyHoop,omitempty"`
+	// Longitudinal anisotropy.                                                                                        
+	AnisotropyLongitudinal                                                                      *float64               `json:"AnisotropyLongitudinal,omitempty"`
+	// Anisotropy radial.                                                                                              
+	AnisotropyRadial                                                                            *float64               `json:"AnisotropyRadial,omitempty"`
+	// Density of the material at specified temperatures.                                                              
+	Densities                                                                                   []Density              `json:"Densities,omitempty"`
+	// If grade standard type is proprietary, then specify manufacturer of the proprietary                             
+	// material grade.                                                                                                 
+	ManufacturerID                                                                              *string                `json:"ManufacturerID,omitempty"`
+	// Grade standard type of API/ISO or Proprietary.                                                                  
+	MaterialGradeStandardTypeID                                                                 *string                `json:"MaterialGradeStandardTypeID,omitempty"`
+	// Maximum Rockwell C hardness.                                                                                    
+	MaximumRockwellCHardness                                                                    *float64               `json:"MaximumRockwellCHardness,omitempty"`
+	// Maximum yield strength.                                                                                         
+	MaximumYield                                                                                *float64               `json:"MaximumYield,omitempty"`
+	// Minimum tensile strength.                                                                                       
+	MinimumTensileStrength                                                                      *float64               `json:"MinimumTensileStrength,omitempty"`
+	// Minimum yield strength.                                                                                         
+	MinimumYield                                                                                *float64               `json:"MinimumYield,omitempty"`
+	// Poissons Ratio typically at a temperature of 25 °C.                                                             
+	PoissonsRatio                                                                               *float64               `json:"PoissonsRatio,omitempty"`
+	// Comments or notes additional to the description.                                                                
+	Remarks                                                                                     []AbstractRemark       `json:"Remarks,omitempty"`
+	// Rushmore code                                                                                                   
+	RushmoreCode                                                                                *string                `json:"RushmoreCode,omitempty"`
+	// Specific heat capacity.                                                                                         
+	SpecificHeatCapacity                                                                        *float64               `json:"SpecificHeatCapacity,omitempty"`
+	// Tensile yield points at specified temperatures.                                                                 
+	TensileYields                                                                               []TensileYield         `json:"TensileYields,omitempty"`
+	// Thermal conductivity.                                                                                           
+	ThermalConductivity                                                                         *float64               `json:"ThermalConductivity,omitempty"`
+	// Thermal expansions at specified temperatures.                                                                   
+	ThermalExpansions                                                                           []ThermalExpansion     `json:"ThermalExpansions,omitempty"`
+	// Youngs Modulus of Elasticity typically at a temperature of 25 °C.                                               
+	YoungsModulus                                                                               *float64               `json:"YoungsModulus,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// Density of the material at specified temperatures.
+type Density struct {
+	// The density of the material at a specified temperature.         
+	Density                                                   *float64 `json:"Density,omitempty"`
+	// Temperature for this yield point.                               
+	Temperature                                               *float64 `json:"Temperature,omitempty"`
+}
+
+// Tensile yield point at specified temperature.
+type TensileYield struct {
+	// Temperature for this yield point.         
+	Temperature                         *float64 `json:"Temperature,omitempty"`
+	// Yield points.                             
+	TensileYield                        *float64 `json:"TensileYield,omitempty"`
+}
+
+// Thermal expansions at specified temperatures.
+type ThermalExpansion struct {
+	// Temperature for this yield point.                                              
+	Temperature                                                              *float64 `json:"Temperature,omitempty"`
+	// How much a material expands or contracts when its temperature changes.         
+	ThermalExpansion                                                         *float64 `json:"ThermalExpansion,omitempty"`
 }
 
 // An enumeration of cell shape types based on the RESQML model, i.e. tetrahedral,
@@ -18293,7 +18787,9 @@ type CoordinateReferenceSystemData struct {
 	ResourceHostRegionIDs                                                                        []string                  `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                    
 	ResourceLifecycleStatus                                                                      *string                   `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                      
+	// DEPRECATED: This security classification is merely decorative; the security                                         
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                
+	// instead. Previously:  Classifies the security level of the resource.                                                
 	ResourceSecurityClassification                                                               *string                   `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                      
 	// organization, agency, system, internal team, or individual. For informational purposes                              
@@ -18363,6 +18859,10 @@ type CoordinateReferenceSystemData struct {
 	// The kind of CRS, e.g. bound, compound, derived, engineering, geocentric, geographic 2D,                             
 	// geographic 3D, projected, vertical.                                                                                 
 	Kind                                                                                         *string                   `json:"Kind,omitempty"`
+	// OGC WKT 2 (Well-Known Text 2) OGC Well Known Text (WKT) 2  representation of a Coordinate                           
+	// Reference System (CRS) or coordinate operation, intended for interoperability with                                  
+	// geospatial libraries and external systems that consume OGC-compliant WKT2 definitions                               
+	OGCWellKnownText2                                                                            *string                   `json:"OGCWellKnownText2,omitempty"`
 	// Used for export and actionable instructions to a conversion/transformation engine. It is                            
 	// initially based on Esri well-known text (WKT). Eventually, when Esri WKT are convertible                            
 	// into ISO WKT and vice versa, the definition can be replaced by                                                      
@@ -18808,7 +19308,9 @@ type CoordinateTransformationData struct {
 	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                      
 	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
 	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                        
 	// organization, agency, system, internal team, or individual. For informational purposes                                
@@ -18878,6 +19380,10 @@ type CoordinateTransformationData struct {
 	// ConcatenatedOperation; EPSG method code and name for CoordinateTransformationType ==                                  
 	// Transformation.                                                                                                       
 	Method                                                                                      *TransformationMethod        `json:"Method,omitempty"`
+	// OGC WKT 2 (Well-Known Text 2) OGC Well Known Text (WKT) 2  representation of a Coordinate                             
+	// Reference System (CRS) or coordinate operation, intended for interoperability with                                    
+	// geospatial libraries and external systems that consume OGC-compliant WKT2 definitions                                 
+	OGCWellKnownText2                                                                           *string                      `json:"OGCWellKnownText2,omitempty"`
 	// Used for export and actionable instructions to a conversion/transformation engine. It is                              
 	// initially based on Esri well-known text (WKT). Eventually, when Esri WKT are convertible                              
 	// into ISO WKT and vice versa, the definition can be replaced by                                                        
@@ -18904,6 +19410,8 @@ type CoordinateTransformationData struct {
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
+// Only populated for CoordinateTransformationType == ConcatenatedOperation: the ordered
+// list of chained transformations.
 type ConcatenatedTransformation struct {
 	// The Transformation authority code, corresponding to the ISO19111 ID and 'projjson' id.                                         
 	AuthorityCode                                                                            *ConcatenatedTransformationAuthorityCode `json:"AuthorityCode,omitempty"`
@@ -21031,6 +21539,109 @@ type DepositionalSubEnvironmentData struct {
 	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
 }
 
+// Downhole Depth Measurement Type
+type DepthMeasurementType struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *DepthMeasurementTypeData      `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type DepthMeasurementTypeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
 // The technique used to remove oil or water from the rock sample, usually in preparation
 // for lab analysis.
 type DesaturationMethod struct {
@@ -22626,6 +23237,110 @@ type DrainageConditionData struct {
 	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
 }
 
+// The reference list of possible tubular drift types.  For example, is the drift type
+// "Standard" or "Special".
+type DriftType struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *DriftTypeData                 `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type DriftTypeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
 // The type of drilling activity classes
 type DrillingActivityClassType struct {
 	// The access control tags associated with this entity.                                                                     
@@ -22993,6 +23708,111 @@ type EdsExternalProcessTypeData struct {
 	// Describes the current Resource Lifecycle status.                                                                
 	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
 	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// For external data source ingestion system to notify users on the ingestion run status
+type EdsNotificationPolicy struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *EdsNotificationPolicyData     `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type EdsNotificationPolicyData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                     
+	// classification associated to the legal.legaltags[] is evaluated by platform services                            
+	// instead. Previously:  Classifies the security level of the resource.                                            
 	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                  
 	// organization, agency, system, internal team, or individual. For informational purposes                          
@@ -30674,6 +31494,212 @@ type HeaderKeyNameData struct {
 	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
 }
 
+// Wellbore Hold Up Depth Category (HUD or Fish)
+type HoldUpDepthCategory struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *HoldUpDepthCategoryData       `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type HoldUpDepthCategoryData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// Wellbore Hold Up Depth type
+type HoldUpDepthType struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *HoldUpDepthTypeData           `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type HoldUpDepthTypeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
 // HoleOpenerType to be properly defined
 type HoleOpenerType struct {
 	// The access control tags associated with this entity.                                                                     
@@ -34579,6 +35605,110 @@ type MarkerType struct {
 // Generic reference object containing the universal properties of reference data,
 // especially the ones commonly thought of as Types
 type MarkerTypeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                  
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
+}
+
+// The reference list to specify the material grade standard.  Typically the type is
+// "API/ISO" or "Proprietary".
+type MaterialGradeStandardType struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *MaterialGradeStandardTypeData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type MaterialGradeStandardTypeData struct {
 	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
 	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
 	// Describes the current Curation status.                                                                          
@@ -38875,6 +40005,114 @@ type ReplaceAttribute struct {
 	SourceSystemAttribute                                                                        *string `json:"SourceSystemAttribute,omitempty"`
 	// DEPRECATED: No longer in use. The target system attribute receiving the value to replace.         
 	TargetSystemAttribute                                                                        *string `json:"TargetSystemAttribute,omitempty"`
+}
+
+// To allow Data Provider/Operator to define the JSON payload template tailored to the API
+// they are making requests to.
+type PayloadTemplate struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *PayloadTemplateData           `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal properties of reference data,
+// especially the ones commonly thought of as Types
+type PayloadTemplateData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                 
+	ExistenceKind                                                                               *string                `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                          
+	ResourceCurationStatus                                                                      *string                `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                  
+	ResourceHomeRegionID                                                                        *string                `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                               
+	ResourceHostRegionIDs                                                                       []string               `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                
+	ResourceLifecycleStatus                                                                     *string                `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                     
+	// classification associated to the legal.legaltags[] is evaluated by platform services                            
+	// instead. Previously:  Classifies the security level of the resource.                                            
+	ResourceSecurityClassification                                                              *string                `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                  
+	// organization, agency, system, internal team, or individual. For informational purposes                          
+	// only, the list of sources is not governed.                                                                      
+	Source                                                                                      *string                `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                           
+	// based on data quality. Clarifications: Since Certified is the highest classification of                         
+	// suitable quality, any further change or versioning of a Certified record should be                              
+	// carefully considered and justified. If a Technical Assurance value is not populated then                        
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                        
+	// Technical Assurance values are not intended to be used for the identification of a single                       
+	// "preferred" or "definitive" record by comparison with other records.                                            
+	TechnicalAssuranceID                                                                        *string                `json:"TechnicalAssuranceID,omitempty"`
+	// Name of the authority, or organisation, which governs the entity value and from which it                        
+	// is sourced.                                                                                                     
+	AttributionAuthority                                                                        *string                `json:"AttributionAuthority,omitempty"`
+	// Name, URL, or other identifier of the publication, or repository, of the attribution                            
+	// source organisation from which the entity value is sourced.                                                     
+	AttributionPublication                                                                      *string                `json:"AttributionPublication,omitempty"`
+	// The distinct instance of the attribution publication, by version number, sequence number,                       
+	// date of publication, etc., that was used for the entity value.                                                  
+	AttributionRevision                                                                         *string                `json:"AttributionRevision,omitempty"`
+	// The abbreviation or mnemonic for a reference type if defined. Example: WELL and WLBR.                           
+	Code                                                                                        *string                `json:"Code,omitempty"`
+	// For reference values published and governed by OSDU: The date and time the record was                           
+	// committed into the OSDU member GitLab reference-values repository. The sole purpose of                          
+	// this date is to optimise the OSDU milestone upgrades. It allows the upgrade code to                             
+	// figure out whether or not the record must be PUT into reference value storage.                                  
+	CommitDate                                                                                  *time.Time             `json:"CommitDate,omitempty"`
+	// The text which describes a NAME TYPE in detail.                                                                 
+	Description                                                                                 *string                `json:"Description,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                         
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                        
+	// If used, the "Source" property should identify that source system.                                              
+	ID                                                                                          *string                `json:"ID,omitempty"`
+	// By default reference values are considered as 'active'. An absent 'InactiveIndicator'                           
+	// property value means the reference value is in active use. When 'InactiveIndicator' is                          
+	// set true the reverence value is no longer in use and should no longer be offered as a                           
+	// choice.                                                                                                         
+	InactiveIndicator                                                                           *bool                  `json:"InactiveIndicator,omitempty"`
+	// The name of the entity instance.                                                                                
+	Name                                                                                        *string                `json:"Name,omitempty"`
+	// Alternative names, including historical, by which this entity instance is/has been known.                       
+	NameAlias                                                                                   []AbstractAliasNames   `json:"NameAlias,omitempty"`
+	// The JSON object payload template to be used for the API request.                                                
+	Template                                                                                    string                 `json:"Template"`
+	ExtensionProperties                                                                         map[string]interface{} `json:"ExtensionProperties,omitempty"`
 }
 
 // The Perforating Gun Centralization Method Type used in a perforation interval.
