@@ -52,6 +52,9 @@
 //    coring, err := UnmarshalCoring(bytes)
 //    bytes, err = coring.Marshal()
 //
+//    equipmentInventory, err := UnmarshalEquipmentInventory(bytes)
+//    bytes, err = equipmentInventory.Marshal()
+//
 //    evaluationPlan, err := UnmarshalEvaluationPlan(bytes)
 //    bytes, err = evaluationPlan.Marshal()
 //
@@ -120,6 +123,21 @@
 //
 //    rig, err := UnmarshalRig(bytes)
 //    bytes, err = rig.Marshal()
+//
+//    rigCirculatingSystem, err := UnmarshalRigCirculatingSystem(bytes)
+//    bytes, err = rigCirculatingSystem.Marshal()
+//
+//    rigDerrick, err := UnmarshalRigDerrick(bytes)
+//    bytes, err = rigDerrick.Marshal()
+//
+//    rigPump, err := UnmarshalRigPump(bytes)
+//    bytes, err = rigPump.Marshal()
+//
+//    rigRiser, err := UnmarshalRigRiser(bytes)
+//    bytes, err = rigRiser.Marshal()
+//
+//    rigSpecifications, err := UnmarshalRigSpecifications(bytes)
+//    bytes, err = rigSpecifications.Marshal()
 //
 //    rigUtilization, err := UnmarshalRigUtilization(bytes)
 //    bytes, err = rigUtilization.Marshal()
@@ -398,6 +416,16 @@ func (r *Coring) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalEquipmentInventory(data []byte) (EquipmentInventory, error) {
+	var r EquipmentInventory
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *EquipmentInventory) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalEvaluationPlan(data []byte) (EvaluationPlan, error) {
 	var r EvaluationPlan
 	err := json.Unmarshal(data, &r)
@@ -625,6 +653,56 @@ func UnmarshalRig(data []byte) (Rig, error) {
 }
 
 func (r *Rig) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigCirculatingSystem(data []byte) (RigCirculatingSystem, error) {
+	var r RigCirculatingSystem
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigCirculatingSystem) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigDerrick(data []byte) (RigDerrick, error) {
+	var r RigDerrick
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigDerrick) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigPump(data []byte) (RigPump, error) {
+	var r RigPump
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigPump) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigRiser(data []byte) (RigRiser, error) {
+	var r RigRiser
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigRiser) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigSpecifications(data []byte) (RigSpecifications, error) {
+	var r RigSpecifications
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigSpecifications) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -1795,7 +1873,9 @@ type ActivityTemplateData struct {
 	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
 	// Describes the current Resource Lifecycle status.                                                                      
 	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
 	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
 	// The entity that produced the record, or from which it is received; could be an                                        
 	// organization, agency, system, internal team, or individual. For informational purposes                                
@@ -1859,7 +1939,11 @@ type ParameterTemplate struct {
 	// only when ParameterType is dataObject.  String is an OSDU kind of work product component.                      
 	DataObjectContentType                                                                       []string              `json:"DataObjectContentType,omitempty"`
 	// Activity Parameter value to use if one not supplied.                                                           
-	DefaultValue                                                                                *DefaultValueElement  `json:"DefaultValue,omitempty"`
+	DefaultValue                                                                                *DefaultValueClass    `json:"DefaultValue,omitempty"`
+	// A human-readable description of this parameter, explaining its purpose, expected values,                       
+	// and any relevant constraints. Used to document the intent of the parameter for users                           
+	// implementing or interpreting the workflow.                                                                     
+	Description                                                                                 *string               `json:"Description,omitempty"`
 	// Indicates if the parameter is an input of the activity. If the parameter is a data object                      
 	// and is also an output of the activity, it is strongly advised to use two parameters : one                      
 	// for input and one for output. The reason is to be able to give two different versions                          
@@ -1897,7 +1981,7 @@ type ParameterTemplate struct {
 //
 // General parameter value used in one instance of activity.
 // [Without inheritance, combined specializations.]
-type DefaultValueElement struct {
+type DefaultValueClass struct {
 	// The boolean parameter value, if ParameterKindID refers to the Boolean type.                                
 	BooleanParameter                                                                            *bool             `json:"BooleanParameter,omitempty"`
 	// Parameter referencing to a top level object.                                                               
@@ -1906,6 +1990,9 @@ type DefaultValueElement struct {
 	DataQuantityParameter                                                                       *float64          `json:"DataQuantityParameter,omitempty"`
 	// Identifies unit of measure for floating point value.                                                       
 	DataQuantityParameterUOMID                                                                  *string           `json:"DataQuantityParameterUOMID,omitempty"`
+	// A human-readable description of this parameter, explaining its purpose and role in the                     
+	// activity.                                                                                                  
+	Description                                                                                 *string           `json:"Description,omitempty"`
 	// When parameter is an array, used to indicate the index in the array.                                       
 	Index                                                                                       *int64            `json:"Index,omitempty"`
 	// Parameter containing an integer value.                                                                     
@@ -4370,146 +4457,146 @@ type BusinessDecision struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type BusinessDecisionData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// The relationship to the current DecisionApprovalStatus.                                                               
-	ApprovalStatusID                                                                            *string                      `json:"ApprovalStatusID,omitempty"`
-	// Individuals involved in the decision, including those who might not be decision makers or                             
-	// owners. Decision contributors might gather alternatives, data points, and decision                                    
-	// criteria that are ultimately used by decision makers.                                                                 
-	Contributors                                                                                []AbstractContactUserProfile `json:"Contributors,omitempty"`
-	// The actual date when the decision was taken.                                                                          
-	DecisionDate                                                                                *string                      `json:"DecisionDate,omitempty"`
-	// The planned due date for the decision to be taken.                                                                    
-	DecisionDueDate                                                                             *string                      `json:"DecisionDueDate,omitempty"`
-	// The relationship to the current DecisionLevel.                                                                        
-	DecisionLevelID                                                                             *string                      `json:"DecisionLevelID,omitempty"`
-	// Individuals who decide on one option upon which to take action, usually by comparison                                 
-	// with other option alternatives. Decision makers are usually responsible for the decision                              
-	// date and weighing decision alternatives.                                                                              
-	DecisionMakers                                                                              []AbstractContactUserProfile `json:"DecisionMakers,omitempty"`
-	// Individuals who are responsible for taking action based on the decision that was made and                             
-	// defending the option chosen, or reviewing it in the future if change is needed.                                       
-	DecisionOwners                                                                              []AbstractContactUserProfile `json:"DecisionOwners,omitempty"`
-	// The 6-component decision quality object.                                                                              
-	DecisionQualities                                                                           *DecisionQualities           `json:"DecisionQualities,omitempty"`
-	// A text summarizing decision highlights and the reasoning behind the decision.                                         
-	DecisionSummary                                                                             *string                      `json:"DecisionSummary,omitempty"`
-	// The project name this decision is associated with to be used for discovery.                                           
-	Name                                                                                        *string                      `json:"Name,omitempty"`
-	// The relationships to potential multiple preceding activity or projects.                                               
-	PriorActivityIDs                                                                            []string                     `json:"PriorActivityIDs,omitempty"`
-	// An array of free remarks or annotations.                                                                              
-	Remarks                                                                                     []AbstractRemark             `json:"Remarks,omitempty"`
-	// The document containing the risk assessment.                                                                          
-	RiskAssessmentDocument                                                                      *string                      `json:"RiskAssessmentDocument,omitempty"`
-	// The list of identified risks.                                                                                         
-	RiskIDs                                                                                     []string                     `json:"RiskIDs,omitempty"`
-	// If multiple DecisionQualities.DoableAlternatives[] are recorded, this property holds the                              
-	// SequenceNumber decided as the selected alternative.                                                                   
-	SelectedAlternativeSequenceNumber                                                           *int64                       `json:"SelectedAlternativeSequenceNumber,omitempty"`
-	// Any events, that may cause a re-evaluation of the decision.                                                           
-	Triggers                                                                                    []AbstractTrigger            `json:"Triggers,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                             
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// The relationship to the current DecisionApprovalStatus.                                                                    
+	ApprovalStatusID                                                                            *string                           `json:"ApprovalStatusID,omitempty"`
+	// Individuals involved in the decision, including those who might not be decision makers or                                  
+	// owners. Decision contributors might gather alternatives, data points, and decision                                         
+	// criteria that are ultimately used by decision makers.                                                                      
+	Contributors                                                                                []AbstractContactUserProfile      `json:"Contributors,omitempty"`
+	// The actual date when the decision was taken.                                                                               
+	DecisionDate                                                                                *string                           `json:"DecisionDate,omitempty"`
+	// The planned due date for the decision to be taken.                                                                         
+	DecisionDueDate                                                                             *string                           `json:"DecisionDueDate,omitempty"`
+	// The relationship to the current DecisionLevel.                                                                             
+	DecisionLevelID                                                                             *string                           `json:"DecisionLevelID,omitempty"`
+	// Individuals who decide on one option upon which to take action, usually by comparison                                      
+	// with other option alternatives. Decision makers are usually responsible for the decision                                   
+	// date and weighing decision alternatives.                                                                                   
+	DecisionMakers                                                                              []AbstractContactUserProfile      `json:"DecisionMakers,omitempty"`
+	// Individuals who are responsible for taking action based on the decision that was made and                                  
+	// defending the option chosen, or reviewing it in the future if change is needed.                                            
+	DecisionOwners                                                                              []AbstractContactUserProfile      `json:"DecisionOwners,omitempty"`
+	// The 6-component decision quality object.                                                                                   
+	DecisionQualities                                                                           *DecisionQualities                `json:"DecisionQualities,omitempty"`
+	// A text summarizing decision highlights and the reasoning behind the decision.                                              
+	DecisionSummary                                                                             *string                           `json:"DecisionSummary,omitempty"`
+	// The project name this decision is associated with to be used for discovery.                                                
+	Name                                                                                        *string                           `json:"Name,omitempty"`
+	// The relationships to potential multiple preceding activity or projects.                                                    
+	PriorActivityIDs                                                                            []string                          `json:"PriorActivityIDs,omitempty"`
+	// An array of free remarks or annotations.                                                                                   
+	Remarks                                                                                     []AbstractRemark                  `json:"Remarks,omitempty"`
+	// The document containing the risk assessment.                                                                               
+	RiskAssessmentDocument                                                                      *string                           `json:"RiskAssessmentDocument,omitempty"`
+	// The list of identified risks.                                                                                              
+	RiskIDs                                                                                     []string                          `json:"RiskIDs,omitempty"`
+	// If multiple DecisionQualities.DoableAlternatives[] are recorded, this property holds the                                   
+	// SequenceNumber decided as the selected alternative.                                                                        
+	SelectedAlternativeSequenceNumber                                                           *int64                            `json:"SelectedAlternativeSequenceNumber,omitempty"`
+	// Any events, that may cause a re-evaluation of the decision.                                                                
+	Triggers                                                                                    []AbstractTrigger                 `json:"Triggers,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // One step/interval in an Activity's or ProjectActivity's state.
@@ -4644,6 +4731,68 @@ type AbstractTrigger struct {
 	// Relationships to zero or more activity templates representing workflows, which need to be                 
 	// executed when the condition is met.                                                                       
 	WorkflowIDs                                                                                 []string         `json:"WorkflowIDs,omitempty"`
+}
+
+// General parameter value used in one instance of activity.
+// [Without inheritance, combined specializations.]
+type PurpleAbstractActivityParameter struct {
+	// The boolean parameter value, if ParameterKindID refers to the Boolean type.                                   
+	BooleanParameter                                                                            *bool                `json:"BooleanParameter,omitempty"`
+	// Parameter referencing to a top level object.                                                                  
+	DataObjectParameter                                                                         *string              `json:"DataObjectParameter,omitempty"`
+	// Parameter containing a double value.                                                                          
+	DataQuantityParameter                                                                       *float64             `json:"DataQuantityParameter,omitempty"`
+	// Identifies unit of measure for floating point value.                                                          
+	DataQuantityParameterUOMID                                                                  *string              `json:"DataQuantityParameterUOMID,omitempty"`
+	// When parameter is an array, used to indicate the index in the array.                                          
+	Index                                                                                       *int64               `json:"Index,omitempty"`
+	// Parameter containing an integer value.                                                                        
+	IntegerQuantityParameter                                                                    *int64               `json:"IntegerQuantityParameter,omitempty"`
+	// A nested array describing keys used to identify a parameter value. When multiple values                       
+	// are provided for a given parameter, the key provides a way to identify the parameter                          
+	// through its association with an object, a time index or a parameter array member via                          
+	// ParameterKey value.                                                                                           
+	Keys                                                                                        []PurpleParameterKey `json:"Keys,omitempty"`
+	// [Added to cover lack of inheritance]                                                                          
+	ParameterKindID                                                                             string               `json:"ParameterKindID"`
+	// Reference data describing how the parameter was used by the activity, such as input,                          
+	// output, control, constraint, agent, predecessor activity, successor activity.                                 
+	ParameterRoleID                                                                             *string              `json:"ParameterRoleID,omitempty"`
+	// Textual description about how this parameter was selected.                                                    
+	Selection                                                                                   *string              `json:"Selection,omitempty"`
+	// Parameter containing a string value.                                                                          
+	StringParameter                                                                             *string              `json:"StringParameter,omitempty"`
+	// Parameter containing a time index value.  It is assumed that all TimeIndexParameters                          
+	// within an Activity have the same date-time format, which is then described by the                             
+	// FrameOfReference mechanism.                                                                                   
+	TimeIndexParameter                                                                          *time.Time           `json:"TimeIndexParameter,omitempty"`
+	// Name of the parameter, used to identify it in the activity. It must have an equivalent in                     
+	// the ActivityTemplate parameters.                                                                              
+	Title                                                                                       string               `json:"Title"`
+}
+
+// Abstract class describing a key used to identify a parameter value. When multiple values
+// are provided for a given parameter, provides a way to identify the parameter through its
+// association with an object, a time index, an integer...
+// [Without inheritance, combined specializations.] Note: floating point numbers are not
+// supported as key values; the numbers have to be formatted as strings for robust equality
+// operations, which are necessary for keys.
+type PurpleParameterKey struct {
+	// Integer value from "ParameterKey" parameter, associated with this parameter. Example:          
+	// {"ParameterKey": "index", "StringParameterKey: 2}.                                             
+	IntegerParameterKey                                                                       *int64  `json:"IntegerParameterKey,omitempty"`
+	// Relationship to an object ID, which acts as the parameter.                                     
+	ObjectParameterKey                                                                        *string `json:"ObjectParameterKey,omitempty"`
+	// The key name, which establishes an association between parameters.                             
+	ParameterKey                                                                              *string `json:"ParameterKey,omitempty"`
+	// String value from "ParameterKey" parameter, associated with this parameter. Can be used        
+	// to associate with parameter values of type string or data quantity. In the later case,         
+	// the string representation of the quantity value will be used. Example: {"ParameterKey":        
+	// "facies", "StringParameterKey: "shale"}, {"ParameterKey":"depth",                              
+	// "StringParameterKey":"1545.43m"}.                                                              
+	StringParameterKey                                                                        *string `json:"StringParameterKey,omitempty"`
+	// The time index acting as parameter key value.                                                  
+	TimeIndexParameterKey                                                                     *string `json:"TimeIndexParameterKey,omitempty"`
 }
 
 // The design of the Casing in a wellbore
@@ -4906,7 +5055,7 @@ type CollaborationProjectData struct {
 	LastActivityState                                                                           *AbstractActivityState                `json:"LastActivityState,omitempty"`
 	// General parameter value used in one instance of activity.  Includes reference to data                                          
 	// objects which are inputs and outputs of the activity.                                                                          
-	Parameters                                                                                  []DefaultValueElement                 `json:"Parameters,omitempty"`
+	Parameters                                                                                  []PurpleAbstractActivityParameter     `json:"Parameters,omitempty"`
 	// The relationship to a parent project acting as a parent activity.                                                              
 	ParentProjectID                                                                             *string                               `json:"ParentProjectID,omitempty"`
 	// Collaboration Project's Timeline end date. Used for planning and tracking but no expected                                      
@@ -5184,177 +5333,180 @@ type ConnectedSourceDataJob struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type ConnectedSourceDataJobData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// DEPRECATED: This security classification is merely decorative; the security                                           
-	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
-	// instead. Previously:  Classifies the security level of the resource.                                                  
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// Indicates if a scheduled job is active (will be executed) or not (won't be executed)                                  
-	ActiveIndicator                                                                             bool                         `json:"ActiveIndicator"`
-	// ID of the external partition containing the desired data                                                              
-	ConnectedSourceDataPartitionID                                                              string                       `json:"ConnectedSourceDataPartitionID"`
-	// ID reference of the parent Connected Source Registry Entry                                                            
-	ConnectedSourceRegistryEntryID                                                              string                       `json:"ConnectedSourceRegistryEntryID"`
-	// Source system schema authority.                                                                                       
-	ConnectedSourceSchemaAuthority                                                              *string                      `json:"ConnectedSourceSchemaAuthority,omitempty"`
-	// The maximum create/update time for data records (UTC).                                                                
-	CreateTimeMax                                                                               *time.Time                   `json:"CreateTimeMax,omitempty"`
-	// The wait time, in seconds, for the eds_Ingest DAG run upon completion of the Manifest                                 
-	// Ingestion (osdu_ingest) DAG run, used to retrieve details from the XCom summary.                                      
-	EdsIngestWaitTime                                                                           *float64                     `json:"EdsIngestWaitTime,omitempty"`
-	// ID of the notification policy containing the email preference                                                         
-	EdsNotificationPolicyID                                                                     *string                      `json:"EdsNotificationPolicyID,omitempty"`
-	// A list of external processes configuration to be executed by EDS                                                      
-	ExternalProcesses                                                                           []ExternalProcess            `json:"ExternalProcesses,omitempty"`
-	// A temporary solution before these references are stored in a related, external record for                             
-	// scalability: The data type/schema/kind of data being retrieved form the external source.                              
-	// The failed records list which is retrieved from the external source.                                                  
-	FailedRecords                                                                               []string                     `json:"FailedRecords,omitempty"`
-	// End time of the records to be fetched from the source system.                                                         
-	FetchEndDateTime                                                                            *time.Time                   `json:"FetchEndDateTime,omitempty"`
-	// The data type/schema/kind of data being retrieved form the external source. The returned                              
-	// value should validate against the corresponding registered schema in the OSDU schema                                  
-	// service.                                                                                                              
-	FetchKind                                                                                   string                       `json:"FetchKind"`
-	// Start time of the records to be fetched from the source system.                                                       
-	FetchStartDateTime                                                                          *time.Time                   `json:"FetchStartDateTime,omitempty"`
-	// Filter applied to the data fetch request, using data members in the FetchKind schema.                                 
-	Filter                                                                                      string                       `json:"Filter"`
-	// Indicates if the dummy parent data mapping should be considered or not, by default it                                 
-	// will be false (and false if absent), if true ParentDataMappingDummyMasterIDs should be                                
-	// set.                                                                                                                  
-	IsDummyParentMappingEnabled                                                                 *bool                        `json:"IsDummyParentMappingEnabled,omitempty"`
-	// The last successful run date of the job (UTC)                                                                         
-	LastSuccessfulRunDateUTC                                                                    *time.Time                   `json:"LastSuccessfulRunDateUTC,omitempty"`
-	// The maximum number of records to be processed in this job.                                                            
-	LimitRecords                                                                                *int64                       `json:"LimitRecords,omitempty"`
-	// Descriptive label given to a scheduled job.                                                                           
-	Name                                                                                        string                       `json:"Name"`
-	// List of access control lists (ACLs) to be injected into the manifests of external data                                
-	// before ingestion                                                                                                      
-	OnIngestionACL                                                                              *AccessControlList           `json:"OnIngestionAcl,omitempty"`
-	// Consumer partition the incoming data will be placed in.                                                               
-	OnIngestionDataPartitionID                                                                  string                       `json:"OnIngestionDataPartitionID"`
-	// List of legal tags to be injected into the manifests of external data before ingestion                                
-	OnIngestionLegalTags                                                                        *LegalMetaData               `json:"OnIngestionLegalTags,omitempty"`
-	// Consumer schema authority for the incoming data will be placed in.                                                    
-	OnIngestionSchemaAuthority                                                                  *string                      `json:"OnIngestionSchemaAuthority,omitempty"`
-	// A fixed dummy master ID is set in advance and will be used if the master record is                                    
-	// unavailable in the consumer system. Multiple master ids can be defined as array members;                              
-	// ids are defined without data-partition example: 'master-data--Well:DummyWell'.                                        
-	ParentDataMappingDummyMasterIDs                                                             []string                     `json:"ParentDataMappingDummyMasterIDs,omitempty"`
-	// A list of attribute paths to be preserved during updates.                                                             
-	PreserveOnUpdate                                                                            []string                     `json:"PreserveOnUpdate,omitempty"`
-	// Schedule this job should run on, in CRON format                                                                       
-	ScheduleUTC                                                                                 string                       `json:"ScheduleUTC"`
-	// TriggerNaturalizationDAG (default false) triggers, if true, a naturalization DAG                                      
-	// (directed acyclic graph) that will add the data file (SEG-Y, LAS, etc.) to the target                                 
-	// OSDU Platform from the source system and convert the WPC's child dataset from "external"                              
-	// to "internal".                                                                                                        
-	TriggerNaturalizationDAG                                                                    *bool                        `json:"TriggerNaturalizationDAG,omitempty"`
-	// DEPRECATED: Superseded by the contents of appropriate parameters in an ActivityTemplate                               
-	// instance identified by data.ActivityTemplateID. In earlier versions: List of workflows                                
-	// and their configuration used in this scheduled job                                                                    
-	Workflows                                                                                   []Workflow                   `json:"Workflows,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                       
+	// instead. Previously:  Classifies the security level of the resource.                                                       
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// Indicates if a scheduled job is active (will be executed) or not (won't be executed)                                       
+	ActiveIndicator                                                                             bool                              `json:"ActiveIndicator"`
+	// ID of the external partition containing the desired data                                                                   
+	ConnectedSourceDataPartitionID                                                              string                            `json:"ConnectedSourceDataPartitionID"`
+	// ID reference of the parent Connected Source Registry Entry                                                                 
+	ConnectedSourceRegistryEntryID                                                              string                            `json:"ConnectedSourceRegistryEntryID"`
+	// Source system schema authority.                                                                                            
+	ConnectedSourceSchemaAuthority                                                              *string                           `json:"ConnectedSourceSchemaAuthority,omitempty"`
+	// The maximum create/update time for data records (UTC).                                                                     
+	CreateTimeMax                                                                               *time.Time                        `json:"CreateTimeMax,omitempty"`
+	// The wait time, in seconds, for the eds_Ingest DAG run upon completion of the Manifest                                      
+	// Ingestion (osdu_ingest) DAG run, used to retrieve details from the XCom summary.                                           
+	EdsIngestWaitTime                                                                           *float64                          `json:"EdsIngestWaitTime,omitempty"`
+	// ID of the notification policy containing the email preference                                                              
+	EdsNotificationPolicyID                                                                     *string                           `json:"EdsNotificationPolicyID,omitempty"`
+	// A list of external processes configuration to be executed by EDS                                                           
+	ExternalProcesses                                                                           []ExternalProcess                 `json:"ExternalProcesses,omitempty"`
+	// A temporary solution before these references are stored in a related, external record for                                  
+	// scalability: The data type/schema/kind of data being retrieved form the external source.                                   
+	// The failed records list which is retrieved from the external source.                                                       
+	FailedRecords                                                                               []string                          `json:"FailedRecords,omitempty"`
+	// End time of the records to be fetched from the source system.                                                              
+	FetchEndDateTime                                                                            *time.Time                        `json:"FetchEndDateTime,omitempty"`
+	// The data type/schema/kind of data being retrieved form the external source. The returned                                   
+	// value should validate against the corresponding registered schema in the OSDU schema                                       
+	// service.                                                                                                                   
+	FetchKind                                                                                   string                            `json:"FetchKind"`
+	// Start time of the records to be fetched from the source system.                                                            
+	FetchStartDateTime                                                                          *time.Time                        `json:"FetchStartDateTime,omitempty"`
+	// Filter applied to the data fetch request, using data members in the FetchKind schema.                                      
+	Filter                                                                                      string                            `json:"Filter"`
+	// Indicates if the dummy parent data mapping should be considered or not, by default it                                      
+	// will be false (and false if absent), if true ParentDataMappingDummyMasterIDs should be                                     
+	// set.                                                                                                                       
+	IsDummyParentMappingEnabled                                                                 *bool                             `json:"IsDummyParentMappingEnabled,omitempty"`
+	// The last successful run date of the job (UTC)                                                                              
+	LastSuccessfulRunDateUTC                                                                    *time.Time                        `json:"LastSuccessfulRunDateUTC,omitempty"`
+	// The maximum number of records to be processed in this job.                                                                 
+	LimitRecords                                                                                *int64                            `json:"LimitRecords,omitempty"`
+	// Descriptive label given to a scheduled job.                                                                                
+	Name                                                                                        string                            `json:"Name"`
+	// List of access control lists (ACLs) to be injected into the manifests of external data                                     
+	// before ingestion                                                                                                           
+	OnIngestionACL                                                                              *AccessControlList                `json:"OnIngestionAcl,omitempty"`
+	// Consumer partition the incoming data will be placed in.                                                                    
+	OnIngestionDataPartitionID                                                                  string                            `json:"OnIngestionDataPartitionID"`
+	// List of legal tags to be injected into the manifests of external data before ingestion                                     
+	OnIngestionLegalTags                                                                        *LegalMetaData                    `json:"OnIngestionLegalTags,omitempty"`
+	// Consumer schema authority for the incoming data will be placed in.                                                         
+	OnIngestionSchemaAuthority                                                                  *string                           `json:"OnIngestionSchemaAuthority,omitempty"`
+	// A fixed dummy master ID is set in advance and will be used if the master record is                                         
+	// unavailable in the consumer system. Multiple master ids can be defined as array members;                                   
+	// ids are defined without data-partition example: 'master-data--Well:DummyWell'.                                             
+	ParentDataMappingDummyMasterIDs                                                             []string                          `json:"ParentDataMappingDummyMasterIDs,omitempty"`
+	// A list of attribute paths to be preserved during updates.                                                                  
+	PreserveOnUpdate                                                                            []string                          `json:"PreserveOnUpdate,omitempty"`
+	// If the FailedRecords array is populated, this flag determines whether to retry ingesting                                   
+	// those records in the next scheduled run, or skip retrying and leave the array unchanged.                                   
+	RetryOnFailedRecords                                                                        *bool                             `json:"RetryOnFailedRecords,omitempty"`
+	// Schedule this job should run on, in CRON format                                                                            
+	ScheduleUTC                                                                                 string                            `json:"ScheduleUTC"`
+	// TriggerNaturalizationDAG (default false) triggers, if true, a naturalization DAG                                           
+	// (directed acyclic graph) that will add the data file (SEG-Y, LAS, etc.) to the target                                      
+	// OSDU Platform from the source system and convert the WPC's child dataset from "external"                                   
+	// to "internal".                                                                                                             
+	TriggerNaturalizationDAG                                                                    *bool                             `json:"TriggerNaturalizationDAG,omitempty"`
+	// DEPRECATED: Superseded by the contents of appropriate parameters in an ActivityTemplate                                    
+	// instance identified by data.ActivityTemplateID. In earlier versions: List of workflows                                     
+	// and their configuration used in this scheduled job                                                                         
+	Workflows                                                                                   []Workflow                        `json:"Workflows,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // A workflow configuration in the context of a scheduled job.
@@ -5442,143 +5594,143 @@ type ConnectedSourceRegistryEntry struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type ConnectedSourceRegistryEntryData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// DEPRECATED: This security classification is merely decorative; the security                                           
-	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
-	// instead. Previously:  Classifies the security level of the resource.                                                  
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// References to applicable agreements governing the use of the data source                                              
-	AgreementIDs                                                                                []string                     `json:"AgreementIDs,omitempty"`
-	// Connectivity information for Airflow endpoints to get more information of Manifest                                    
-	// Ingestion.                                                                                                            
-	AirflowStableAPIURL                                                                         *string                      `json:"AirflowStableAPIUrl,omitempty"`
-	// A placeholder to keep the data provider Dataset URL.                                                                  
-	DatasetURL                                                                                  *string                      `json:"DatasetURL,omitempty"`
-	// Additional information/description about the data source                                                              
-	Description                                                                                 *string                      `json:"Description,omitempty"`
-	// List of Email API schemes available for use in mailing the detailed EDS's report.                                     
-	EmailAPISchemes                                                                             []EmailAPISchemes            `json:"EmailApiSchemes,omitempty"`
-	// Flag that determines whether the external source has a full OSDU implementation (true) or                             
-	// a wrapper facade over proprietary APIs (false)                                                                        
-	FullOSDUImplementationIndicator                                                             *bool                        `json:"FullOSDUImplementationIndicator,omitempty"`
-	// Descriptive label given to the data source. This could be the name of an organisation                                 
-	// and/or the name of a specific database or system.                                                                     
-	Name                                                                                        string                       `json:"Name"`
-	// DEPRECATED: Please use reference-data--ExternalReferenceValueMapping reference catalog                                
-	// items instead. Temporary property awaiting a external reference-value mapping framework.                              
-	// A generic dictionary of string reference-data as keys mapping to reference-value as                                   
-	// string value. Only predefined reference-data and its values are permitted.                                            
-	ReferenceValueMappings                                                                      map[string]interface{}       `json:"ReferenceValueMappings,omitempty"`
-	// A placeholder to store the data provider Search service URL.                                                          
-	SearchURL                                                                                   *string                      `json:"SearchURL,omitempty"`
-	// List of security schemes available for use in authorizing against OSDU-compliant APIs of                              
-	// a connected data source.                                                                                              
-	SecuritySchemes                                                                             []SecurityScheme             `json:"SecuritySchemes"`
-	// List of SMTP server schemes available for use in mailing the detailed EDS's report.                                   
-	SMTPSchemes                                                                                 []SMTPScheme                 `json:"SmtpSchemes,omitempty"`
-	// Identifier of the organisation that the registered source belongs to.                                                 
-	SourceOrganisationID                                                                        *string                      `json:"SourceOrganisationID,omitempty"`
-	// A placeholder to keep the data provider Storage service URL.                                                          
-	StorageURL                                                                                  *string                      `json:"StorageURL,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                       
+	// instead. Previously:  Classifies the security level of the resource.                                                       
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// References to applicable agreements governing the use of the data source                                                   
+	AgreementIDs                                                                                []string                          `json:"AgreementIDs,omitempty"`
+	// Connectivity information for Airflow endpoints to get more information of Manifest                                         
+	// Ingestion.                                                                                                                 
+	AirflowStableAPIURL                                                                         *string                           `json:"AirflowStableAPIUrl,omitempty"`
+	// A placeholder to keep the data provider Dataset URL.                                                                       
+	DatasetURL                                                                                  *string                           `json:"DatasetURL,omitempty"`
+	// Additional information/description about the data source                                                                   
+	Description                                                                                 *string                           `json:"Description,omitempty"`
+	// List of Email API schemes available for use in mailing the detailed EDS's report.                                          
+	EmailAPISchemes                                                                             []EmailAPISchemes                 `json:"EmailApiSchemes,omitempty"`
+	// Flag that determines whether the external source has a full OSDU implementation (true) or                                  
+	// a wrapper facade over proprietary APIs (false)                                                                             
+	FullOSDUImplementationIndicator                                                             *bool                             `json:"FullOSDUImplementationIndicator,omitempty"`
+	// Descriptive label given to the data source. This could be the name of an organisation                                      
+	// and/or the name of a specific database or system.                                                                          
+	Name                                                                                        string                            `json:"Name"`
+	// DEPRECATED: Please use reference-data--ExternalReferenceValueMapping reference catalog                                     
+	// items instead. Temporary property awaiting a external reference-value mapping framework.                                   
+	// A generic dictionary of string reference-data as keys mapping to reference-value as                                        
+	// string value. Only predefined reference-data and its values are permitted.                                                 
+	ReferenceValueMappings                                                                      map[string]interface{}            `json:"ReferenceValueMappings,omitempty"`
+	// A placeholder to store the data provider Search service URL.                                                               
+	SearchURL                                                                                   *string                           `json:"SearchURL,omitempty"`
+	// List of security schemes available for use in authorizing against OSDU-compliant APIs of                                   
+	// a connected data source.                                                                                                   
+	SecuritySchemes                                                                             []SecurityScheme                  `json:"SecuritySchemes"`
+	// List of SMTP server schemes available for use in mailing the detailed EDS's report.                                        
+	SMTPSchemes                                                                                 []SMTPScheme                      `json:"SmtpSchemes,omitempty"`
+	// Identifier of the organisation that the registered source belongs to.                                                      
+	SourceOrganisationID                                                                        *string                           `json:"SourceOrganisationID,omitempty"`
+	// A placeholder to keep the data provider Storage service URL.                                                               
+	StorageURL                                                                                  *string                           `json:"StorageURL,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // List of Email API schemes available for use in mailing the detailed EDS's report.
@@ -5786,7 +5938,7 @@ type CoringData struct {
 	ActivityTemplateID                                                                          *string                              `json:"ActivityTemplateID,omitempty"`
 	// General parameter value used in one instance of activity.  Includes reference to data                                         
 	// objects which are inputs and outputs of the activity.                                                                         
-	Parameters                                                                                  []PurpleAbstractActivityParameter    `json:"Parameters,omitempty"`
+	Parameters                                                                                  []FluffyAbstractActivityParameter    `json:"Parameters,omitempty"`
 	// The relationship to a parent project acting as a parent activity.                                                             
 	ParentProjectID                                                                             *string                              `json:"ParentProjectID,omitempty"`
 	// The depth of the base of the core. The reference and kind of depth (e.g. driller's depth                                      
@@ -5876,7 +6028,7 @@ type CoreRemark struct {
 
 // General parameter value used in one instance of activity.
 // [Without inheritance, combined specializations.]
-type PurpleAbstractActivityParameter struct {
+type FluffyAbstractActivityParameter struct {
 	// Parameter referencing to a top level object.                                                                  
 	DataObjectParameter                                                                         *string              `json:"DataObjectParameter,omitempty"`
 	// Parameter containing a double value.                                                                          
@@ -5891,7 +6043,7 @@ type PurpleAbstractActivityParameter struct {
 	// are provided for a given parameter, the key provides a way to identify the parameter                          
 	// through its association with an object, a time index or a parameter array member via                          
 	// ParameterKey value.                                                                                           
-	Keys                                                                                        []PurpleParameterKey `json:"Keys,omitempty"`
+	Keys                                                                                        []FluffyParameterKey `json:"Keys,omitempty"`
 	// [Added to cover lack of inheritance]                                                                          
 	ParameterKindID                                                                             string               `json:"ParameterKindID"`
 	// Reference data describing how the parameter was used by the activity, such as input,                          
@@ -5916,7 +6068,7 @@ type PurpleAbstractActivityParameter struct {
 // [Without inheritance, combined specializations.] Note: floating point numbers are not
 // supported as key values; the numbers have to be formatted as strings for robust equality
 // operations, which are necessary for keys.
-type PurpleParameterKey struct {
+type FluffyParameterKey struct {
 	// Integer value from "ParameterKey" parameter, associated with this parameter. Example:          
 	// {"ParameterKey": "index", "StringParameterKey: 2}.                                             
 	IntegerParameterKey                                                                       *int64  `json:"IntegerParameterKey,omitempty"`
@@ -5955,6 +6107,131 @@ type SidewallCoreSample struct {
 	RecoveredLength                                                                            *float64 `json:"RecoveredLength,omitempty"`
 	// Typically a sequential number identifying the sidewall core sample.                              
 	SampleID                                                                                   *string  `json:"SampleID,omitempty"`
+}
+
+// Use with the Rig.2.0.0 or later schema. A list tracking the various types of equipment
+// and units at the well site during a specific period of time. For example, Mud Pumps,
+// Cement Units, Coil Tubing Reels,  etc.
+type EquipmentInventory struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *EquipmentInventoryData        `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type EquipmentInventoryData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                        
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// The inventory of equipment located on site.                                                                           
+	EquipmentInventory                                                                          []EquipmentInventoryElement  `json:"EquipmentInventory,omitempty"`
+	// Identifies the Rig Specification this Inventory applies to.                                                           
+	RigSpecificationsID                                                                         *string                      `json:"RigSpecificationsID,omitempty"`
+	// For rigless operations identifies the wellbore where the equipment is on location                                     
+	WellboreID                                                                                  *string                      `json:"WellboreID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// The inventory of equipment located on site.
+type EquipmentInventoryElement struct {
+	// Remarks or comments on the equipment such as why it went to maintenance.                     
+	Comments                                                                             *string    `json:"Comments,omitempty"`
+	// A reference to the object defining the equipment included in this inventory.                 
+	EquipmentID                                                                          *string    `json:"EquipmentID,omitempty"`
+	// Date and time the equipment/unit is installed on site                                        
+	InstallDate                                                                          *time.Time `json:"InstallDate,omitempty"`
+	// Date and time the equipment/unit taken offline to under go maintenance or repairs.           
+	// removed from site                                                                            
+	MaintenanceDate                                                                      *time.Time `json:"MaintenanceDate,omitempty"`
+	// Date and time the equipment/unit is removed from site                                        
+	RemoveDate                                                                           *time.Time `json:"RemoveDate,omitempty"`
+	// Date and time the equipment/unit returned to service after main or repairs.                  
+	ReturnDate                                                                           *time.Time `json:"ReturnDate,omitempty"`
 }
 
 // A planned evaluation on a drilling operation
@@ -7677,7 +7954,7 @@ type GravityMagneticAcquisitionSurveyData struct {
 	LastActivityState                                                                           *AbstractActivityState               `json:"LastActivityState,omitempty"`
 	// General parameter value used in one instance of activity.  Includes reference to data                                         
 	// objects which are inputs and outputs of the activity.                                                                         
-	Parameters                                                                                  []DefaultValueElement                `json:"Parameters,omitempty"`
+	Parameters                                                                                  []PurpleAbstractActivityParameter    `json:"Parameters,omitempty"`
 	// The relationship to a parent project acting as a parent activity.                                                             
 	ParentProjectID                                                                             *string                              `json:"ParentProjectID,omitempty"`
 	// Describes the start and end date range of the survey acquisition                                                              
@@ -10944,7 +11221,8 @@ type ReservoirSegmentData struct {
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
-// Definition of a drilling rig.
+// Definition the Physical Rig. These values do not or very rarely change. Use the
+// RigSpecification schema for all configuration data for the rig.
 type Rig struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11083,16 +11361,885 @@ type RigData struct {
 	InitialOperatorID                                                                           *string                         `json:"InitialOperatorID,omitempty"`
 	// Identifies the Facility's general location as being onshore vs. offshore.                                                
 	OperatingEnvironmentID                                                                      *string                         `json:"OperatingEnvironmentID,omitempty"`
-	// Classification of the rig.                                                                                               
+	// Classification of the rig, such as Deepwater, Shallow Water, Fixed Platform, Mobile                                      
+	// Offshore Drilling Unit (MODU).                                                                                           
+	// For onshore or offshore status see Facility.data.OperatingEnvironmentID                                                  
 	ClassRig                                                                                    *string                         `json:"ClassRig,omitempty"`
-	// The identifier of the company that owns the rig.                                                                         
-	OwnerID                                                                                     *string                         `json:"OwnerID,omitempty"`
+	// The date the date Construction of the Rig ended.                                                                         
+	ConstructionDate                                                                            *time.Time                      `json:"ConstructionDate,omitempty"`
+	// The technological sophistication and vintage of a drilling rig.                                                          
+	Generation                                                                                  *string                         `json:"Generation,omitempty"`
+	// The company who constructed the rig                                                                                      
+	Manufacturer                                                                                *string                         `json:"Manufacturer,omitempty"`
+	// The design model of the rig.                                                                                             
+	Model                                                                                       *string                         `json:"Model,omitempty"`
+	// The date the Rig was retired                                                                                             
+	RetiredDate                                                                                 *time.Time                      `json:"RetiredDate,omitempty"`
+	// The date the Rig first came into service.                                                                                
+	ServiceDate                                                                                 *time.Time                      `json:"ServiceDate,omitempty"`
 	// The type of rig (e.g., semi-submersible, jack-up, etc.)                                                                  
-	TypeRig                                                                                     *string                         `json:"TypeRig,omitempty"`
+	TypeRigID                                                                                   *string                         `json:"TypeRigID,omitempty"`
+	// The 4-digit year the rig entered service.                                                                                
+	YearEnterService                                                                            *int64                          `json:"YearEnterService,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}          `json:"ExtensionProperties,omitempty"`
 }
 
-// The utilization of a rig during the drilling phase of a section
+// Defines the properties of the circulation system on a rig.
+type RigCirculatingSystem struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigCirculatingSystemData      `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type RigCirculatingSystemData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// The internal fluid capacity of flexible hoses installed in the booster or boost line                                  
+	// system.                                                                                                               
+	BoosterLineHoseVolume                                                                       *float64                     `json:"BoosterLineHoseVolume,omitempty"`
+	// The total internal fluid capacity of the fixed boost line used to supply additional flow                              
+	// (commonly subsea) to support drilling or circulation operations.                                                      
+	BoostLineVolume                                                                             *float64                     `json:"BoostLineVolume,omitempty"`
+	// The maximum working pressure that the Blowout Preventer (BOP) stack is designed, tested,                              
+	// and certified to safely withstand.                                                                                    
+	BOPPressureRating                                                                           *float64                     `json:"BOPPressureRating,omitempty"`
+	// The total internal fluid capacity of the Blowout Preventer stack, including cavities and                              
+	// flow paths that can contain circulating fluids.                                                                       
+	BOPVolume                                                                                   *float64                     `json:"BOPVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the cement unit discharge and the                                
+	// cement manifold.                                                                                                      
+	CementUnitCementManifoldVolume                                                              *float64                     `json:"CementUnitCementManifoldVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the cement unit discharge and the                                
+	// choke manifold.                                                                                                       
+	CementUnitChokeManifoldVolume                                                               *float64                     `json:"CementUnitChokeManifoldVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the cement unit discharge and the                                
+	// standpipe manifold.                                                                                                   
+	CementUnitStandpipeManifoldVolume                                                           *float64                     `json:"CementUnitStandpipeManifoldVolume,omitempty"`
+	// The internal fluid capacity of flexible hoses installed in the choke line system.                                     
+	ChokeLineHoseVolume                                                                         *float64                     `json:"ChokeLineHoseVolume,omitempty"`
+	// The total internal fluid capacity of the fixed choke line between the Blowout Preventer                               
+	// choke outlet and the choke manifold.                                                                                  
+	ChokeLineVolume                                                                             *float64                     `json:"ChokeLineVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the choke manifold and the BOP choke                             
+	// outlet or connection.                                                                                                 
+	ChokeManifoldBOPChokeVolume                                                                 *float64                     `json:"ChokeManifoldBOPChokeVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the choke manifold and the BOP kill                              
+	// inlet.                                                                                                                
+	ChokeManifoldBOPKillVolume                                                                  *float64                     `json:"ChokeManifoldBOPKillVolume,omitempty"`
+	// The internal fluid capacity of flexible hoses installed in the kill line system.                                      
+	KillLineHoseVolume                                                                          *float64                     `json:"KillLineHoseVolume,omitempty"`
+	// The total internal fluid capacity of the fixed kill line between the surface system and                               
+	// the Blowout Preventer kill inlet.                                                                                     
+	KillLineVolume                                                                              *float64                     `json:"KillLineVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the mud pump discharge and the BOP                               
+	// boost line inlet.                                                                                                     
+	MudPumpsBOPBoostVolume                                                                      *float64                     `json:"MudPumpsBOPBoostVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the mud pump discharge and the                                   
+	// standpipe manifold.                                                                                                   
+	MudPumpsStandpipeManifoldVolume                                                             *float64                     `json:"MudPumpsStandpipeManifoldVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the mud standpipe system and the                                 
+	// choke manifold.                                                                                                       
+	MudStandpipeChokeManifoldVolume                                                             *float64                     `json:"MudStandpipeChokeManifoldVolume,omitempty"`
+	// The primary energy source used to drive the rig circulation and pressure control                                      
+	// equipment (e.g., electric, diesel, diesel‑electric, hydraulic).                                                       
+	PowerType                                                                                   *string                      `json:"PowerType,omitempty"`
+	// Required mud flow rates delivered by the pump system.                                                                 
+	RequiredFlowRate                                                                            *float64                     `json:"RequiredFlowRate,omitempty"`
+	// Identifies the Rig Specification this Inventory applies to.                                                           
+	RigSpecificationsID                                                                         *string                      `json:"RigSpecificationsID,omitempty"`
+	// The total internal fluid capacity of the marine riser or surface riser section between                                
+	// the Blowout Preventer and the rig.                                                                                    
+	RiserVolume                                                                                 *float64                     `json:"RiserVolume,omitempty"`
+	// Description of slow circulation rates (SCR) system.                                                                   
+	// SCR is the rate at which drilling fluid (mud) is pumped through the wellbore and back to                              
+	// the surface at a deliberately reduced speed.                                                                          
+	SlowCirculationRateDescription                                                              *string                      `json:"SlowCirculationRateDescription,omitempty"`
+	// The internal fluid capacity of the flow path between the standpipe manifold and the top                               
+	// drive inlet.                                                                                                          
+	StandpipeManifoldTopDriveVolume                                                             *float64                     `json:"StandpipeManifoldTopDriveVolume,omitempty"`
+	// The internal fluid capacity of the flow path between the well test standpipe and the                                  
+	// gooseneck connection used during well testing operations.                                                             
+	WellTestStandpipeGooseneckVolume                                                            *float64                     `json:"WellTestStandpipeGooseneckVolume,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Definition of a drilling rig Derrick.
+type RigDerrick struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigDerrickData                `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type RigDerrickData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Average height of stands in the Derrick                                                                               
+	AveragePipeStandHeight                                                                      *float64                     `json:"AveragePipeStandHeight,omitempty"`
+	// The model of the Block                                                                                                
+	BlockModel                                                                                  *string                      `json:"BlockModel,omitempty"`
+	// Maximum load capacity determined by the size, design, and materials used in the block                                 
+	BlockRating                                                                                 *float64                     `json:"BlockRating,omitempty"`
+	// Weight of the block.                                                                                                  
+	BlockWeight                                                                                 *float64                     `json:"BlockWeight,omitempty"`
+	// It controls and stops the movement of heavy drilling equipment. Ensures safe handling of                              
+	// the load and prevents uncontrolled movements.                                                                         
+	BrakeDescription                                                                            *string                      `json:"BrakeDescription,omitempty"`
+	// Description of the derrick for example,  conventional, portable mast, cantilever,                                     
+	// modular,  box, etc.                                                                                                   
+	DerrickDescription                                                                          *string                      `json:"DerrickDescription,omitempty"`
+	// Height of the derrick.                                                                                                
+	DerrickHeight                                                                               *float64                     `json:"DerrickHeight,omitempty"`
+	// Rating is based on load capacity, height and structural strength which determine its                                  
+	// ability to support drilling operations                                                                                
+	DerrickRating                                                                               *float64                     `json:"DerrickRating,omitempty"`
+	// Specifies the type of drilling derrick. Describes the type of Derrick.                                                
+	DerrickTypeID                                                                               *string                      `json:"DerrickTypeID,omitempty"`
+	// The model of the drawworks                                                                                            
+	DrawWorksModel                                                                              *string                      `json:"DrawWorksModel,omitempty"`
+	// It is an electrical motor the drives the drawworks. It controls the speed and tension of                              
+	// the wireline, enabling the lifting and lowering of equipment                                                          
+	DrawWorksMotor                                                                              *string                      `json:"DrawWorksMotor,omitempty"`
+	// Draw works horse power.                                                                                               
+	DrawWorksPowerRating                                                                        *float64                     `json:"DrawWorksPowerRating,omitempty"`
+	// The type of machine on the rig consisting of a large-diameter steel spool, brakes, a                                  
+	// power source, and assorted auxiliary devices                                                                          
+	DrawWorksType                                                                               *string                      `json:"DrawWorksType,omitempty"`
+	// Weight rating of the draw works.                                                                                      
+	DrawWorksWeightRating                                                                       *float64                     `json:"DrawWorksWeightRating,omitempty"`
+	// Strength and capacity of the drill line used into hoisting system of a derrick                                        
+	DrillLineCapacity                                                                           *float64                     `json:"DrillLineCapacity,omitempty"`
+	// Drill Line Length                                                                                                     
+	DrillLineLength                                                                             *float64                     `json:"DrillLineLength,omitempty"`
+	// Drill line diameter.                                                                                                  
+	DrillLineSize                                                                               *float64                     `json:"DrillLineSize,omitempty"`
+	// Maximum allowable weight rating of the hook for this Derrick                                                          
+	HookLoadRating                                                                              *float64                     `json:"HookLoadRating,omitempty"`
+	// The manufacture model of the hook                                                                                     
+	HookModel                                                                                   *string                      `json:"HookModel,omitempty"`
+	// Type of hook installed for this rig usage.                                                                            
+	HookType                                                                                    *string                      `json:"HookType,omitempty"`
+	// Number of joints that make up a stand in the derrick.                                                                 
+	JointsPerStand                                                                              *int64                       `json:"JointsPerStand,omitempty"`
+	// Maximum wind load that the derrick and its supporting structure can safely withstand                                  
+	MaxWindCapacity                                                                             *float64                     `json:"MaxWindCapacity,omitempty"`
+	// Number of block lines that support the weight of the derrick block. Shows the amount of                               
+	// load distribution and mechanical advantage                                                                            
+	NumBlockLines                                                                               *int64                       `json:"NumBlockLines,omitempty"`
+	// Name of pipe-handling system.                                                                                         
+	PipeHandlingName                                                                            *string                      `json:"PipeHandlingName,omitempty"`
+	// The length of the pipe stand.                                                                                         
+	PipeStandLength                                                                             *string                      `json:"PipeStandLength,omitempty"`
+	// Required hoisting capacity based on derrick / drawworks                                                               
+	RequiredHoistingCapacity                                                                    *float64                     `json:"RequiredHoistingCapacity,omitempty"`
+	// Identifies the Rig Specification this Inventory applies to.                                                           
+	RigSpecificationsID                                                                         *string                      `json:"RigSpecificationsID,omitempty"`
+	// The maximum load and torque the rotary system can safely handle while transmitting                                    
+	// rotation to the drill string                                                                                          
+	RotaryCapacity                                                                              *float64                     `json:"RotaryCapacity,omitempty"`
+	// Rotary size opening.                                                                                                  
+	RotaryOpeningSize                                                                           *float64                     `json:"RotaryOpeningSize,omitempty"`
+	// Description of rotating system. For example, Rotary Table, Top Drive, Kelly Bushing.                                  
+	RotarySystemDescription                                                                     *string                      `json:"RotarySystemDescription,omitempty"`
+	// Company that manufactured the Rotary System ("Make").                                                                 
+	RotarySystemMake                                                                            *string                      `json:"RotarySystemMake,omitempty"`
+	// Rotary System Model.                                                                                                  
+	RotarySystemModel                                                                           *string                      `json:"RotarySystemModel,omitempty"`
+	// Rotary System Power Rating.                                                                                           
+	RotarySystemPowerRating                                                                     *float64                     `json:"RotarySystemPowerRating,omitempty"`
+	// Maximum allowable Rotary System torque rating.                                                                        
+	RotarySystemTorqueRating                                                                    *float64                     `json:"RotarySystemTorqueRating,omitempty"`
+	// Rotary System Type.                                                                                                   
+	RotarySystemType                                                                            *string                      `json:"RotarySystemType,omitempty"`
+	// The maximum weight rating of the rotary system on the rig. This could be the rotary                                   
+	// system or the top drive.                                                                                              
+	RotarySystemWeightRating                                                                    *float64                     `json:"RotarySystemWeightRating,omitempty"`
+	// The physical space available around and through the rotary table, especially the center                               
+	// opening and vertical clearance to the derrick floor and substructure.                                                 
+	RotaryTableClearance                                                                        *float64                     `json:"RotaryTableClearance,omitempty"`
+	// The Model of the Swivel                                                                                               
+	SwivelModel                                                                                 *string                      `json:"SwivelModel,omitempty"`
+	// Maximum swivel rating.                                                                                                
+	SwivelRating                                                                                *float64                     `json:"SwivelRating,omitempty"`
+	// Type of swivel.                                                                                                       
+	SwivelType                                                                                  *string                      `json:"SwivelType,omitempty"`
+	// Capacity of the Top Drive                                                                                             
+	TopDriveCapacity                                                                            *float64                     `json:"TopDriveCapacity,omitempty"`
+	// Top Drive Inner Diameter.                                                                                             
+	TopDriveInnerDiameter                                                                       *float64                     `json:"TopDriveInnerDiameter,omitempty"`
+	// Top Drive Length.                                                                                                     
+	TopDriveLength                                                                              *float64                     `json:"TopDriveLength,omitempty"`
+	// Company that manufactured the Top Drive ("Make").                                                                     
+	TopDriveMake                                                                                *string                      `json:"TopDriveMake,omitempty"`
+	// Model of the Top Drive                                                                                                
+	TopDriveModel                                                                               *string                      `json:"TopDriveModel,omitempty"`
+	// Maximum Top Drive Torque Rating that can be supported. "Rig Torque Rating WP"                                         
+	TopDriveTorqueRating                                                                        *float64                     `json:"TopDriveTorqueRating,omitempty"`
+	// Top Drive Type.                                                                                                       
+	TopDriveType                                                                                *string                      `json:"TopDriveType,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Pump found on a rig.
+type RigPump struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigPumpData                   `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type RigPumpData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Pump action. 1 = single acting, 2 = double acting.                                                                    
+	Action                                                                                      *int64                       `json:"Action,omitempty"`
+	// Pulsation dampener pressure.                                                                                          
+	DampenerPressure                                                                            *float64                     `json:"DampenerPressure,omitempty"`
+	// Pulsation dampener volume.                                                                                            
+	DampenerVolume                                                                              *float64                     `json:"DampenerVolume,omitempty"`
+	// Pump displacement. /// The volume of fluid the pump can displace per stroke.                                          
+	DisplacementOutput                                                                          *float64                     `json:"DisplacementOutput,omitempty"`
+	// Efficiency of the pump.                                                                                               
+	Efficiency                                                                                  *float64                     `json:"Efficiency,omitempty"`
+	// Maximum hydraulic power authorized by the Drilling Contractor (manufacturing maximum                                  
+	// including a safety factor)                                                                                            
+	HydraulicPowerAllowed                                                                       *float64                     `json:"HydraulicPowerAllowed,omitempty"`
+	// Maximum power defined by the manufacturer.                                                                            
+	HydraulicPowerMaximum                                                                       *float64                     `json:"HydraulicPowerMaximum,omitempty"`
+	// Inner diameter of the pump liner.                                                                                     
+	LinerInnerDiameter                                                                          *float64                     `json:"LinerInnerDiameter,omitempty"`
+	// Maximum mechanical power defined by the manufacturer.                                                                 
+	MaxMechanicalPower                                                                          *float64                     `json:"MaxMechanicalPower,omitempty"`
+	// Maximum required/delivered flowrate from/by the pump                                                                  
+	MaxPumpFlowrate                                                                             *float64                     `json:"MaxPumpFlowrate,omitempty"`
+	// Maximum required/delivered pressure from/by the pump                                                                  
+	MaxPumpPressure                                                                             *float64                     `json:"MaxPumpPressure,omitempty"`
+	// Number of cylinders (3 = single acting, 2 = double acting)                                                            
+	NumOfCylinders                                                                              *int64                       `json:"NumOfCylinders,omitempty"`
+	// Maximum SPM from/by the pump defined by the manufacturer.                                                             
+	PumpStrokeMaximum                                                                           *float64                     `json:"PumpStrokeMaximum,omitempty"`
+	// Purpose of pump.                                                                                                      
+	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
+	// Rod outer diameter.                                                                                                   
+	RodOuterDiameter                                                                            *float64                     `json:"RodOuterDiameter,omitempty"`
+	// Stroke length.                                                                                                        
+	StrokeLength                                                                                *float64                     `json:"StrokeLength,omitempty"`
+	// Supercharger Make                                                                                                     
+	SuperchargerMake                                                                            *string                      `json:"SuperchargerMake,omitempty"`
+	// Supercharger Model                                                                                                    
+	SuperchargerModel                                                                           *string                      `json:"SuperchargerModel,omitempty"`
+	// Maximum power authorized by the drilling contractor                                                                   
+	WorkingPower                                                                                *float64                     `json:"WorkingPower,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Riser found on a rig.
+type RigRiser struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigRiserData                  `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type RigRiserData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Angle Limit of the riser as specified by Manufacturer.                                                                
+	AngleLimit                                                                                  *float64                     `json:"AngleLimit,omitempty"`
+	// Bottom Connection of Riser Joint.                                                                                     
+	BottomConnection                                                                            *string                      `json:"BottomConnection,omitempty"`
+	// Drift Inner Diameter.                                                                                                 
+	DriftInnerDiameter                                                                          *float64                     `json:"DriftInnerDiameter,omitempty"`
+	// Grade.                                                                                                                
+	Grade                                                                                       *string                      `json:"Grade,omitempty"`
+	// Riser body Inner Diameter.                                                                                            
+	InnerDiameter                                                                               *float64                     `json:"InnerDiameter,omitempty"`
+	// Length of Riser Joint.                                                                                                
+	Length                                                                                      *float64                     `json:"Length,omitempty"`
+	// Riser body Outer Diameter.                                                                                            
+	OuterDiameter                                                                               *float64                     `json:"OuterDiameter,omitempty"`
+	// Designed riser working pressure.                                                                                      
+	RiserWorkingPressure                                                                        *float64                     `json:"RiserWorkingPressure,omitempty"`
+	// Top Connection of Riser Joint.                                                                                        
+	TopConnection                                                                               *string                      `json:"TopConnection,omitempty"`
+	// Volume of Riser Joint.                                                                                                
+	Volume                                                                                      *float64                     `json:"Volume,omitempty"`
+	// Weight of Riser Joint.                                                                                                
+	Weight                                                                                      *float64                     `json:"Weight,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// The specifications or configuration of the rig over a period of time. Use with the
+// Rig.2.0.0 or later schema.
+type RigSpecifications struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigSpecificationsData         `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+type RigSpecificationsData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Number of people that can be accommodated on the rig.                                                                 
+	AccommodationCapacity                                                                       *int64                       `json:"AccommodationCapacity,omitempty"`
+	// Indicates that the rig has a Programmer Control Room Operating System                                                 
+	AutomationPCROS                                                                             *bool                        `json:"AutomationPCROS,omitempty"`
+	// Breadth of the Rig (offshore)                                                                                         
+	Breadth                                                                                     *float64                     `json:"Breadth,omitempty"`
+	// Total volume of cement that can be stored for critical drilling operations like cementing                             
+	// the casing, securing the wellbore, and isolating different formation zones.                                           
+	BulkCementCapacity                                                                          *float64                     `json:"BulkCementCapacity,omitempty"`
+	// Depth of the Rig (offshore)                                                                                           
+	Depth                                                                                       *float64                     `json:"Depth,omitempty"`
+	// Water displacement during operations                                                                                  
+	DisplacementOperating                                                                       *float64                     `json:"DisplacementOperating,omitempty"`
+	// Water displacement during Transit                                                                                     
+	DisplacementTransit                                                                         *float64                     `json:"DisplacementTransit,omitempty"`
+	// The Class of the dynamic positioning system.                                                                          
+	DPSystemClass                                                                               *string                      `json:"DPSystemClass,omitempty"`
+	// Depth of the vessel below the waterline during operations                                                             
+	DraftOperating                                                                              *float64                     `json:"DraftOperating,omitempty"`
+	// Depth of the vessel below the waterline during transit                                                                
+	DraftTransit                                                                                *float64                     `json:"DraftTransit,omitempty"`
+	// Total volume for Drill water that can be stored for use in various drilling operations.                               
+	// Uses for mud mixing, cooling and cleaning                                                                             
+	DrillWaterCapacity                                                                          *float64                     `json:"DrillWaterCapacity,omitempty"`
+	// Total volume of Bulk/Dry Mud that can be stored on the rig.                                                           
+	DryMudCapacity                                                                              *float64                     `json:"DryMudCapacity,omitempty"`
+	// The end date when this rig specification is  valid.                                                                   
+	EffectiveEndDate                                                                            *time.Time                   `json:"EffectiveEndDate,omitempty"`
+	// The start date when this rig specification is valid.                                                                  
+	EffectiveStartDate                                                                          *time.Time                   `json:"EffectiveStartDate,omitempty"`
+	// Energy Storage System Description.                                                                                    
+	// Systems and technologies used to store energy for operational use, back up power and                                  
+	// efficiency optimization like (Compressed air energy storage, Thermal e. st., hydraulic                                
+	// accumulators, Flywheels, batteries)                                                                                   
+	EnergyStorage                                                                               *string                      `json:"EnergyStorage,omitempty"`
+	// Description of flare(s).                                                                                              
+	// Suggested types: open flame flare, enclosed flare, smokeless flare                                                    
+	FlareTypeID                                                                                 *string                      `json:"FlareTypeID,omitempty"`
+	// Total volume of fuel that can be stored and made available on the rig to power its                                    
+	// operation, including drilling, generation of electricity, and other essential systems                                 
+	FuelCapacity                                                                                *float64                     `json:"FuelCapacity,omitempty"`
+	// Description of the elevated walkway (gantry).                                                                         
+	GantryTypeID                                                                                *string                      `json:"GantryTypeID,omitempty"`
+	// Description of the electrical power generating system.                                                                
+	Generator                                                                                   *string                      `json:"Generator,omitempty"`
+	// Maximum allowable heave on the rig.                                                                                   
+	HeaveCapacity                                                                               *float64                     `json:"HeaveCapacity,omitempty"`
+	// A description of the type of helicopter the helideck is rated to support. Can also                                    
+	// include the dimensions of the helideck.                                                                               
+	HelideckRating                                                                              *string                      `json:"HelideckRating,omitempty"`
+	// Identification number for the rig provided by International Maritime Organization (IMO).                              
+	IMONumber                                                                                   *string                      `json:"IMONumber,omitempty"`
+	// Are the thrusters azimuth?  Help maintain stability and position without the need of                                  
+	// mooring lines.                                                                                                        
+	IsThrusterAzimuth                                                                           *bool                        `json:"IsThrusterAzimuth,omitempty"`
+	// The system that allows jack-up rigs to elevate their hulls above sea level.                                           
+	JackingSystem                                                                               *string                      `json:"JackingSystem,omitempty"`
+	// Length of the Rig (offshore)                                                                                          
+	Length                                                                                      *float64                     `json:"Length,omitempty"`
+	// Total volume for Liquid mud that can be stored, mixed, and processed on the rig                                       
+	LiquidMudCapacity                                                                           *float64                     `json:"LiquidMudCapacity,omitempty"`
+	// The type of engines that provides the primary power source to run essential systems,                                  
+	// including drilling operations, power generation, and propulsion                                                       
+	MainEngine                                                                                  *string                      `json:"MainEngine,omitempty"`
+	// Maximum drilling hole depth rating for the rig.                                                                       
+	MaxDrillingDepthRating                                                                      *float64                     `json:"MaxDrillingDepthRating,omitempty"`
+	// Maximum water depth for the rig.                                                                                      
+	MaxWaterDepthRating                                                                         *float64                     `json:"MaxWaterDepthRating,omitempty"`
+	// Method or system used to secure the rig in it's operational location, either temporary or                             
+	// permanently                                                                                                           
+	MooringTypeID                                                                               *string                      `json:"MooringTypeID,omitempty"`
+	// Maximum motion compensation.                                                                                          
+	MotionCompensationMaximum                                                                   *float64                     `json:"MotionCompensationMaximum,omitempty"`
+	// Minimum motion compensation.                                                                                          
+	MotionCompensationMinimum                                                                   *float64                     `json:"MotionCompensationMinimum,omitempty"`
+	// Name/Description of Compensation System                                                                               
+	MotionCompensationName                                                                      *string                      `json:"MotionCompensationName,omitempty"`
+	// Length of motion compensation provided by equipment.                                                                  
+	MotionCompensationStroke                                                                    *float64                     `json:"MotionCompensationStroke,omitempty"`
+	// Indicates that the rig supports Managed Pressure Drilling                                                             
+	MPDCapable                                                                                  *bool                        `json:"MPDCapable,omitempty"`
+	// Total number of anchors the Rig can accommodate.                                                                      
+	NumAnchor                                                                                   *int64                       `json:"NumAnchor,omitempty"`
+	// The number of cranes on the rig                                                                                       
+	NumCranes                                                                                   *int64                       `json:"NumCranes,omitempty"`
+	// Total number of guideline tensioners supported by the rig.                                                            
+	NumGuidelines                                                                               *int64                       `json:"NumGuidelines,omitempty"`
+	// The number of Jackup legs the rig has.                                                                                
+	NumJackUpLegs                                                                               *int64                       `json:"NumJackUpLegs,omitempty"`
+	// Number of lifeboats on the rig                                                                                        
+	NumLifeboats                                                                                *string                      `json:"NumLifeboats,omitempty"`
+	// Total number of riser tensioners supported by the rig.                                                                
+	// Tensioners maintain constant tension on the marine riser or drilling equipment,                                       
+	// compensating the vertical motion caused by waves and ocean currents                                                   
+	NumTensioners                                                                               *int64                       `json:"NumTensioners,omitempty"`
+	// Total number of thrusters supported by the rig.                                                                       
+	// Thrusters used for dynamic positioning to keep the rig stable in deep water                                           
+	NumThrusters                                                                                *int64                       `json:"NumThrusters,omitempty"`
+	// The identifier of the company that owns the rig.                                                                      
+	OwnerID                                                                                     *string                      `json:"OwnerID,omitempty"`
+	// Total capacity for fresh potable water that can be stored and made available for                                      
+	// consumption and everyday use by the crew, such as drinking, cooking, sanitation, and                                  
+	// cleaning                                                                                                              
+	PotableWaterCapacity                                                                        *float64                     `json:"PotableWaterCapacity,omitempty"`
+	// Identifier of the Rig this specification applies to                                                                   
+	RigID                                                                                       string                       `json:"RigID"`
+	// The diameter of the spud cans.                                                                                        
+	SpudCanDiameter                                                                             *float64                     `json:"SpudCanDiameter,omitempty"`
+	// Maximum allowable weight the rig can safely carry provided by the Rig Owner.                                          
+	VariableDeckLoadRating                                                                      *float64                     `json:"VariableDeckLoadRating,omitempty"`
+	// Maximum allowable weight the rig can safely carry during a storm provided by the Rig                                  
+	// Owner.                                                                                                                
+	VariableDeckLoadStormRating                                                                 *float64                     `json:"VariableDeckLoadStormRating,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines when the Rig is on/off location and the hole section depths related to the
+// operations being performed by the rig.
 type RigUtilization struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11225,7 +12372,12 @@ type RigUtilizationData struct {
 	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
 	// Description of the objectives of a Project.                                                                           
 	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The end date and time for the activity that this rig was utilized for                                                 
+	// Air gap from the rig floor to the ground or mean sea level, depending on the rig                                      
+	// location. This is typically a static number and will have only one record in the array,                               
+	// but can change in offshore operations when the rig is raised or lowered.                                              
+	AirGaps                                                                                     []AirGap                     `json:"AirGaps,omitempty"`
+	// The end date and time when operations performed with this rig ended. (Rig off location                                
+	// date)                                                                                                                 
 	EndDateActivity                                                                             *time.Time                   `json:"EndDateActivity,omitempty"`
 	// Measured depth of the wellbore when operations performed with this rig ended. Depth                                   
 	// relative to Planned wellbore ZDP. Navigate via HoleSectionId and WellboreID to the                                    
@@ -11233,49 +12385,29 @@ type RigUtilizationData struct {
 	// data.VerticalMeasurement.                                                                                             
 	EndHoleDepth                                                                                *float64                     `json:"EndHoleDepth,omitempty"`
 	// Identifier of the Hole Section that is being drilled                                                                  
-	HoleSectionID                                                                               *string                      `json:"HoleSectionId,omitempty"`
-	// Required maximum workable water depth for the rig.                                                                    
-	MaxWaterDepth                                                                               *float64                     `json:"MaxWaterDepth,omitempty"`
-	// Mud pump equipment on the rig                                                                                         
-	MudPumps                                                                                    []MudPump                    `json:"MudPumps,omitempty"`
-	// Required mud flow rates delivered by the pump system.                                                                 
-	RequiredFlowRate                                                                            *float64                     `json:"RequiredFlowRate,omitempty"`
-	// Required hoisting capacity based on derrick / drawworks                                                               
-	RequiredHoistingCapacity                                                                    *float64                     `json:"RequiredHoistingCapacity,omitempty"`
-	// Required Standpipe pressure                                                                                           
-	RequiredStandpipePressure                                                                   *float64                     `json:"RequiredStandpipePressure,omitempty"`
-	// The rig that is being utilized to drill this depth range of this section.                                             
-	RigID                                                                                       *string                      `json:"RigID,omitempty"`
-	// Nominal inside diameter of the riser                                                                                  
-	RiserInsideDiameter                                                                         *string                      `json:"RiserInsideDiameter,omitempty"`
-	// Designed riser working pressure.                                                                                      
-	RiserWorkingPressure                                                                        *float64                     `json:"RiserWorkingPressure,omitempty"`
-	// The start date and time for the activity that this rig was utilized for                                               
+	HoleSectionID                                                                               *string                      `json:"HoleSectionID,omitempty"`
+	// The specifications or configuration of the rig at the time it is being utilized to drill                              
+	// this depth range of this section.                                                                                     
+	RigSpecificationsID                                                                         *string                      `json:"RigSpecificationsID,omitempty"`
+	// The start date and time when operations performed with this rig started (Rig on location                              
+	// date)                                                                                                                 
 	StartDateActivity                                                                           *time.Time                   `json:"StartDateActivity,omitempty"`
 	// Measured depth of the wellbore when operations performed with this rig started. Depth                                 
 	// relative to Planned wellbore ZDP. Navigate via HoleSectionId and WellboreID to the                                    
 	// side-car WellPlanningWellbore, which holds the depth reference in                                                     
 	// data.VerticalMeasurement.                                                                                             
 	StartHoleDepth                                                                              *float64                     `json:"StartHoleDepth,omitempty"`
-	// Required maximum torque for the top drive.                                                                            
-	TopDriveTorqueRating                                                                        *float64                     `json:"TopDriveTorqueRating,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
-// Pumps present on the rig
-type MudPump struct {
-	// Maximum power defined by the manufacturer.                   
-	MaxPower                                               *float64 `json:"MaxPower,omitempty"`
-	// Maximum required/delivered flowrate from/by the pump         
-	MaxPumpFlowrate                                        *float64 `json:"MaxPumpFlowrate,omitempty"`
-	// Maximum required/delivered pressure from/by the pump         
-	MaxPumpPressure                                        *float64 `json:"MaxPumpPressure,omitempty"`
-	// The name of the mud pump (model)                             
-	Name                                                   *string  `json:"Name,omitempty"`
-	// Number of pump of that type on the rig.                      
-	Number                                                 *int64   `json:"Number,omitempty"`
-	// Maximum power authorized by the drilling contractor          
-	WorkingPower                                           *float64 `json:"WorkingPower,omitempty"`
+// Air gap from the rig floor to the ground or mean sea level, depending on the rig location.
+type AirGap struct {
+	// Air gap from the rig floor to the ground or mean sea level, depending on the rig location.           
+	AirGap                                                                                       *float64   `json:"AirGap,omitempty"`
+	// The end date and time  the air gap measurement takes affect on the rig.                              
+	EndDate                                                                                      *time.Time `json:"EndDate,omitempty"`
+	// The start date and time the air gap measurement takes affect on the rig.                             
+	StartDate                                                                                    *time.Time `json:"StartDate,omitempty"`
 }
 
 // The exposure to the possibility of loss, injury, or other adverse or unwelcome
@@ -11816,10 +12948,10 @@ type RockVolumeFeatureData struct {
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
-// This object captures attributes of a sample/ specimen (rocks, fluids, or other materials)
-// acquired either through an original acquisition event, sub-sampling event, generated from
-// recombination of other samples /specimens or derived through the application of some
-// laboratory process on the parent sample.
+// This object captures attributes of a sample or specimen (rocks, fluids, or other
+// materials) acquired either through an original acquisition event, sub-sampling event,
+// generated from recombination of other samples or specimens or derived through the
+// application of some laboratory process on the parent sample.
 type Sample struct {
 	// The access control tags associated with this entity.                                                                     
 	ACL                                                                                          AccessControlList              `json:"acl"`
@@ -11863,103 +12995,143 @@ type Sample struct {
 //
 // Properties shared with all master-data schema instances.
 type SampleData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// This attribute stores the array of OSDU record IDs for the parent samples used in                                     
-	// creating this sample. Creation of this sample could be achieved through through                                       
-	// extractions, sub sampling, derived sampling or recombination.                                                         
-	ParentSampleIDs                                                                             []string                     `json:"ParentSampleIDs,omitempty"`
-	// For a sample that has been recombined from separate samples, e.g. liquid sample and vapor                             
-	// sample, this object records the specified: recombination conditions (pressure and                                     
-	// temperature), recombination ratio, the saturation pressure and  target recombined sample                              
-	// composition, whichever of these are appropriate for this recombination effort.                                        
-	RecombinationSpecification                                                                  *RecombinationSpecification  `json:"RecombinationSpecification,omitempty"`
-	// An array containing operational or quality comments about the sample.                                                 
-	Remarks                                                                                     []AbstractRemark             `json:"Remarks,omitempty"`
-	// This captures the acquisition parameters obtained during  the sample acquisition event                                
-	// associated with this sample. Note that this attribute should only be used when                                        
-	// associating the sample with an acquisition event from its original source and not for                                 
-	// sub-sampling or derivative sources.                                                                                   
-	SampleAcquisition                                                                           *SampleAcquisition           `json:"SampleAcquisition,omitempty"`
-	// This is an OSDU Record ID referencing a document that contains instructions on how the                                
-	// sample should be disposed.                                                                                            
-	SampleDisposalInstructionID                                                                 *string                      `json:"SampleDisposalInstructionID,omitempty"`
-	// Identifier from a Master Data Management System or other trusted source external to OSDU                              
-	// - stored here in order to allow for multi-system connection and synchronization. If used,                             
-	// the "Source" property in AbstractCommonResources schema should identify that source                                   
-	// system. i.e. this item is optional.                                                                                   
-	SampleIdentifier                                                                            *string                      `json:"SampleIdentifier,omitempty"`
-	// This provides the name of the sample. If there are other names that need to be stored ,                               
-	// leverage the Aliases available in the Abstract objects.                                                               
-	SampleName                                                                                  *string                      `json:"SampleName,omitempty"`
-	// This provides information about the type of the origin of the sample. It can be used to                               
-	// determine if the sample was acquired from an original source location, result of                                      
-	// recombination, subsampling or derived from some laboratory process.                                                   
-	SampleOriginTypeID                                                                          *string                      `json:"SampleOriginTypeID,omitempty"`
-	// This captures information about the preparation process executed after the sample                                     
-	// acquisition event.                                                                                                    
-	SamplePreparation                                                                           []SamplePreparation          `json:"SamplePreparation,omitempty"`
-	// This captures information pertaining to the observed physical properties of the sample.                               
-	SampleProperties                                                                            *AbstractSampleProperties    `json:"SampleProperties,omitempty"`
-	// The classification of the type of specimen/sample (e.g. whole core, cuttings, rock chip,                              
-	// oil extract, headspace gas), which is identified for the purpose of analysing the                                     
-	// specimen or a subsample of it. In partnership with other reference data, the sample type                              
-	// may indicate the general substance type, size, shape, general source, and in certain                                  
-	// cases, the retrieval method. In rare cases, the special purpose of a specimen might                                   
-	// contribute to its sample type classification.                                                                         
-	SampleTypeID                                                                                *string                      `json:"SampleTypeID,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                
+	ExistenceKind                                                                               *string                               `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                         
+	ResourceCurationStatus                                                                      *string                               `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                 
+	ResourceHomeRegionID                                                                        *string                               `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                              
+	ResourceHostRegionIDs                                                                       []string                              `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                               
+	ResourceLifecycleStatus                                                                     *string                               `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                    
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                           
+	// instead. Previously:  Classifies the security level of the resource.                                                           
+	ResourceSecurityClassification                                                              *string                               `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                 
+	// organization, agency, system, internal team, or individual. For informational purposes                                         
+	// only, the list of sources is not governed.                                                                                     
+	Source                                                                                      *string                               `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                          
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                        
+	// suitable quality, any further change or versioning of a Certified record should be                                             
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                       
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                       
+	// Technical Assurance values are not intended to be used for the identification of a single                                      
+	// "preferred" or "definitive" record by comparison with other records.                                                           
+	TechnicalAssuranceID                                                                        *string                               `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                         
+	// multiple types or multiple values of the same type.                                                                            
+	GeoContexts                                                                                 []AbstractGeoContext                  `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                       
+	// should include all the identifiers).                                                                                           
+	NameAliases                                                                                 []AbstractAliasNames                  `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                         
+	// not appropriate).                                                                                                              
+	SpatialLocation                                                                             *AbstractSpatialLocation              `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                        
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                                 
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                         
+	// further change or versioning of a Certified record should be carefully considered and                                          
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                        
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                           
+	// values are not intended to be used for the identification of a single "preferred" or                                           
+	// "definitive" record by comparison with other records.                                                                          
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance          `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                                 
+	// master-data record's overall suitability for general business consumption based on data                                        
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                             
+	// quality, any further change or versioning of a Certified record should be carefully                                            
+	// considered and justified. If a Technical Assurance value is not populated then one can                                         
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                               
+	// Technical Assurance values are not intended to be used for the identification of a single                                      
+	// "preferred" or "definitive" record by comparison with other records.                                                           
+	TechnicalAssuranceTypeID                                                                    *string                               `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                       
+	VersionCreationReason                                                                       *string                               `json:"VersionCreationReason,omitempty"`
+	// Specification of the depth shift for this sample that is considered definitive by the                                          
+	// organization, business unit, or owner.                                                                                         
+	DefinitiveDepthShift                                                                        *AbstractDefinitiveDepthShift         `json:"DefinitiveDepthShift,omitempty"`
+	// All depths and elevations pertaining to the target sample or sub-sample, e.g., top and                                         
+	// base measured depths, top and base true vertical depths, measured depth elevation.                                             
+	DepthMeasurements                                                                           []AbstractFacilityVerticalMeasurement `json:"DepthMeasurements,omitempty"`
+	// This attribute stores the array of OSDU record IDs for the parent samples used in                                              
+	// creating this sample. Creation of this sample could be achieved through through                                                
+	// extractions, sub sampling, derived sampling or recombination.                                                                  
+	ParentSampleIDs                                                                             []string                              `json:"ParentSampleIDs,omitempty"`
+	// For a sample that has been recombined from separate samples, e.g. liquid sample and vapor                                      
+	// sample, this object records the specified: recombination conditions (pressure and                                              
+	// temperature), recombination ratio, the saturation pressure and  target recombined sample                                       
+	// composition, whichever of these are appropriate for this recombination effort.                                                 
+	RecombinationSpecification                                                                  *RecombinationSpecification           `json:"RecombinationSpecification,omitempty"`
+	// An array containing operational or quality comments about the sample.                                                          
+	Remarks                                                                                     []AbstractRemark                      `json:"Remarks,omitempty"`
+	// This captures the acquisition parameters obtained during  the sample acquisition event                                         
+	// associated with this sample. Note that this attribute should only be used when                                                 
+	// associating the sample with an acquisition event from its original source and not for                                          
+	// sub-sampling or derivative sources.                                                                                            
+	SampleAcquisition                                                                           *SampleAcquisition                    `json:"SampleAcquisition,omitempty"`
+	// This is an OSDU Record ID referencing a document that contains instructions on how the                                         
+	// sample should be disposed.                                                                                                     
+	SampleDisposalInstructionID                                                                 *string                               `json:"SampleDisposalInstructionID,omitempty"`
+	// Identifier from a Master Data Management System or other trusted source external to OSDU                                       
+	// - stored here in order to allow for multi-system connection and synchronization. If used,                                      
+	// the "Source" property in AbstractCommonResources schema should identify that source                                            
+	// system. i.e. this item is optional.                                                                                            
+	SampleIdentifier                                                                            *string                               `json:"SampleIdentifier,omitempty"`
+	// This provides the name of the sample. If there are other names that need to be stored ,                                        
+	// leverage the Aliases available in the Abstract objects.                                                                        
+	SampleName                                                                                  *string                               `json:"SampleName,omitempty"`
+	// This provides information about the type of the origin of the sample. It can be used to                                        
+	// determine if the sample was acquired from an original source location, result of                                               
+	// recombination, subsampling or derived from some laboratory process.                                                            
+	SampleOriginTypeID                                                                          *string                               `json:"SampleOriginTypeID,omitempty"`
+	// This captures information about the preparation process executed after the sample                                              
+	// acquisition event.                                                                                                             
+	SamplePreparation                                                                           []SamplePreparation                   `json:"SamplePreparation,omitempty"`
+	// This captures information pertaining to the observed physical properties of the sample.                                        
+	SampleProperties                                                                            *AbstractSampleProperties             `json:"SampleProperties,omitempty"`
+	// The classification of the type of specimen/sample (e.g. whole core, cuttings, rock chip,                                       
+	// oil extract, headspace gas), which is identified for the purpose of analysing the                                              
+	// specimen or a subsample of it. In partnership with other reference data, the sample type                                       
+	// may indicate the general substance type, size, shape, general source, and in certain                                           
+	// cases, the retrieval method. In rare cases, the special purpose of a specimen might                                            
+	// contribute to its sample type classification.                                                                                  
+	SampleTypeID                                                                                *string                               `json:"SampleTypeID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                `json:"ExtensionProperties,omitempty"`
+}
+
+// Specification of the depth shift for this sample that is considered definitive by the
+// organization, business unit, or owner.
+//
+// Schema fragment which enables the embedding of a definitive depth shift within OSDU
+// schemas.
+type AbstractDefinitiveDepthShift struct {
+	// Identifies the definitive depth shift record applied to the object.                                              
+	DefinitiveDepthShiftID                                                                      *string                 `json:"DefinitiveDepthShiftID,omitempty"`
+	// Identifies the well log that was used to create this depth shift. Usually this identifies                        
+	// a log record with a wireline gamma ray curve.                                                                    
+	DefinitiveDepthShiftSourceID                                                                *string                 `json:"DefinitiveDepthShiftSourceID,omitempty"`
+	// Identifies the attributes impacted by the depth shift and their persisted depth-shifted                          
+	// values.                                                                                                          
+	DepthShiftedAttributes                                                                      []DepthShiftedAttribute `json:"DepthShiftedAttributes,omitempty"`
+}
+
+// Identifies an attribute impacted by the depth shift and its persisted depth-shifted
+// values.
+type DepthShiftedAttribute struct {
+	// Identifies the attribute name in this data record that is impacted by the depth shift.           
+	DepthShiftAttributeName                                                                    *string  `json:"DepthShiftAttributeName,omitempty"`
+	// Defines the amount of depth shifted from the original, as-received, depths for this data         
+	// attribute. Positive values represent depth-shifting downhole in depth, while negative            
+	// values represent depth shifting uphole.                                                          
+	DepthShiftedAmount                                                                         *float64 `json:"DepthShiftedAmount,omitempty"`
+	// Persisted depth-shifted vertical measurement value, for the identified attribute.                
+	DepthShiftedVerticalMeasurementValue                                                       *float64 `json:"DepthShiftedVerticalMeasurementValue,omitempty"`
+	// Defines the unit of measure for DepthShiftedAmount and                                           
+	// DepthShiftedVerticalMeasurementValue.                                                            
+	DepthShiftUnitOfMeasureID                                                                  *string  `json:"DepthShiftUnitOfMeasureID,omitempty"`
 }
 
 // For a sample that has been recombined from separate samples, e.g. liquid sample and vapor
@@ -12015,19 +13187,6 @@ type RecombinationSpecification struct {
 // >[].Item.AcquisitionTemperature
 //
 // This captures the operating conditions (prevailing pressure and temperatures) on the
-// target equipment used on Topside Facilities (exclusive of wells or separators) during the
-// sample acquisition event.  This attribute is provided in the event that the acquisition
-// pressure and temperature recorded at the flow port or sampling point from which the
-// sample is acquired is different from the operating P&T for the target facility or
-// equipment. The property is only used in conjunction with FacilitySampleAcquisition
-// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
-// as seen below:
-//
-// FacilityOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityPressure
-//
-// FacilityOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityTemperature
-//
-// This captures the operating conditions (prevailing pressure and temperatures) on the
 // target formation during the sample acquisition event.  This attribute is provided in the
 // event that the acquisition pressure and temperature recorded at the downhole sampling
 // location is different from the Formation's P&T. The property is used in conjunction with
@@ -12039,35 +13198,6 @@ type RecombinationSpecification struct {
 // FormationCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.FormationPressure
 //
 // FormationCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.FormationTemperature
-//
-// This captures the operating conditions (prevailing pressure and temperatures) on the
-// target facility or equipment (in this case separator) during the sample acquisition
-// event.  This attribute is provided in the event that the acquisition pressure and
-// temperature recorded at the flow port or sampling point from which the sample is acquired
-// is different from the operating P&T for the separator. The property is only used in
-// conjunction with SeparatorSampleAcquisition
-// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
-// as seen below:
-//
-// SeparatorOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorPressure
-//
-// SeparatorOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorTemperature
-//
-// This captures the operating conditions (prevailing pressure and temperatures) on the
-// target facility or equipment (in this case wellhead) during the sample acquisition
-// event.  This attribute is provided in the event that the acquisition pressure and
-// temperature recorded at the flow port or sampling point from which the sample is acquired
-// is different from the operating P&T at the wellhead. The property is only used in
-// conjunction with WellheadSampleAcquisition.
-// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
-// as seen below:
-//
-// wellheadOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadPressure
-//
-// wellheadOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadTemperature
-//
-// Used to describe the pressure and temperature conditions at which the sample preparation
-// took place
 //
 // This provides the recommended operating conditions (Pressure and Temperature) rating for
 // the sample container.
@@ -12260,7 +13390,7 @@ type SampleAcquisitionDetail struct {
 	// FacilityOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityPressure                                              
 	//                                                                                                                                                                                                 
 	// FacilityOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityTemperature                                        
-	FacilityEquipmentOperatingCondition                                                                                                                           *OperatingConditionRatingClass       `json:"FacilityEquipmentOperatingCondition,omitempty"`
+	FacilityEquipmentOperatingCondition                                                                                                                           *ClosingConditionClass               `json:"FacilityEquipmentOperatingCondition,omitempty"`
 	// This captures the operating conditions (prevailing pressure and temperatures) on the                                                                                                            
 	// target formation during the sample acquisition event.  This attribute is provided in the                                                                                                        
 	// event that the acquisition pressure and temperature recorded at the downhole sampling                                                                                                           
@@ -12362,7 +13492,7 @@ type SampleAcquisitionDetail struct {
 	// SeparatorOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorPressure                                           
 	//                                                                                                                                                                                                 
 	// SeparatorOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorTemperature                                     
-	SeparatorOperatingCondition                                                                                                                                   *OperatingConditionRatingClass       `json:"SeparatorOperatingCondition,omitempty"`
+	SeparatorOperatingCondition                                                                                                                                   *ClosingConditionClass               `json:"SeparatorOperatingCondition,omitempty"`
 	// Identifies the type of non-facility location (e.g. beach, oil seep, outcrop, sinkhole)                                                                                                          
 	// that can be where the acquisition event occurred to collect a rock or fluid sample. Being                                                                                                       
 	// different from a facility (which includes wells), a generic site is usually a natural                                                                                                           
@@ -12425,7 +13555,84 @@ type SampleAcquisitionDetail struct {
 	// wellheadOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadPressure                                              
 	//                                                                                                                                                                                                 
 	// wellheadOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadTemperature                                        
-	WellheadOperatingCondition                                                                                                                                    *OperatingConditionRatingClass       `json:"WellheadOperatingCondition,omitempty"`
+	WellheadOperatingCondition                                                                                                                                    *ClosingConditionClass               `json:"WellheadOperatingCondition,omitempty"`
+}
+
+// This captures the operating conditions (prevailing pressure and temperatures) on the
+// target equipment used on Topside Facilities (exclusive of wells or separators) during the
+// sample acquisition event.  This attribute is provided in the event that the acquisition
+// pressure and temperature recorded at the flow port or sampling point from which the
+// sample is acquired is different from the operating P&T for the target facility or
+// equipment. The property is only used in conjunction with FacilitySampleAcquisition
+// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
+// as seen below:
+//
+// FacilityOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityPressure
+//
+// FacilityOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<FacilitySampleAcquisition>[].Item.FacilityTemperature
+//
+// The pair of absolute pressure and temperature values describing the condition for a
+// particular volume measurement or estimation. The unit of measure context is defined via
+// the meta[] block in the record. Search responses will return pressure in Pa (Pascal) and
+// temperature in K (Kelvin).
+//
+// This captures the operating conditions (prevailing pressure and temperatures) on the
+// target facility or equipment (in this case separator) during the sample acquisition
+// event.  This attribute is provided in the event that the acquisition pressure and
+// temperature recorded at the flow port or sampling point from which the sample is acquired
+// is different from the operating P&T for the separator. The property is only used in
+// conjunction with SeparatorSampleAcquisition
+// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
+// as seen below:
+//
+// SeparatorOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorPressure
+//
+// SeparatorOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<SeparatorSampleAcquisition>[].Item.SeparatorTemperature
+//
+// This captures the operating conditions (prevailing pressure and temperatures) on the
+// target facility or equipment (in this case wellhead) during the sample acquisition
+// event.  This attribute is provided in the event that the acquisition pressure and
+// temperature recorded at the flow port or sampling point from which the sample is acquired
+// is different from the operating P&T at the wellhead. The property is only used in
+// conjunction with WellheadSampleAcquisition.
+// Note:As an example, If ingesting data formatted using PRODML, this is typically  mapped
+// as seen below:
+//
+// wellheadOperatingCondition.Pressure=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadPressure
+//
+// wellheadOperatingCondition.Temperature=PRODML:2.1:FluidSampleAcquisitionJob.FluidSampleAcquisition<WellheadSampleAcquisition>[].Item.wellheadTemperature
+//
+// Used to describe the pressure and temperature conditions at which the sample preparation
+// took place
+//
+// The pressure and temperature conditions recorded when the current sample container is
+// closed for the current chain of custody event.
+//
+// The pressure and temperature conditions recorded when the previous sample container is
+// opened for the current chain of custody event.
+//
+// The pressure and temperature conditions recorded during the sample transfer operation
+// between containers for the current chain of custody event.
+// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:
+// TransferCondition.Pressure =
+// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferPressure
+// TransferCondition.Temperature =
+// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature
+type ClosingConditionClass struct {
+	// To capture when Measurement have been made at Standard Conditions (25°C / 100 kPa)                
+	// Mutually Exclusive with Pressure/Temperature.                                                     
+	// Capture                                                                                           
+	IsStandardConditions                                                                         *bool   `json:"IsStandardConditions,omitempty"`
+	// Open Text Box to capture the P & T Reference when measurements are made at non standard           
+	// conditions (such as "Reservoir", "Tank",…)                                                        
+	NonStandardConditionsReference                                                               *string `json:"NonStandardConditionsReference,omitempty"`
+	// The recorded absolute pressure condition. The unit of measure context is defined via              
+	// meta[] in the Storage record while the Search responses return the value in base SI unit          
+	// Pa (Pascal).                                                                                      
+	Pressure                                                                                     float64 `json:"Pressure"`
+	// The recorded temperature condition. The unit of measure context is defined via meta[] in          
+	// the Storage record while the Search responses return the value in base SI unit K (Kelvin).        
+	Temperature                                                                                  float64 `json:"Temperature"`
 }
 
 // A free-form reference to the flow port on the Facility where this sample was acquired.
@@ -12449,20 +13656,20 @@ type SamplingPoint struct {
 // This captures information about the preparation process executed after the sample
 // acquisition event.
 type SamplePreparation struct {
-	// This captures other pertinent information regarding the sample preparation process.                                    
-	Remarks                                                                                    []AbstractRemark               `json:"Remarks,omitempty"`
-	// Used to describe the pressure and temperature conditions at which the sample preparation                               
-	// took place                                                                                                             
-	SamplePreparationCondition                                                                 *OperatingConditionRatingClass `json:"SamplePreparationCondition,omitempty"`
-	// This represents the end date for the sample preparation process.                                                       
-	SamplePreparationEndDate                                                                   *time.Time                     `json:"SamplePreparationEndDate,omitempty"`
-	// Provide additional details on which industrial/lab method used to conduct the sample                                   
-	// preparation                                                                                                            
-	SamplePreparationMethodID                                                                  *string                        `json:"SamplePreparationMethodID,omitempty"`
-	// This represents the start date for the sample preparation process.                                                     
-	SamplePreparationStartDate                                                                 *time.Time                     `json:"SamplePreparationStartDate,omitempty"`
-	// Provides extra details on any processes applied after the sample has been acquired                                     
-	SamplePreparationTypeID                                                                    *string                        `json:"SamplePreparationTypeID,omitempty"`
+	// This captures other pertinent information regarding the sample preparation process.                            
+	Remarks                                                                                    []AbstractRemark       `json:"Remarks,omitempty"`
+	// Used to describe the pressure and temperature conditions at which the sample preparation                       
+	// took place                                                                                                     
+	SamplePreparationCondition                                                                 *ClosingConditionClass `json:"SamplePreparationCondition,omitempty"`
+	// This represents the end date for the sample preparation process.                                               
+	SamplePreparationEndDate                                                                   *time.Time             `json:"SamplePreparationEndDate,omitempty"`
+	// Provide additional details on which industrial/lab method used to conduct the sample                           
+	// preparation                                                                                                    
+	SamplePreparationMethodID                                                                  *string                `json:"SamplePreparationMethodID,omitempty"`
+	// This represents the start date for the sample preparation process.                                             
+	SamplePreparationStartDate                                                                 *time.Time             `json:"SamplePreparationStartDate,omitempty"`
+	// Provides extra details on any processes applied after the sample has been acquired                             
+	SamplePreparationTypeID                                                                    *string                `json:"SamplePreparationTypeID,omitempty"`
 }
 
 // This captures information pertaining to the observed physical properties of the sample.
@@ -12542,113 +13749,113 @@ type SampleAcquisitionJob struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type SampleAcquisitionJobData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// Free form text to specify the type of the sample acquisition job                                                      
-	JobTypeID                                                                                   *string                      `json:"JobTypeID,omitempty"`
-	// Unique identifier for an acquisition job provided by the service company or reporting                                 
-	// organisation                                                                                                          
-	ReferenceJobNumber                                                                          *string                      `json:"ReferenceJobNumber,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                             
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// Free form text to specify the type of the sample acquisition job                                                           
+	JobTypeID                                                                                   *string                           `json:"JobTypeID,omitempty"`
+	// Unique identifier for an acquisition job provided by the service company or reporting                                      
+	// organisation                                                                                                               
+	ReferenceJobNumber                                                                          *string                           `json:"ReferenceJobNumber,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // This provides historical information on the events that affect the physical sample, such
@@ -12817,41 +14024,6 @@ type SampleChainOfCustodyEventData struct {
 	// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature                                           
 	TransferCondition                                                                           *ClosingConditionClass       `json:"TransferCondition,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
-}
-
-// The pressure and temperature conditions recorded when the current sample container is
-// closed for the current chain of custody event.
-//
-// The pair of absolute pressure and temperature values describing the condition for a
-// particular volume measurement or estimation. The unit of measure context is defined via
-// the meta[] block in the record. Search responses will return pressure in Pa (Pascal) and
-// temperature in K (Kelvin).
-//
-// The pressure and temperature conditions recorded when the previous sample container is
-// opened for the current chain of custody event.
-//
-// The pressure and temperature conditions recorded during the sample transfer operation
-// between containers for the current chain of custody event.
-// Eg. if ingesting from PRODML Sample object, then the mapping can be seen below:
-// TransferCondition.Pressure =
-// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferPressure
-// TransferCondition.Temperature =
-// PRODML:2.1:FluidSample.FluidSampleChainOfCustodyEvent[].TransferTemperature
-type ClosingConditionClass struct {
-	// To capture when Measurement have been made at Standard Conditions (25°C / 100 kPa)                
-	// Mutually Exclusive with Pressure/Temperature.                                                     
-	// Capture                                                                                           
-	IsStandardConditions                                                                         *bool   `json:"IsStandardConditions,omitempty"`
-	// Open Text Box to capture the P & T Reference when measurements are made at non standard           
-	// conditions (such as "Reservoir", "Tank",…)                                                        
-	NonStandardConditionsReference                                                               *string `json:"NonStandardConditionsReference,omitempty"`
-	// The recorded absolute pressure condition. The unit of measure context is defined via              
-	// meta[] in the Storage record while the Search responses return the value in base SI unit          
-	// Pa (Pascal).                                                                                      
-	Pressure                                                                                     float64 `json:"Pressure"`
-	// The recorded temperature condition. The unit of measure context is defined via meta[] in          
-	// the Storage record while the Search responses return the value in base SI unit K (Kelvin).        
-	Temperature                                                                                  float64 `json:"Temperature"`
 }
 
 // Information on the sample container used in storing the sample.
@@ -13069,112 +14241,112 @@ type Seismic2DInterpretationSet struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type Seismic2DInterpretationSetData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// The set of processing geometries comprising the 2D Interpretation Survey (often referred                              
-	// to as survey in the context of an interpretation application but not a survey in the                                  
-	// context of acquisition).                                                                                              
-	SeismicLineGeometries                                                                       []SeismicLineGeometries      `json:"SeismicLineGeometries,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                             
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// The set of processing geometries comprising the 2D Interpretation Survey (often referred                                   
+	// to as survey in the context of an interpretation application but not a survey in the                                       
+	// context of acquisition).                                                                                                   
+	SeismicLineGeometries                                                                       []SeismicLineGeometries           `json:"SeismicLineGeometries,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // A processing geometry comprising the 2D Interpretation Survey (often referred to as
@@ -13255,110 +14427,110 @@ type Seismic3DInterpretationSet struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type Seismic3DInterpretationSetData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// A reference to the Bin Grid that all the associated traces and horizons are based on.                                 
-	SeismicBinGridID                                                                            *string                      `json:"SeismicBinGridID,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                             
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// A reference to the Bin Grid that all the associated traces and horizons are based on.                                      
+	SeismicBinGridID                                                                            *string                           `json:"SeismicBinGridID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // A seismic acquisition project is a type of business project that deploys resources to the
@@ -13511,7 +14683,7 @@ type SeismicAcquisitionSurveyData struct {
 	LastActivityState                                                                           *AbstractActivityState               `json:"LastActivityState,omitempty"`
 	// General parameter value used in one instance of activity.  Includes reference to data                                         
 	// objects which are inputs and outputs of the activity.                                                                         
-	Parameters                                                                                  []DefaultValueElement                `json:"Parameters,omitempty"`
+	Parameters                                                                                  []PurpleAbstractActivityParameter    `json:"Parameters,omitempty"`
 	// The relationship to a parent project acting as a parent activity.                                                             
 	ParentProjectID                                                                             *string                              `json:"ParentProjectID,omitempty"`
 	// Acquisition approach used Conventional, Wide Azimuth, Multi Azimuth etc.                                                      
@@ -13696,121 +14868,121 @@ type SeismicProcessingProject struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type SeismicProcessingProjectData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// DEPRECATED: This security classification is merely decorative; the security                                           
-	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
-	// instead. Previously:  Classifies the security level of the resource.                                                  
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// For 3D projects, BinGridID relates to the primary bin grid geometry for the processing;                               
-	// for 3D merge projects, it relates to the final (re-)projection and re-binning geometry.                               
-	BinGridID                                                                                   *string                      `json:"BinGridID,omitempty"`
-	// List of seismic acquisition projects (surveys) that originated the underlying data used                               
-	// in Processing Project.  Trace data work product components have an explicit child                                     
-	// relationship.  Other affiliated objects may use Lineage.                                                              
-	SeismicAcquisitionSurveys                                                                   []string                     `json:"SeismicAcquisitionSurveys,omitempty"`
-	// For 2D seismic processing projects, this property references the definitive                                           
-	// SeismicLineGeometry entities associated with the project. One or more 2D seismic lines                                
-	// may be included.                                                                                                      
-	SeismicLineGeometryIDs                                                                      []string                     `json:"SeismicLineGeometryIDs,omitempty"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                       
+	// instead. Previously:  Classifies the security level of the resource.                                                       
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// For 3D projects, BinGridID relates to the primary bin grid geometry for the processing;                                    
+	// for 3D merge projects, it relates to the final (re-)projection and re-binning geometry.                                    
+	BinGridID                                                                                   *string                           `json:"BinGridID,omitempty"`
+	// List of seismic acquisition projects (surveys) that originated the underlying data used                                    
+	// in Processing Project.  Trace data work product components have an explicit child                                          
+	// relationship.  Other affiliated objects may use Lineage.                                                                   
+	SeismicAcquisitionSurveys                                                                   []string                          `json:"SeismicAcquisitionSurveys,omitempty"`
+	// For 2D seismic processing projects, this property references the definitive                                                
+	// SeismicLineGeometry entities associated with the project. One or more 2D seismic lines                                     
+	// may be included.                                                                                                           
+	SeismicLineGeometryIDs                                                                      []string                          `json:"SeismicLineGeometryIDs,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // A generic storage facility for e.g., core and rock or fluid samples, seismic tapes, etc.
@@ -14506,6 +15678,8 @@ type TubularComponentData struct {
 	ClosedEndDisplacement                                                                       *float64                              `json:"ClosedEndDisplacement,omitempty"`
 	// Collapse Pressure                                                                                                              
 	CollapsePressure                                                                            *float64                              `json:"CollapsePressure,omitempty"`
+	// Identifier to a Product Component Catalogue reference list item.                                                               
+	ComponentCatalogueID                                                                        *string                               `json:"ComponentCatalogueID,omitempty"`
 	// Top and/or Bottom Connection information                                                                                       
 	Connections                                                                                 []AbstractTubularComponentConnection  `json:"Connections,omitempty"`
 	// Density                                                                                                                        
@@ -15773,156 +16947,156 @@ type WellActivity struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type WellActivityData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// Classifies the security level of the resource.                                                                        
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// Freeform comments describing the overall well activity                                                                
-	Comments                                                                                    *string                      `json:"Comments,omitempty"`
-	// Individual, company, or corporate division that work is being executed on behalf of.                                  
-	Customer                                                                                    *string                      `json:"Customer,omitempty"`
-	// Date of data quality check approval                                                                                   
-	DataQCDate                                                                                  *time.Time                   `json:"DataQCDate,omitempty"`
-	// DEPRECATED: Superseded by DataQCReviewerName (format and x-osdu-frame-of-reference                                    
-	// changed). Name of the individual that approved the quality check for the data                                         
-	DataQCName                                                                                  *time.Time                   `json:"DataQCName,omitempty"`
-	// Name of the individual that approved the quality check for the data                                                   
-	DataQCReviewerName                                                                          *string                      `json:"DataQCReviewerName,omitempty"`
-	// Timestamp for the end of the Well Activity                                                                            
-	EndDateTime                                                                                 *time.Time                   `json:"EndDateTime,omitempty"`
-	// Expected duration in days for the well activity                                                                       
-	EstimatedDuration                                                                           *float64                     `json:"EstimatedDuration,omitempty"`
-	// Flag to identify whether data has been submitted for performance benchmarking                                         
-	IsPerformanceBenchmarkSubmitted                                                             *bool                        `json:"IsPerformanceBenchmarkSubmitted,omitempty"`
-	// The name of this Well Activity                                                                                        
-	Name                                                                                        *string                      `json:"Name,omitempty"`
-	// Timestamp for when well was taken off production for well activity                                                    
-	OffProductionDateTime                                                                       *time.Time                   `json:"OffProductionDateTime,omitempty"`
-	// Timestamp for when the well is returned to production following well activity                                         
-	OnProductionDateTime                                                                        *time.Time                   `json:"OnProductionDateTime,omitempty"`
-	// Date Performance Benchmark was submitted                                                                              
-	PerformanceBenchmarkSubmittedDate                                                           *time.Time                   `json:"PerformanceBenchmarkSubmittedDate,omitempty"`
-	// Name of the individual that submitted data for benchmarking                                                           
-	PerformanceBenchmarkSubmitter                                                               *string                      `json:"PerformanceBenchmarkSubmitter,omitempty"`
-	// List of Rigs or Work Units performing the Well Activity                                                               
-	RigAssignments                                                                              []RigAssignment              `json:"RigAssignments,omitempty"`
-	// Timestamp for the beginning of the Well Activity                                                                      
-	StartDateTime                                                                               *time.Time                   `json:"StartDateTime,omitempty"`
-	// Company or corporate division that is responsible for executing the work.                                             
-	StewardingCompany                                                                           *string                      `json:"StewardingCompany,omitempty"`
-	// Team within a company, or corporate division that is responsible for executing the work.                              
-	StewardingCompanyTeam                                                                       *string                      `json:"StewardingCompanyTeam,omitempty"`
-	// Benchmarking categories (from picklist - open)                                                                        
-	TechnologyApplied                                                                           []string                     `json:"TechnologyApplied,omitempty"`
-	// A narrative summary of the work being conducted in this well activity                                                 
-	WellActivityDescription                                                                     *string                      `json:"WellActivityDescription,omitempty"`
-	// The objective for the Well Activity.  A Well Activity may have one or more objectives.                                
-	// The first is the primary objective to need to retain order.                                                           
-	WellActivityObjective                                                                       []string                     `json:"WellActivityObjective,omitempty"`
-	// The type of well activity being conducted.                                                                            
-	WellActivityType                                                                            string                       `json:"WellActivityType"`
-	// Current wellhead connection (from picklist - local)                                                                   
-	WellheadConnection                                                                          *string                      `json:"WellheadConnection,omitempty"`
-	// Link to the Well                                                                                                      
-	WellID                                                                                      string                       `json:"WellID"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                             
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// Freeform comments describing the overall well activity                                                                     
+	Comments                                                                                    *string                           `json:"Comments,omitempty"`
+	// Individual, company, or corporate division that work is being executed on behalf of.                                       
+	Customer                                                                                    *string                           `json:"Customer,omitempty"`
+	// Date of data quality check approval                                                                                        
+	DataQCDate                                                                                  *time.Time                        `json:"DataQCDate,omitempty"`
+	// DEPRECATED: Superseded by DataQCReviewerName (format and x-osdu-frame-of-reference                                         
+	// changed). Name of the individual that approved the quality check for the data                                              
+	DataQCName                                                                                  *time.Time                        `json:"DataQCName,omitempty"`
+	// Name of the individual that approved the quality check for the data                                                        
+	DataQCReviewerName                                                                          *string                           `json:"DataQCReviewerName,omitempty"`
+	// Timestamp for the end of the Well Activity                                                                                 
+	EndDateTime                                                                                 *time.Time                        `json:"EndDateTime,omitempty"`
+	// Expected duration in days for the well activity                                                                            
+	EstimatedDuration                                                                           *float64                          `json:"EstimatedDuration,omitempty"`
+	// Flag to identify whether data has been submitted for performance benchmarking                                              
+	IsPerformanceBenchmarkSubmitted                                                             *bool                             `json:"IsPerformanceBenchmarkSubmitted,omitempty"`
+	// The name of this Well Activity                                                                                             
+	Name                                                                                        *string                           `json:"Name,omitempty"`
+	// Timestamp for when well was taken off production for well activity                                                         
+	OffProductionDateTime                                                                       *time.Time                        `json:"OffProductionDateTime,omitempty"`
+	// Timestamp for when the well is returned to production following well activity                                              
+	OnProductionDateTime                                                                        *time.Time                        `json:"OnProductionDateTime,omitempty"`
+	// Date Performance Benchmark was submitted                                                                                   
+	PerformanceBenchmarkSubmittedDate                                                           *time.Time                        `json:"PerformanceBenchmarkSubmittedDate,omitempty"`
+	// Name of the individual that submitted data for benchmarking                                                                
+	PerformanceBenchmarkSubmitter                                                               *string                           `json:"PerformanceBenchmarkSubmitter,omitempty"`
+	// List of Rigs or Work Units performing the Well Activity                                                                    
+	RigAssignments                                                                              []RigAssignment                   `json:"RigAssignments,omitempty"`
+	// Timestamp for the beginning of the Well Activity                                                                           
+	StartDateTime                                                                               *time.Time                        `json:"StartDateTime,omitempty"`
+	// Company or corporate division that is responsible for executing the work.                                                  
+	StewardingCompany                                                                           *string                           `json:"StewardingCompany,omitempty"`
+	// Team within a company, or corporate division that is responsible for executing the work.                                   
+	StewardingCompanyTeam                                                                       *string                           `json:"StewardingCompanyTeam,omitempty"`
+	// Benchmarking categories (from picklist - open)                                                                             
+	TechnologyApplied                                                                           []string                          `json:"TechnologyApplied,omitempty"`
+	// A narrative summary of the work being conducted in this well activity                                                      
+	WellActivityDescription                                                                     *string                           `json:"WellActivityDescription,omitempty"`
+	// The objective for the Well Activity.  A Well Activity may have one or more objectives.                                     
+	// The first is the primary objective to need to retain order.                                                                
+	WellActivityObjective                                                                       []string                          `json:"WellActivityObjective,omitempty"`
+	// The type of well activity being conducted.                                                                                 
+	WellActivityType                                                                            string                            `json:"WellActivityType"`
+	// Current wellhead connection (from picklist - local)                                                                        
+	WellheadConnection                                                                          *string                           `json:"WellheadConnection,omitempty"`
+	// Link to the Well                                                                                                           
+	WellID                                                                                      string                            `json:"WellID"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // Association of a rig to a particular well and well activity.
@@ -15931,7 +17105,7 @@ type RigAssignment struct {
 	EndDateTime                                                   *time.Time `json:"EndDateTime,omitempty"`
 	// Remarks related to this rig assignment                                
 	Remark                                                        *string    `json:"Remark,omitempty"`
-	// A link to the Rig                                                     
+	// References the Rig onsite during operations                           
 	RigID                                                         *string    `json:"RigID,omitempty"`
 	// The start time for this rig assignment to the well activity           
 	StartDateTime                                                 *time.Time `json:"StartDateTime,omitempty"`
@@ -16071,7 +17245,11 @@ type WellActivityProgramData struct {
 	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
 	// Description of the objectives of a Project.                                                                           
 	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The set of multiple phases that compose the whole program                                                             
+	// The set of individual phases that compose the WellActivityProgram. A phase describes the                              
+	// key milestones and is usually based on the major sections of the well or non-well-related                             
+	// work.                                                                                                                 
+	// (Such as "Drill Surface", "Case Surface", "Acces Well", "Suspend ", "Wellhead Removal                                 
+	// "...).                                                                                                                
 	Phases                                                                                      []Phase                      `json:"Phases"`
 	// A reference to the object that holds the information about the rig used in this drilling                              
 	// program                                                                                                               
@@ -16088,7 +17266,8 @@ type WellActivityProgramData struct {
 // Description of an individual phase that compose the WellActivityProgram. A phase
 // describes the key milestones and is usually based on the major sections of the well or
 // non-well-related work.
-// (Such as "Acces Well", "Suspend ", "Wellhead Removal "...)
+// (Such as "Drill Surface", "Case Surface", "Acces Well", "Suspend ", "Wellhead Removal
+// "...)
 type Phase struct {
 	// Reference to the different BHA runs                                                                
 	BHARunIDs                                                                                    []string `json:"BHARunIDs"`
@@ -16108,6 +17287,9 @@ type Phase struct {
 	// Reference to the objects that hold the expected lithology designs information about the            
 	// drilling program for this phase                                                                    
 	PlannedLithologyIDs                                                                          []string `json:"PlannedLithologyIDs,omitempty"`
+	// Identifier of Rig Utilization object, which defines when the rig is on location during             
+	// operations.                                                                                        
+	RigUtilizationID                                                                             *string  `json:"RigUtilizationID,omitempty"`
 	// Reference to the objects that holds the information about the risks that apply to this             
 	// drilling program (may be too high level for this)                                                  
 	RiskIDs                                                                                      []string `json:"RiskIDs,omitempty"`
@@ -16121,7 +17303,8 @@ type Phase struct {
 	WellActivityPlanID                                                                           string   `json:"WellActivityPlanID"`
 	// Identifier of the description from the Well Barrier Element Test to be run                         
 	WellBarrierElementTestID                                                                     *string  `json:"WellBarrierElementTestID,omitempty"`
-	// A reference to the object that describes the physical structure of a borehole                      
+	// A reference to the object that describes the schematic (physical structure) of the                 
+	// wellbore at the end of this Phase                                                                  
 	WellboreArchitectureID                                                                       *string  `json:"WellboreArchitectureID,omitempty"`
 	// The wellbore to which this drilling program phase refers                                           
 	WellboreID                                                                                   *string  `json:"WellboreID,omitempty"`
@@ -17134,7 +18317,7 @@ type WellLogAcquisitionData struct {
 	LastActivityState                                                                           *AbstractActivityState               `json:"LastActivityState,omitempty"`
 	// General parameter value used in one instance of activity.  Includes reference to data                                         
 	// objects which are inputs and outputs of the activity.                                                                         
-	Parameters                                                                                  []DefaultValueElement                `json:"Parameters,omitempty"`
+	Parameters                                                                                  []PurpleAbstractActivityParameter    `json:"Parameters,omitempty"`
 	// The relationship to a parent project acting as a parent activity.                                                             
 	ParentProjectID                                                                             *string                              `json:"ParentProjectID,omitempty"`
 	// The tools run in the hole for the purpose of acquiring well log measurements. Defined as                                      
@@ -17541,125 +18724,125 @@ type WellPressureTestAcquisitionJob struct {
 //
 // The activity abstraction for projects and surveys (master-data).
 type WellPressureTestAcquisitionJobData struct {
-	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
-	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
-	// Describes the current Curation status.                                                                                
-	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
-	// The name of the home [cloud environment] region for this OSDU resource object.                                        
-	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
-	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
-	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
-	// Describes the current Resource Lifecycle status.                                                                      
-	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
-	// DEPRECATED: This security classification is merely decorative; the security                                           
-	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
-	// instead. Previously:  Classifies the security level of the resource.                                                  
-	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
-	// The entity that produced the record, or from which it is received; could be an                                        
-	// organization, agency, system, internal team, or individual. For informational purposes                                
-	// only, the list of sources is not governed.                                                                            
-	Source                                                                                      *string                      `json:"Source,omitempty"`
-	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
-	// based on data quality. Clarifications: Since Certified is the highest classification of                               
-	// suitable quality, any further change or versioning of a Certified record should be                                    
-	// carefully considered and justified. If a Technical Assurance value is not populated then                              
-	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
-	// List of geographic entities which provide context to the master data. This may include                                
-	// multiple types or multiple values of the same type.                                                                   
-	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
-	// Alternative names, including historical, by which this master data is/has been known (it                              
-	// should include all the identifiers).                                                                                  
-	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
-	// The spatial location information such as coordinates, CRS information (left empty when                                
-	// not appropriate).                                                                                                     
-	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
-	// Describes a record's overall suitability for general business consumption in context of                               
-	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
-	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
-	// further change or versioning of a Certified record should be carefully considered and                                 
-	// justified. If a Technical Assurance value is not populated then one can assume the data                               
-	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
-	// values are not intended to be used for the identification of a single "preferred" or                                  
-	// "definitive" record by comparison with other records.                                                                 
-	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
-	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
-	// master-data record's overall suitability for general business consumption based on data                               
-	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
-	// quality, any further change or versioning of a Certified record should be carefully                                   
-	// considered and justified. If a Technical Assurance value is not populated then one can                                
-	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
-	// Technical Assurance values are not intended to be used for the identification of a single                             
-	// "preferred" or "definitive" record by comparison with other records.                                                  
-	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
-	// This describes the reason that caused the creation of a new version of this master data.                              
-	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
-	// References to applicable agreements in external contract database system of record.                                   
-	ContractIDs                                                                                 []string                     `json:"ContractIDs,omitempty"`
-	// References to organisations which supplied services to the Project.                                                   
-	Contractors                                                                                 []Contractors                `json:"Contractors,omitempty"`
-	// The history of expenditure approvals.                                                                                 
-	FundsAuthorizations                                                                         []FundsAuthorizations        `json:"FundsAuthorizations,omitempty"`
-	// The organisation which controlled the conduct of the project.                                                         
-	Operator                                                                                    *string                      `json:"Operator,omitempty"`
-	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                             
-	// could reference a separate Persons master data object.                                                                
-	Personnel                                                                                   []PurplePersonnel            `json:"Personnel,omitempty"`
-	// The date and time when the Project was initiated.                                                                     
-	ProjectBeginDate                                                                            *time.Time                   `json:"ProjectBeginDate,omitempty"`
-	// The date and time when the Project was completed.                                                                     
-	ProjectEndDate                                                                              *time.Time                   `json:"ProjectEndDate,omitempty"`
-	// Native identifier from a Master Data Management System or other trusted source external                               
-	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                              
-	// If used, the "Source" property should identify that source system.                                                    
-	ProjectID                                                                                   *string                      `json:"ProjectID,omitempty"`
-	// The common or preferred name of a Project.                                                                            
-	ProjectName                                                                                 *string                      `json:"ProjectName,omitempty"`
-	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                               
-	// business identifiers.                                                                                                 
-	ProjectNames                                                                                []AbstractAliasNames         `json:"ProjectNames,omitempty"`
-	// General parameters defining the configuration of the Project.  In the case of a seismic                               
-	// acquisition project it is like receiver interval, source depth, source type.  In the case                             
-	// of a processing project, it is like replacement velocity, reference datum above mean sea                              
-	// level.                                                                                                                
-	ProjectSpecifications                                                                       []ProjectSpecifications      `json:"ProjectSpecifications,omitempty"`
-	// The history of life cycle states that the Project has been through..                                                  
-	ProjectStates                                                                               []ProjectStates              `json:"ProjectStates,omitempty"`
-	// Description of the objectives of a Project.                                                                           
-	Purpose                                                                                     *string                      `json:"Purpose,omitempty"`
-	// The (non-overlapping) historical activity states and effective start and termination                                  
-	// dates. The last state is replicated in the single LastActivityState for simpler queries.                              
-	ActivityStates                                                                              []AbstractActivityState      `json:"ActivityStates,omitempty"`
-	// The relation to the ActivityTemplate carrying expected parameter definitions and default                              
-	// values.                                                                                                               
-	ActivityTemplateID                                                                          *string                      `json:"ActivityTemplateID,omitempty"`
-	// The current or last state this activity transitioned to. It is a copy of the last element                             
-	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                               
-	// empty.                                                                                                                
-	LastActivityState                                                                           *AbstractActivityState       `json:"LastActivityState,omitempty"`
-	// General parameter value used in one instance of activity.  Includes reference to data                                 
-	// objects which are inputs and outputs of the activity.                                                                 
-	Parameters                                                                                  []DefaultValueElement        `json:"Parameters,omitempty"`
-	// The relationship to a parent project acting as a parent activity.                                                     
-	ParentProjectID                                                                             *string                      `json:"ParentProjectID,omitempty"`
-	// The Identifier (from any external system) of the Acquisition Program, this specific                                   
-	// acquisition job is derived from                                                                                       
-	AcquisitionProgramExternalID                                                                *string                      `json:"AcquisitionProgramExternalID,omitempty"`
-	// Array of unitary Acquisition Runs - eg. Period of the job included between two                                        
-	// consecutive extraction of the acquisition string from the ground.                                                     
-	PressureTestsAcquisitionRuns                                                                []AcquisitionRun             `json:"PressureTestsAcquisitionRuns"`
-	// Identifier of the InterpretationSet (can be MarkerSet or IntervalSet) array, used as a                                
-	// prognosed reference to define the test stations                                                                       
-	PrognosedInterpretationSetID                                                                *string                      `json:"PrognosedInterpretationSetID,omitempty"`
-	// Identifier of the WellLog capturing the final processed measures along the wellbore                                   
-	ReferencePressureProcessedLogID                                                             *string                      `json:"ReferencePressureProcessedLogID,omitempty"`
-	// Time stamped remarks associated with the pressure test acquisition activity                                           
-	Remarks                                                                                     *string                      `json:"Remarks,omitempty"`
-	// The identifier of the wellbore where Pressure Test was conducted                                                      
-	WellboreID                                                                                  string                       `json:"WellboreID"`
-	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                            
+	ExistenceKind                                                                               *string                           `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                     
+	ResourceCurationStatus                                                                      *string                           `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                             
+	ResourceHomeRegionID                                                                        *string                           `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                          
+	ResourceHostRegionIDs                                                                       []string                          `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                           
+	ResourceLifecycleStatus                                                                     *string                           `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                                
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                       
+	// instead. Previously:  Classifies the security level of the resource.                                                       
+	ResourceSecurityClassification                                                              *string                           `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                             
+	// organization, agency, system, internal team, or individual. For informational purposes                                     
+	// only, the list of sources is not governed.                                                                                 
+	Source                                                                                      *string                           `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                      
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                    
+	// suitable quality, any further change or versioning of a Certified record should be                                         
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                   
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                   
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceID                                                                        *string                           `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                     
+	// multiple types or multiple values of the same type.                                                                        
+	GeoContexts                                                                                 []AbstractGeoContext              `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                                   
+	// should include all the identifiers).                                                                                       
+	NameAliases                                                                                 []AbstractAliasNames              `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                     
+	// not appropriate).                                                                                                          
+	SpatialLocation                                                                             *AbstractSpatialLocation          `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                    
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                             
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                     
+	// further change or versioning of a Certified record should be carefully considered and                                      
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                    
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                       
+	// values are not intended to be used for the identification of a single "preferred" or                                       
+	// "definitive" record by comparison with other records.                                                                      
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance      `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                             
+	// master-data record's overall suitability for general business consumption based on data                                    
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                         
+	// quality, any further change or versioning of a Certified record should be carefully                                        
+	// considered and justified. If a Technical Assurance value is not populated then one can                                     
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                           
+	// Technical Assurance values are not intended to be used for the identification of a single                                  
+	// "preferred" or "definitive" record by comparison with other records.                                                       
+	TechnicalAssuranceTypeID                                                                    *string                           `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                                   
+	VersionCreationReason                                                                       *string                           `json:"VersionCreationReason,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                        
+	ContractIDs                                                                                 []string                          `json:"ContractIDs,omitempty"`
+	// References to organisations which supplied services to the Project.                                                        
+	Contractors                                                                                 []Contractors                     `json:"Contractors,omitempty"`
+	// The history of expenditure approvals.                                                                                      
+	FundsAuthorizations                                                                         []FundsAuthorizations             `json:"FundsAuthorizations,omitempty"`
+	// The organisation which controlled the conduct of the project.                                                              
+	Operator                                                                                    *string                           `json:"Operator,omitempty"`
+	// List of key individuals supporting the Project.  This could be Abstracted for re-use, and                                  
+	// could reference a separate Persons master data object.                                                                     
+	Personnel                                                                                   []PurplePersonnel                 `json:"Personnel,omitempty"`
+	// The date and time when the Project was initiated.                                                                          
+	ProjectBeginDate                                                                            *time.Time                        `json:"ProjectBeginDate,omitempty"`
+	// The date and time when the Project was completed.                                                                          
+	ProjectEndDate                                                                              *time.Time                        `json:"ProjectEndDate,omitempty"`
+	// Native identifier from a Master Data Management System or other trusted source external                                    
+	// to OSDU - stored here in order to allow for multi-system connection and synchronization.                                   
+	// If used, the "Source" property should identify that source system.                                                         
+	ProjectID                                                                                   *string                           `json:"ProjectID,omitempty"`
+	// The common or preferred name of a Project.                                                                                 
+	ProjectName                                                                                 *string                           `json:"ProjectName,omitempty"`
+	// DEPRECATED: please use data.NameAliases. The history of Project names, codes, and other                                    
+	// business identifiers.                                                                                                      
+	ProjectNames                                                                                []AbstractAliasNames              `json:"ProjectNames,omitempty"`
+	// General parameters defining the configuration of the Project.  In the case of a seismic                                    
+	// acquisition project it is like receiver interval, source depth, source type.  In the case                                  
+	// of a processing project, it is like replacement velocity, reference datum above mean sea                                   
+	// level.                                                                                                                     
+	ProjectSpecifications                                                                       []ProjectSpecifications           `json:"ProjectSpecifications,omitempty"`
+	// The history of life cycle states that the Project has been through..                                                       
+	ProjectStates                                                                               []ProjectStates                   `json:"ProjectStates,omitempty"`
+	// Description of the objectives of a Project.                                                                                
+	Purpose                                                                                     *string                           `json:"Purpose,omitempty"`
+	// The (non-overlapping) historical activity states and effective start and termination                                       
+	// dates. The last state is replicated in the single LastActivityState for simpler queries.                                   
+	ActivityStates                                                                              []AbstractActivityState           `json:"ActivityStates,omitempty"`
+	// The relation to the ActivityTemplate carrying expected parameter definitions and default                                   
+	// values.                                                                                                                    
+	ActivityTemplateID                                                                          *string                           `json:"ActivityTemplateID,omitempty"`
+	// The current or last state this activity transitioned to. It is a copy of the last element                                  
+	// in ActivityStates[]. If there is only one state recorded, the ActivityStates[] can stay                                    
+	// empty.                                                                                                                     
+	LastActivityState                                                                           *AbstractActivityState            `json:"LastActivityState,omitempty"`
+	// General parameter value used in one instance of activity.  Includes reference to data                                      
+	// objects which are inputs and outputs of the activity.                                                                      
+	Parameters                                                                                  []PurpleAbstractActivityParameter `json:"Parameters,omitempty"`
+	// The relationship to a parent project acting as a parent activity.                                                          
+	ParentProjectID                                                                             *string                           `json:"ParentProjectID,omitempty"`
+	// The Identifier (from any external system) of the Acquisition Program, this specific                                        
+	// acquisition job is derived from                                                                                            
+	AcquisitionProgramExternalID                                                                *string                           `json:"AcquisitionProgramExternalID,omitempty"`
+	// Array of unitary Acquisition Runs - eg. Period of the job included between two                                             
+	// consecutive extraction of the acquisition string from the ground.                                                          
+	PressureTestsAcquisitionRuns                                                                []AcquisitionRun                  `json:"PressureTestsAcquisitionRuns"`
+	// Identifier of the InterpretationSet (can be MarkerSet or IntervalSet) array, used as a                                     
+	// prognosed reference to define the test stations                                                                            
+	PrognosedInterpretationSetID                                                                *string                           `json:"PrognosedInterpretationSetID,omitempty"`
+	// Identifier of the WellLog capturing the final processed measures along the wellbore                                        
+	ReferencePressureProcessedLogID                                                             *string                           `json:"ReferencePressureProcessedLogID,omitempty"`
+	// Time stamped remarks associated with the pressure test acquisition activity                                                
+	Remarks                                                                                     *string                           `json:"Remarks,omitempty"`
+	// The identifier of the wellbore where Pressure Test was conducted                                                           
+	WellboreID                                                                                  string                            `json:"WellboreID"`
+	ExtensionProperties                                                                         map[string]interface{}            `json:"ExtensionProperties,omitempty"`
 }
 
 // A Run is defined between two consecutive "extractions" from the ground" from acquisition
