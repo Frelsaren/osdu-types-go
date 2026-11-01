@@ -124,17 +124,50 @@
 //    rig, err := UnmarshalRig(bytes)
 //    bytes, err = rig.Marshal()
 //
+//    rigAnchor, err := UnmarshalRigAnchor(bytes)
+//    bytes, err = rigAnchor.Marshal()
+//
+//    rigBoiler, err := UnmarshalRigBoiler(bytes)
+//    bytes, err = rigBoiler.Marshal()
+//
+//    rigCementUnit, err := UnmarshalRigCementUnit(bytes)
+//    bytes, err = rigCementUnit.Marshal()
+//
+//    rigCentrifuge, err := UnmarshalRigCentrifuge(bytes)
+//    bytes, err = rigCentrifuge.Marshal()
+//
 //    rigCirculatingSystem, err := UnmarshalRigCirculatingSystem(bytes)
 //    bytes, err = rigCirculatingSystem.Marshal()
 //
+//    rigCoilTubingReel, err := UnmarshalRigCoilTubingReel(bytes)
+//    bytes, err = rigCoilTubingReel.Marshal()
+//
+//    rigCrane, err := UnmarshalRigCrane(bytes)
+//    bytes, err = rigCrane.Marshal()
+//
+//    rigDegasser, err := UnmarshalRigDegasser(bytes)
+//    bytes, err = rigDegasser.Marshal()
+//
 //    rigDerrick, err := UnmarshalRigDerrick(bytes)
 //    bytes, err = rigDerrick.Marshal()
+//
+//    rigHydrocyclone, err := UnmarshalRigHydrocyclone(bytes)
+//    bytes, err = rigHydrocyclone.Marshal()
+//
+//    rigMotor, err := UnmarshalRigMotor(bytes)
+//    bytes, err = rigMotor.Marshal()
+//
+//    rigPit, err := UnmarshalRigPit(bytes)
+//    bytes, err = rigPit.Marshal()
 //
 //    rigPump, err := UnmarshalRigPump(bytes)
 //    bytes, err = rigPump.Marshal()
 //
 //    rigRiser, err := UnmarshalRigRiser(bytes)
 //    bytes, err = rigRiser.Marshal()
+//
+//    rigShaker, err := UnmarshalRigShaker(bytes)
+//    bytes, err = rigShaker.Marshal()
 //
 //    rigSpecifications, err := UnmarshalRigSpecifications(bytes)
 //    bytes, err = rigSpecifications.Marshal()
@@ -656,6 +689,46 @@ func (r *Rig) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalRigAnchor(data []byte) (RigAnchor, error) {
+	var r RigAnchor
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigAnchor) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigBoiler(data []byte) (RigBoiler, error) {
+	var r RigBoiler
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigBoiler) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigCementUnit(data []byte) (RigCementUnit, error) {
+	var r RigCementUnit
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigCementUnit) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigCentrifuge(data []byte) (RigCentrifuge, error) {
+	var r RigCentrifuge
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigCentrifuge) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalRigCirculatingSystem(data []byte) (RigCirculatingSystem, error) {
 	var r RigCirculatingSystem
 	err := json.Unmarshal(data, &r)
@@ -666,6 +739,36 @@ func (r *RigCirculatingSystem) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalRigCoilTubingReel(data []byte) (RigCoilTubingReel, error) {
+	var r RigCoilTubingReel
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigCoilTubingReel) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigCrane(data []byte) (RigCrane, error) {
+	var r RigCrane
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigCrane) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigDegasser(data []byte) (RigDegasser, error) {
+	var r RigDegasser
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigDegasser) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalRigDerrick(data []byte) (RigDerrick, error) {
 	var r RigDerrick
 	err := json.Unmarshal(data, &r)
@@ -673,6 +776,36 @@ func UnmarshalRigDerrick(data []byte) (RigDerrick, error) {
 }
 
 func (r *RigDerrick) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigHydrocyclone(data []byte) (RigHydrocyclone, error) {
+	var r RigHydrocyclone
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigHydrocyclone) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigMotor(data []byte) (RigMotor, error) {
+	var r RigMotor
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigMotor) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigPit(data []byte) (RigPit, error) {
+	var r RigPit
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigPit) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -693,6 +826,16 @@ func UnmarshalRigRiser(data []byte) (RigRiser, error) {
 }
 
 func (r *RigRiser) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalRigShaker(data []byte) (RigShaker, error) {
+	var r RigShaker
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *RigShaker) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
@@ -11384,6 +11527,540 @@ type RigData struct {
 	ExtensionProperties                                                                         map[string]interface{}          `json:"ExtensionProperties,omitempty"`
 }
 
+// Defines the properties of an anchor found on a rig.
+type RigAnchor struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigAnchorData                 `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigAnchorData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                        
+	ExistenceKind                                                                                *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                 
+	ResourceCurationStatus                                                                       *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                         
+	ResourceHomeRegionID                                                                         *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                      
+	ResourceHostRegionIDs                                                                        []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                       
+	ResourceLifecycleStatus                                                                      *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                            
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                   
+	// instead. Previously:  Classifies the security level of the resource.                                                   
+	ResourceSecurityClassification                                                               *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                         
+	// organization, agency, system, internal team, or individual. For informational purposes                                 
+	// only, the list of sources is not governed.                                                                             
+	Source                                                                                       *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                  
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                
+	// suitable quality, any further change or versioning of a Certified record should be                                     
+	// carefully considered and justified. If a Technical Assurance value is not populated then                               
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                               
+	// Technical Assurance values are not intended to be used for the identification of a single                              
+	// "preferred" or "definitive" record by comparison with other records.                                                   
+	TechnicalAssuranceID                                                                         *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                 
+	// multiple types or multiple values of the same type.                                                                    
+	GeoContexts                                                                                  []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                               
+	// should include all the identifiers).                                                                                   
+	NameAliases                                                                                  []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                 
+	// not appropriate).                                                                                                      
+	SpatialLocation                                                                              *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                                
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                         
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                 
+	// further change or versioning of a Certified record should be carefully considered and                                  
+	// justified. If a Technical Assurance value is not populated then one can assume the data                                
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                   
+	// values are not intended to be used for the identification of a single "preferred" or                                   
+	// "definitive" record by comparison with other records.                                                                  
+	TechnicalAssurances                                                                          []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                         
+	// master-data record's overall suitability for general business consumption based on data                                
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                     
+	// quality, any further change or versioning of a Certified record should be carefully                                    
+	// considered and justified. If a Technical Assurance value is not populated then one can                                 
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                       
+	// Technical Assurance values are not intended to be used for the identification of a single                              
+	// "preferred" or "definitive" record by comparison with other records.                                                   
+	TechnicalAssuranceTypeID                                                                     *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                               
+	VersionCreationReason                                                                        *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                            
+	Comments                                                                                     *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                         
+	EquipmentManufacturer                                                                        *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                       
+	EquipmentModel                                                                               *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                             
+	EquipmentName                                                                                *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                               
+	// the rigsite.                                                                                                           
+	EquipmentNumber                                                                              *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                     
+	EquipmentOwnerID                                                                             *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                              
+	// tag; however, some tags contain many pieces of information. This element only identifies                               
+	// the tag and does not describe the contents.                                                                            
+	EquipmentTag                                                                                 *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                               
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                               
+	// mast, box, etc.                                                                                                        
+	EquipmentTypeID                                                                              *string                      `json:"EquipmentTypeID,omitempty"`
+	// The maximum load the anchor can withstand before dragging or failing                                                   
+	AnchorRating                                                                                 *float64                     `json:"AnchorRating,omitempty"`
+	// The grade defining the chain's tensile strength. (N/mm2)                                                               
+	ChainGrade                                                                                   *float64                     `json:"ChainGrade,omitempty"`
+	// Ther Minimum Breaking Load (MBL) is the  minimum force at which a new chain is expected                                
+	// to break. It is a critical safety specification.                                                                       
+	ChainMinimumBreakingLoad                                                                     *float64                     `json:"ChainMinimumBreakingLoad,omitempty"`
+	// The Working Load Limit (WLL) is the maximum safe load a chain should carry during normal                               
+	// operations.                                                                                                            
+	ChainWorkingLoadLimit                                                                        *float64                     `json:"ChainWorkingLoadLimit,omitempty"`
+	// Location where the anchor is installed.                                                                                
+	Location                                                                                     *string                      `json:"Location,omitempty"`
+	// The Line Rating is the minimum breaking strength (MBS) or rated break strength of the                                  
+	// mooring line attached to the anchor. This rating is a critical safety specification,                                   
+	// indicating the maximum amount of force the line is designed to withstand before it breaks.                             
+	MooringLineRating                                                                            *float64                     `json:"MooringLineRating,omitempty"`
+	ExtensionProperties                                                                          map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Boiler found on a rig.
+type RigBoiler struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigBoilerData                 `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigBoilerData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Fuel capacity of the boiler.                                                                                          
+	FuelCapacity                                                                                *float64                     `json:"FuelCapacity,omitempty"`
+	// Power output of the boiler.                                                                                           
+	Output                                                                                      *float64                     `json:"Output,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Cement unit found on a rig.
+type RigCementUnit struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigCementUnitData             `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigCementUnitData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Maximum Flow Rate according to manufacturer's specifications.                                                         
+	FlowRateMaximum                                                                             *float64                     `json:"FlowRateMaximum,omitempty"`
+	// Height from CMT unit to RKB                                                                                           
+	HeightCementRotary                                                                          *float64                     `json:"HeightCementRotary,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Centrifuge found on the rig.
+type RigCentrifuge struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigCentrifugeData             `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigCentrifugeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Maximum flow rate at which the unit efficiently operates.                                                             
+	FlowCapacity                                                                                *float64                     `json:"FlowCapacity,omitempty"`
+	// Maximum solids mass per hour at which the unit efficiently operates.                                                  
+	SolidsCapacity                                                                              *float64                     `json:"SolidsCapacity,omitempty"`
+	// Maximum rotation at which the unit efficiently operates. Typically in rpm                                             
+	SpeedRating                                                                                 *float64                     `json:"SpeedRating,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
 // Defines the properties of the circulation system on a rig.
 type RigCirculatingSystem struct {
 	// The access control tags associated with this entity.                                                                     
@@ -11549,6 +12226,446 @@ type RigCirculatingSystemData struct {
 	// The internal fluid capacity of the flow path between the well test standpipe and the                                  
 	// gooseneck connection used during well testing operations.                                                             
 	WellTestStandpipeGooseneckVolume                                                            *float64                     `json:"WellTestStandpipeGooseneckVolume,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of coil tubing reel found on a rig.
+type RigCoilTubingReel struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigCoilTubingReelData         `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigCoilTubingReelData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Outside diameter of the reel core that the coiled tubing is wrapped around.                                           
+	CoreOuterDiameter                                                                           *float64                     `json:"CoreOuterDiameter,omitempty"`
+	// Inner diameter of the pump discharge line.                                                                            
+	DischargeLineInnerDiameter                                                                  *float64                     `json:"DischargeLineInnerDiameter,omitempty"`
+	// Length of the pump discharge line.                                                                                    
+	DischargeLineLength                                                                         *float64                     `json:"DischargeLineLength,omitempty"`
+	// The length of tubing from the end of the coil reel to the rotary kelly bushing. This                                  
+	// length includes the tubing in the hole and the tubing on the reel. This measurement takes                             
+	// into account the 20 or so feet of tubing that is being straightened and pushed through                                
+	// the injector head.                                                                                                    
+	InjectorStackUpHeight                                                                       *float64                     `json:"InjectorStackUpHeight,omitempty"`
+	// True/false flag to indicate an injector stack up is present.                                                          
+	IsInjectorStackUp                                                                           *bool                        `json:"IsInjectorStackUp,omitempty"`
+	// True/false flag to account for the wireline inside the coiled tubing.                                                 
+	IsUmbilicalInside                                                                           *bool                        `json:"IsUmbilicalInside,omitempty"`
+	// Length of the coiled tubing remaining on the reel.                                                                    
+	ReelLength                                                                                  *bool                        `json:"ReelLength,omitempty"`
+	// Outside diameter of the coiled tubing reel.                                                                           
+	ReelOuterDiameter                                                                           *float64                     `json:"ReelOuterDiameter,omitempty"`
+	// Width of the reel core. This is the inside dimension.                                                                 
+	ReelWrapWidth                                                                               *float64                     `json:"ReelWrapWidth,omitempty"`
+	// Length of the umbilical.                                                                                              
+	UmbilicalLength                                                                             *float64                     `json:"UmbilicalLength,omitempty"`
+	// Outer diameter of the umbilical.                                                                                      
+	UmbilicalOuterDiameter                                                                      *float64                     `json:"UmbilicalOuterDiameter,omitempty"`
+	// The coiled tubing wrap type.                                                                                          
+	WrapTypeID                                                                                  *string                      `json:"WrapTypeID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a crane found on a rig.
+type RigCrane struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigCraneData                  `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigCraneData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Maximum external lift capacity of the crane                                                                           
+	ExternalLiftCapacity                                                                        *float64                     `json:"ExternalLiftCapacity,omitempty"`
+	// Maximum internal lift capacity of the crane                                                                           
+	InternalLiftCapacity                                                                        *float64                     `json:"InternalLiftCapacity,omitempty"`
+	// Identifies the Rig Specification this Crane applies to.                                                               
+	RigSpecificationID                                                                          *string                      `json:"RigSpecificationID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Degasser found on a rig.
+type RigDegasser struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigDegasserData               `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigDegasserData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Gas vent rate at which the vent line pressure drop exceeds the hydrostatic head because                               
+	// of the mud seal.                                                                                                      
+	BlowDownCapacity                                                                            *float64                     `json:"BlowDownCapacity,omitempty"`
+	// Class of degasser.                                                                                                    
+	Class                                                                                       *string                      `json:"Class,omitempty"`
+	// Flow area of the separator.                                                                                           
+	FlowArea                                                                                    *float64                     `json:"FlowArea,omitempty"`
+	// Maximum flow rate at which the unit efficiently operates.                                                             
+	FlowCapacity                                                                                *float64                     `json:"FlowCapacity,omitempty"`
+	// Safe gas-separating capacity.                                                                                         
+	GasSeparatingCapacity                                                                       *float64                     `json:"GasSeparatingCapacity,omitempty"`
+	// Height of the separator.                                                                                              
+	Height                                                                                      *float64                     `json:"Height,omitempty"`
+	// Internal diameter of the inlet line.                                                                                  
+	InletInnerDiameter                                                                          *float64                     `json:"InletInnerDiameter,omitempty"`
+	// Internal diameter of the object.                                                                                      
+	InnerDiameter                                                                               *float64                     `json:"InnerDiameter,omitempty"`
+	// Length of the separator.                                                                                              
+	Length                                                                                      *float64                     `json:"Length,omitempty"`
+	// Depth of trip-tank fluid level to provide back pressure against the separator flow.                                   
+	MudSealHeight                                                                               *float64                     `json:"MudSealHeight,omitempty"`
+	// Pressure rating of the item.                                                                                          
+	PressureRating                                                                              *float64                     `json:"PressureRating,omitempty"`
+	// Temperature rating of the separator.                                                                                  
+	TemperatureRating                                                                           *float64                     `json:"TemperatureRating,omitempty"`
+	// Internal diameter of the vent line.                                                                                   
+	VentLineInnerDiameter                                                                       *float64                     `json:"VentLineInnerDiameter,omitempty"`
+	// Length of the vent line.                                                                                              
+	VentLineLength                                                                              *float64                     `json:"VentLineLength,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
@@ -11757,6 +12874,412 @@ type RigDerrickData struct {
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
+// Defines the properties of a Hydrocyclone found on a rig.
+type RigHydrocyclone struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigHydrocycloneData           `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigHydrocycloneData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// The number of hydrocyclone cones installed in the hydrocyclone unit or mud cleaner.                                   
+	AmountOfCones                                                                               *int64                       `json:"AmountOfCones,omitempty"`
+	// Nominal diameter of the hydrocyclone cone.                                                                            
+	ConeSize                                                                                    *float64                     `json:"ConeSize,omitempty"`
+	// Identifier or descriptor of the hydrocyclone cone design, model, or product family.                                   
+	ConeType                                                                                    *string                      `json:"ConeType,omitempty"`
+	// Maximum flow rate at which the unit efficiently operates.                                                             
+	FlowCapacity                                                                                *float64                     `json:"FlowCapacity,omitempty"`
+	// True/false flag to indicate if MudCleaner is part of mud-cleaning assembly.                                           
+	IsMudCleaner                                                                                *bool                        `json:"IsMudCleaner,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Motor found on a rig.
+type RigMotor struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigMotorData                  `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigMotorData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Mechanical power output available at the motor shaft, measured as brake horsepower.                                   
+	BrakeHorsePower                                                                             *float64                     `json:"BrakeHorsePower,omitempty"`
+	// Rated electrical current that the motor can continuously carry under normal operating                                 
+	// conditions.                                                                                                           
+	CurrentRating                                                                               *float64                     `json:"CurrentRating,omitempty"`
+	// Amount of fuel consumed by the motor or engine per unit time while operating at the                                   
+	// specified load.                                                                                                       
+	FuelConsumption                                                                             *float64                     `json:"FuelConsumption,omitempty"`
+	// Rated power output of the motor.                                                                                      
+	Power                                                                                       *float64                     `json:"Power,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Pit found on a rig.
+type RigPit struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigPitData                    `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigPitData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Maximum pit capacity.                                                                                                 
+	Capacity                                                                                    *float64                     `json:"Capacity,omitempty"`
+	// Dead volume in pit.                                                                                                   
+	DeadVolume                                                                                  *float64                     `json:"DeadVolume,omitempty"`
+	// Description of fluid restrictions for the pit.                                                                        
+	FluidRestrictions                                                                           *string                      `json:"FluidRestrictions,omitempty"`
+	// Flag to indicate if the pit is part of the active system.                                                             
+	IsActive                                                                                    *bool                        `json:"IsActive,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
 // Defines the properties of a Pump found on a rig.
 type RigPump struct {
 	// The access control tags associated with this entity.                                                                     
@@ -11800,6 +13323,9 @@ type RigPump struct {
 // persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
 //
 // Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
 type RigPumpData struct {
 	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
 	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
@@ -11856,6 +13382,27 @@ type RigPumpData struct {
 	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
 	// This describes the reason that caused the creation of a new version of this master data.                              
 	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
 	// Pump action. 1 = single acting, 2 = double acting.                                                                    
 	Action                                                                                      *int64                       `json:"Action,omitempty"`
 	// Pulsation dampener pressure.                                                                                          
@@ -12019,6 +13566,147 @@ type RigRiserData struct {
 	Volume                                                                                      *float64                     `json:"Volume,omitempty"`
 	// Weight of Riser Joint.                                                                                                
 	Weight                                                                                      *float64                     `json:"Weight,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
+}
+
+// Defines the properties of a Shaker found on a rig.
+type RigShaker struct {
+	// The access control tags associated with this entity.                                                                     
+	ACL                                                                                          AccessControlList              `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                       
+	// derived.                                                                                                                 
+	Ancestry                                                                                     *ParentList                    `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                 
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                    
+	CreateTime                                                                                   *time.Time                     `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                  
+	// System.                                                                                                                  
+	CreateUser                                                                                   *string                        `json:"createUser,omitempty"`
+	Data                                                                                         *RigShakerData                 `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                   
+	// version.                                                                                                                 
+	ID                                                                                           *string                        `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                             
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                 
+	// scheme follows the semantic versioning, https://semver.org/.                                                             
+	Kind                                                                                         string                         `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                   
+	// legal tags is managed by the Compliance Service.                                                                         
+	Legal                                                                                        LegalMetaData                  `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                  
+	// definitions.                                                                                                             
+	Meta                                                                                         []FrameOfReferenceMetaDataItem `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                 
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	ModifyTime                                                                                   *time.Time                     `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                               
+	ModifyUser                                                                                   *string                        `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                  
+	// as keys and values.                                                                                                      
+	Tags                                                                                         map[string]string              `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                          
+	Version                                                                                      *int64                         `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Properties shared with all master-data schema instances.
+//
+// Defines the properties of various types of equipment found on a rig, unit, and during
+// rigless operations.
+type RigShakerData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                       
+	ExistenceKind                                                                               *string                      `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                
+	ResourceCurationStatus                                                                      *string                      `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                        
+	ResourceHomeRegionID                                                                        *string                      `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                     
+	ResourceHostRegionIDs                                                                       []string                     `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                      
+	ResourceLifecycleStatus                                                                     *string                      `json:"ResourceLifecycleStatus,omitempty"`
+	// DEPRECATED: This security classification is merely decorative; the security                                           
+	// classification associated to the legal.legaltags[] is evaluated by platform services                                  
+	// instead. Previously:  Classifies the security level of the resource.                                                  
+	ResourceSecurityClassification                                                              *string                      `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                        
+	// organization, agency, system, internal team, or individual. For informational purposes                                
+	// only, the list of sources is not governed.                                                                            
+	Source                                                                                      *string                      `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                 
+	// based on data quality. Clarifications: Since Certified is the highest classification of                               
+	// suitable quality, any further change or versioning of a Certified record should be                                    
+	// carefully considered and justified. If a Technical Assurance value is not populated then                              
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                              
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceID                                                                        *string                      `json:"TechnicalAssuranceID,omitempty"`
+	// List of geographic entities which provide context to the master data. This may include                                
+	// multiple types or multiple values of the same type.                                                                   
+	GeoContexts                                                                                 []AbstractGeoContext         `json:"GeoContexts,omitempty"`
+	// Alternative names, including historical, by which this master data is/has been known (it                              
+	// should include all the identifiers).                                                                                  
+	NameAliases                                                                                 []AbstractAliasNames         `json:"NameAliases,omitempty"`
+	// The spatial location information such as coordinates, CRS information (left empty when                                
+	// not appropriate).                                                                                                     
+	SpatialLocation                                                                             *AbstractSpatialLocation     `json:"SpatialLocation,omitempty"`
+	// Describes a record's overall suitability for general business consumption in context of                               
+	// one or more workflows/personas based on data quality and reviewer's decisions.                                        
+	// Clarifications: Since Certified is the highest classification of suitable quality, any                                
+	// further change or versioning of a Certified record should be carefully considered and                                 
+	// justified. If a Technical Assurance value is not populated then one can assume the data                               
+	// has not been evaluated or its quality is unknown (=Unevaluated). Technical Assurance                                  
+	// values are not intended to be used for the identification of a single "preferred" or                                  
+	// "definitive" record by comparison with other records.                                                                 
+	TechnicalAssurances                                                                         []AbstractTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// DEPRECATED: (in favor of more nuanced TechnicalAssurances[] array) Describes a                                        
+	// master-data record's overall suitability for general business consumption based on data                               
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                    
+	// quality, any further change or versioning of a Certified record should be carefully                                   
+	// considered and justified. If a Technical Assurance value is not populated then one can                                
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                      
+	// Technical Assurance values are not intended to be used for the identification of a single                             
+	// "preferred" or "definitive" record by comparison with other records.                                                  
+	TechnicalAssuranceTypeID                                                                    *string                      `json:"TechnicalAssuranceTypeID,omitempty"`
+	// This describes the reason that caused the creation of a new version of this master data.                              
+	VersionCreationReason                                                                       *string                      `json:"VersionCreationReason,omitempty"`
+	// Free text remarks about the equipment/unit.                                                                           
+	Comments                                                                                    *string                      `json:"Comments,omitempty"`
+	// The Make or Manufacturer of the equipment/unit                                                                        
+	EquipmentManufacturer                                                                       *string                      `json:"EquipmentManufacturer,omitempty"`
+	// The Model of the equipment/unit.                                                                                      
+	EquipmentModel                                                                              *string                      `json:"EquipmentModel,omitempty"`
+	// Human-recognizable name for the equipment.                                                                            
+	EquipmentName                                                                               *string                      `json:"EquipmentName,omitempty"`
+	// A number assigned to the Equipment to differentiate it from other identical equipment on                              
+	// the rigsite.                                                                                                          
+	EquipmentNumber                                                                             *int64                       `json:"EquipmentNumber,omitempty"`
+	// The owner of the equipment or unit                                                                                    
+	EquipmentOwnerID                                                                            *string                      `json:"EquipmentOwnerID,omitempty"`
+	// An identification tag for the equipment/unit. A serial number is a type of identification                             
+	// tag; however, some tags contain many pieces of information. This element only identifies                              
+	// the tag and does not describe the contents.                                                                           
+	EquipmentTag                                                                                *string                      `json:"EquipmentTag,omitempty"`
+	// A description of the "type" of equipment being defined. For example, a mud pump may have                              
+	// the "type" Triplex, Duplex, Mixing, etc. or a derrick type may be conventional, portable                              
+	// mast, box, etc.                                                                                                       
+	EquipmentTypeID                                                                             *string                      `json:"EquipmentTypeID,omitempty"`
+	// Maximum pump rate at which the unit efficiently operates.                                                             
+	FlowCapacity                                                                                *float64                     `json:"FlowCapacity,omitempty"`
+	// Is part of mud-cleaning assembly as opposed to discrete shale shaker? Values are "true"                               
+	// (or "1") and "false" (or "0").                                                                                        
+	IsMudCleaner                                                                                *bool                        `json:"IsMudCleaner,omitempty"`
+	// Minimum mesh size.                                                                                                    
+	MeshSizeMinimum                                                                             *float64                     `json:"MeshSizeMinimum,omitempty"`
+	// Number of cascade levels.                                                                                             
+	NumberCascadeLevel                                                                          *int64                       `json:"NumberCascadeLevel,omitempty"`
+	// Number of decks.                                                                                                      
+	NumberDecks                                                                                 *int64                       `json:"NumberDecks,omitempty"`
+	// Reference to  Pit that is connected to the shaker.                                                                    
+	PitSourceID                                                                                 *string                      `json:"PitSourceID,omitempty"`
+	// Shaker location on the rig.                                                                                           
+	ShakerLocation                                                                              *string                      `json:"ShakerLocation,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
@@ -12540,7 +14228,7 @@ type RiskData struct {
 	InitialSeverity                                                                             *float64                     `json:"InitialSeverity,omitempty"`
 	// Describes the measure or measures that may be applied to the risk to mitigate its                                     
 	// consequences                                                                                                          
-	Mitigations                                                                                 []MitigationElement          `json:"Mitigations,omitempty"`
+	Mitigations                                                                                 []RiskResponse               `json:"Mitigations,omitempty"`
 	// The common or preferred name for a risk                                                                               
 	Name                                                                                        *string                      `json:"Name,omitempty"`
 	// Assumes PREVENTION AND MITIGATION barriers are in place to manage the risk event                                      
@@ -12551,8 +14239,6 @@ type RiskData struct {
 	NetRiskScore                                                                                *float64                     `json:"NetRiskScore,omitempty"`
 	// Assumes PREVENTION AND MITIGATION barriers are in place to manage the risk event                                      
 	NetSeverity                                                                                 *float64                     `json:"NetSeverity,omitempty"`
-	// A textual description of the steps to prevent this risk                                                               
-	Preventions                                                                                 []PreventionElement          `json:"Preventions,omitempty"`
 	// Date a resource is formed outside of OSDU before loading                                                              
 	PublicationDate                                                                             *time.Time                   `json:"PublicationDate,omitempty"`
 	// Identifier of the Related Risks collection                                                                            
@@ -12601,12 +14287,12 @@ type RiskData struct {
 	// The type of risk.                                                                                                     
 	TypeID                                                                                      *string                      `json:"TypeID,omitempty"`
 	// Identifier of the planned Wellbore                                                                                    
-	WellboreID                                                                                  string                       `json:"WellboreID"`
+	WellboreID                                                                                  *string                      `json:"WellboreID,omitempty"`
 	ExtensionProperties                                                                         map[string]interface{}       `json:"ExtensionProperties,omitempty"`
 }
 
 // Describe a set of action to prevent for a risk or to mitigate its consequences
-type MitigationElement struct {
+type RiskResponse struct {
 	// Date the response must be completed                                                                      
 	Deadline                                                                                  *float64          `json:"Deadline,omitempty"`
 	// General description of the response                                                                      
@@ -12619,27 +14305,6 @@ type MitigationElement struct {
 	// List of the staff responsible to proceed with the response as references to UserProfile                  
 	// records. This is the 'by reference' alternative to 'by value' in                                         
 	// data.Mitigations[].Responsibles[].                                                                       
-	ResponsiblesByReferenceIDs                                                                []string          `json:"ResponsiblesByReferenceIDs,omitempty"`
-	// Describes the status of the action such as (progress, done, canceled)                                    
-	Status                                                                                    string            `json:"Status"`
-	// Date the description of the response has been updated.                                                   
-	UpdateDate                                                                                *float64          `json:"UpdateDate,omitempty"`
-}
-
-// Describe a set of action to prevent for a risk or to mitigate its consequences
-type PreventionElement struct {
-	// Date the response must be completed                                                                      
-	Deadline                                                                                  *float64          `json:"Deadline,omitempty"`
-	// General description of the response                                                                      
-	Description                                                                               string            `json:"Description"`
-	// Name of the response                                                                                     
-	Name                                                                                      string            `json:"Name"`
-	// List of the staff responsible to proceed with the response. This is the 'by value'                       
-	// alternative to the 'by reference' data.Preventions[].ResponsiblesByReferenceIDs[].                       
-	Responsibles                                                                              []AbstractContact `json:"Responsibles"`
-	// List of the staff responsible to proceed with the response as references to UserProfile                  
-	// records. This is the 'by reference' alternative to 'by value' in                                         
-	// data.Preventions[].Responsibles[].                                                                       
 	ResponsiblesByReferenceIDs                                                                []string          `json:"ResponsiblesByReferenceIDs,omitempty"`
 	// Describes the status of the action such as (progress, done, canceled)                                    
 	Status                                                                                    string            `json:"Status"`
@@ -16754,6 +18419,10 @@ type WellData struct {
 	// Identifies, for the purpose of current use, if the Business Interest [Well Interest Type]                                 
 	// for this well has ever been Technical in the past.                                                                        
 	WasBusinessInterestTechnical                                                                 *bool                           `json:"WasBusinessInterestTechnical,omitempty"`
+	// A permanent, recoverable, fixed point of deepest horizontal constraint. This point is                                     
+	// often used as the tie-in point for the first survey and plan on the well. It is typically                                 
+	// the well's position at seabed or ground level.                                                                            
+	WellReferencePoint                                                                           *WellReferencePointWRP          `json:"WellReferencePoint,omitempty"`
 	// An optional relationship to a WellSiteStructure, e.g., Pad, Platform, Subsea Template.                                    
 	WellSiteStructureID                                                                          *string                         `json:"WellSiteStructureID,omitempty"`
 	ExtensionProperties                                                                          map[string]interface{}          `json:"ExtensionProperties,omitempty"`
@@ -16893,6 +18562,43 @@ type PurpleVerticalMeasurementID struct {
 	VerticalReferenceID                                                                          *string    `json:"VerticalReferenceID,omitempty"`
 	// Specifies what directional survey or wellpath was used to calculate the TVD.                         
 	WellboreTVDTrajectoryID                                                                      *string    `json:"WellboreTVDTrajectoryID,omitempty"`
+}
+
+// A permanent, recoverable, fixed point of deepest horizontal constraint. This point is
+// often used as the tie-in point for the first survey and plan on the well. It is typically
+// the well's position at seabed or ground level.
+type WellReferencePointWRP struct {
+	// Azimuth at Well Reference Point.                                                                  
+	WellReferencePointAzimuth                                                                   *float64 `json:"WellReferencePointAzimuth,omitempty"`
+	// Distance of the Well Reference Point from the well's DefaultVerticalCRSID downward along          
+	// a line                                                                                            
+	// that is perpendicular to that surface.                                                            
+	// A depth above the vertical reference surface will have a negative value.                          
+	WellReferencePointCRSTVD                                                                    *float64 `json:"WellReferencePointCRSTVD,omitempty"`
+	// The coordinate value representing the distance east (positive) or west (negative) from an         
+	// north–south reference axis within a defined coordinate reference system.                          
+	WellReferencePointEasting                                                                   *float64 `json:"WellReferencePointEasting,omitempty"`
+	// Inclination at the Well Reference Point.                                                          
+	WellReferencePointInclination                                                               *float64 `json:"WellReferencePointInclination,omitempty"`
+	// If the wellbore is non-vertical at the WRP then the along hole distance from rig datum to         
+	// WRP is longer than the vertical distance. In this case, enter the additional measured             
+	// depth, which is usually less than 1m for curved conductors. This additional distance will         
+	// not change if the rig elevation change.                                                           
+	WellReferencePointMD                                                                        *float64 `json:"WellReferencePointMD,omitempty"`
+	// The coordinate value representing the distance north (positive) or south (negative) from          
+	// an east–west reference axis within a defined coordinate reference system.                         
+	WellReferencePointNorthing                                                                  *float64 `json:"WellReferencePointNorthing,omitempty"`
+	// The offset distance east from the well position to the Well Reference Point.  Also known          
+	// as Local easting.                                                                                 
+	WellReferencePointOffsetEast                                                                *float64 `json:"WellReferencePointOffsetEast,omitempty"`
+	// The offset distance north from the well position to the Well Reference Point. Also known          
+	// as the Local northing.                                                                            
+	WellReferencePointOffsetNorth                                                               *float64 `json:"WellReferencePointOffsetNorth,omitempty"`
+	// Vertical distance of the point from the well's DefaultVerticalMeasurementID.                      
+	WellReferencePointTVD                                                                       *float64 `json:"WellReferencePointTVD,omitempty"`
+	// The type of Well Reference Point (WRP) that determines the values used to define the              
+	// point. For example, Vertical, Slant Rig and Curved Conductor.                                     
+	WellReferencePointType                                                                      *string  `json:"WellReferencePointType,omitempty"`
 }
 
 // A Well Activity is a operation performed on a well to accomplish a predetermined
