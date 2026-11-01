@@ -202,6 +202,24 @@
 //    seismicLineGeometry, err := UnmarshalSeismicLineGeometry(bytes)
 //    bytes, err = seismicLineGeometry.Marshal()
 //
+//    seismicPostStackProcessingProduct, err := UnmarshalSeismicPostStackProcessingProduct(bytes)
+//    bytes, err = seismicPostStackProcessingProduct.Marshal()
+//
+//    seismicPostStackTrace2DSection, err := UnmarshalSeismicPostStackTrace2DSection(bytes)
+//    bytes, err = seismicPostStackTrace2DSection.Marshal()
+//
+//    seismicPostStackTrace3DVolume, err := UnmarshalSeismicPostStackTrace3DVolume(bytes)
+//    bytes, err = seismicPostStackTrace3DVolume.Marshal()
+//
+//    seismicPreStackProcessingProduct, err := UnmarshalSeismicPreStackProcessingProduct(bytes)
+//    bytes, err = seismicPreStackProcessingProduct.Marshal()
+//
+//    seismicPreStackTrace2DSection, err := UnmarshalSeismicPreStackTrace2DSection(bytes)
+//    bytes, err = seismicPreStackTrace2DSection.Marshal()
+//
+//    seismicPreStackTrace3DVolume, err := UnmarshalSeismicPreStackTrace3DVolume(bytes)
+//    bytes, err = seismicPreStackTrace3DVolume.Marshal()
+//
 //    seismicTraceData, err := UnmarshalSeismicTraceData(bytes)
 //    bytes, err = seismicTraceData.Marshal()
 //
@@ -970,6 +988,66 @@ func (r *SeismicLineGeometry) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
+func UnmarshalSeismicPostStackProcessingProduct(data []byte) (SeismicPostStackProcessingProduct, error) {
+	var r SeismicPostStackProcessingProduct
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPostStackProcessingProduct) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalSeismicPostStackTrace2DSection(data []byte) (SeismicPostStackTrace2DSection, error) {
+	var r SeismicPostStackTrace2DSection
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPostStackTrace2DSection) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalSeismicPostStackTrace3DVolume(data []byte) (SeismicPostStackTrace3DVolume, error) {
+	var r SeismicPostStackTrace3DVolume
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPostStackTrace3DVolume) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalSeismicPreStackProcessingProduct(data []byte) (SeismicPreStackProcessingProduct, error) {
+	var r SeismicPreStackProcessingProduct
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPreStackProcessingProduct) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalSeismicPreStackTrace2DSection(data []byte) (SeismicPreStackTrace2DSection, error) {
+	var r SeismicPreStackTrace2DSection
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPreStackTrace2DSection) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+func UnmarshalSeismicPreStackTrace3DVolume(data []byte) (SeismicPreStackTrace3DVolume, error) {
+	var r SeismicPreStackTrace3DVolume
+	err := json.Unmarshal(data, &r)
+	return r, err
+}
+
+func (r *SeismicPreStackTrace3DVolume) Marshal() ([]byte, error) {
+	return json.Marshal(r)
+}
+
 func UnmarshalSeismicTraceData(data []byte) (SeismicTraceData, error) {
 	var r SeismicTraceData
 	err := json.Unmarshal(data, &r)
@@ -1670,6 +1748,8 @@ type PurpleSoftware struct {
 // SpatialLocation corresponding to FirstCMP.
 //
 // SpatialLocation corresponding to LastCMP.
+//
+// Polygon or lines showing the coverage of live traces in the trace dataset
 type AbstractSpatialLocation struct {
 	// The audit trail of operations applied to the coordinates from the original state to the                                   
 	// current state. The list may contain operations applied prior to ingestion as well as the                                  
@@ -16369,6 +16449,1483 @@ type SeismicLineGeometryData struct {
 	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
 }
 
+// A singular post stack output from a seismic processing project, encompassing one or many
+// sections and/or volumes.
+type SeismicPostStackProcessingProduct struct {
+	// The access control tags associated with this entity.                                                                             
+	ACL                                                                                          AccessControlList                      `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                               
+	// derived.                                                                                                                         
+	Ancestry                                                                                     *ParentList                            `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                         
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                            
+	CreateTime                                                                                   *time.Time                             `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                          
+	// System.                                                                                                                          
+	CreateUser                                                                                   *string                                `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPostStackProcessingProductData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                           
+	// version.                                                                                                                         
+	ID                                                                                           *string                                `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                     
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                         
+	// scheme follows the semantic versioning, https://semver.org/.                                                                     
+	Kind                                                                                         string                                 `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                           
+	// legal tags is managed by the Compliance Service.                                                                                 
+	Legal                                                                                        LegalMetaData                          `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                          
+	// definitions.                                                                                                                     
+	Meta                                                                                         []FrameOfReferenceMetaDataItem         `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                         
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                                
+	ModifyTime                                                                                   *time.Time                             `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                       
+	ModifyUser                                                                                   *string                                `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                          
+	// as keys and values.                                                                                                              
+	Tags                                                                                         map[string]string                      `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                                  
+	Version                                                                                      *int64                                 `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPostStackProcessingProductData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                          
+	ExistenceKind                                                                                *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                   
+	ResourceCurationStatus                                                                       *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                           
+	ResourceHomeRegionID                                                                         *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                        
+	ResourceHostRegionIDs                                                                        []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                         
+	ResourceLifecycleStatus                                                                      *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                           
+	ResourceSecurityClassification                                                               *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                           
+	// organization, agency, system, internal team, or individual. For informational purposes                                                   
+	// only, the list of sources is not governed.                                                                                               
+	Source                                                                                       *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                    
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                  
+	// suitable quality, any further change or versioning of a Certified record should be                                                       
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                 
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                 
+	// Technical Assurance values are not intended to be used for the identification of a single                                                
+	// "preferred" or "definitive" record by comparison with other records.                                                                     
+	TechnicalAssuranceID                                                                         *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                                
+	// from the file, in the sense certain valuable information is generated during loading                                                     
+	// process (Artefact generation process). Examples include retrieving location data,                                                        
+	// performing an OCR which may result in the generation of artefacts which need to be                                                       
+	// preserved distinctly                                                                                                                     
+	Artefacts                                                                                    []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                      
+	Datasets                                                                                     []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                 
+	// work-product-component. The references are formed as URI following                                                                       
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                                
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                       
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                 
+	// the DDMS id.                                                                                                                             
+	DDMSDatasets                                                                                 []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                                
+	// the search index.                                                                                                                        
+	IsDiscoverable                                                                               *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                  
+	// reflects the fact that the work product component is in an early stage and may be updated                                                
+	// before finalization.                                                                                                                     
+	IsExtendedLoad                                                                               *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                                
+	// known (it should include all the identifiers).                                                                                           
+	NameAliases                                                                                  []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                  
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                       
+	// quality, any further change or versioning of a Certified record should be carefully                                                      
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                   
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                         
+	// Technical Assurance values are not intended to be used for the identification of a single                                                
+	// "preferred" or "definitive" record by comparison with other records.                                                                     
+	TechnicalAssurances                                                                          []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                     
+	// entity.                                                                                                                                  
+	AuthorIDs                                                                                    []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                   
+	// (ex. well planning, exploration).                                                                                                        
+	BusinessActivities                                                                           []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                     
+	// loading (e.g. publication date).                                                                                                         
+	CreationDateTime                                                                             *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                       
+	// captures thoughts of creator about the wpc.                                                                                              
+	Description                                                                                  *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                 
+	// types or multiple values of the same type.                                                                                               
+	GeoContexts                                                                                  []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                     
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                     
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                    
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                                
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                    
+	LineageAssertions                                                                            []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                     
+	Name                                                                                         *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                 
+	// (location of the subject matter).                                                                                                        
+	SpatialArea                                                                                  *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                   
+	// (location of the subject matter).                                                                                                        
+	SpatialPoint                                                                                 *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                              
+	SubmitterName                                                                                *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                           
+	Tags                                                                                         []string                                       `json:"Tags,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                      
+	Contracts                                                                                    []string                                       `json:"Contracts,omitempty"`
+	// Actual nominal fold of the trace data set as processed, expressed as the mode in                                                         
+	// percentage points (60 fold = 6000%).                                                                                                     
+	CoveragePercent                                                                              *float64                                       `json:"CoveragePercent,omitempty"`
+	// References to the volume, volumes, and sections that represent the definitive collection.                                                
+	// Generally will be the highest fidelity and largest coverage.                                                                             
+	DefinitiveProducts                                                                           []string                                       `json:"DefinitiveProducts,omitempty"`
+	// Indicates if the volume is a product of the difference between 4D surveys                                                                
+	Difference                                                                                   *bool                                          `json:"Difference,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                              
+	// SeismicDomainType to know if data is in time or depth.                                                                                   
+	EndVerticalIndex                                                                             *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// For most datasets, the acquisition project that generated the underlying field data.  For                                                
+	// merges, probably absent (see processing project for set of acquisition projects used in                                                  
+	// processing this dataset).                                                                                                                
+	PrincipalAcquisitionProjectID                                                                *string                                        `json:"PrincipalAcquisitionProjectID,omitempty"`
+	// Processing Parameters to simply capture process history until full provenance model can                                                  
+	// be implemented.                                                                                                                          
+	ProcessingParameters                                                                         []PurpleProcessingParameters                   `json:"ProcessingParameters,omitempty"`
+	// The processing project from which this trace dataset was produced.  Absent for field data.                                               
+	ProcessingProjectID                                                                          *string                                        `json:"ProcessingProjectID,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                 
+	RangeAmplitudeMax                                                                            *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                 
+	RangeAmplitudeMin                                                                            *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Value used to produce vertical static shifts in data                                                                                     
+	ReplacementVelocity                                                                          *float64                                       `json:"ReplacementVelocity,omitempty"`
+	// Number of samples in the vertical direction.                                                                                             
+	SampleCount                                                                                  *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                      
+	SampleInterval                                                                               *float64                                       `json:"SampleInterval,omitempty"`
+	// ID of the Seismic Trace Data Type                                                                                                        
+	SeismicAttributeTypeID                                                                       *string                                        `json:"SeismicAttributeTypeID,omitempty"`
+	// ID of the nature of the vertical axis in the trace data set, usually Depth or Time.                                                      
+	SeismicDomainTypeID                                                                          *string                                        `json:"SeismicDomainTypeID,omitempty"`
+	// ID of the Seismic Filtering Type                                                                                                         
+	SeismicFilteringTypeID                                                                       *string                                        `json:"SeismicFilteringTypeID,omitempty"`
+	// ID of the Seismic Migration Data Type                                                                                                    
+	SeismicMigrationTypeID                                                                       *string                                        `json:"SeismicMigrationTypeID,omitempty"`
+	// Reference to the reference-data--SeismicPhase value describing the wavelet phase as                                                      
+	// estimated/processed for this SeismicTraceData instance.                                                                                  
+	SeismicPhaseID                                                                               *string                                        `json:"SeismicPhaseID,omitempty"`
+	// Reference to the reference-data--SeismicPolarity value describing the polarity for this                                                  
+	// SeismicTraceData instance.                                                                                                               
+	SeismicPolarityID                                                                            *string                                        `json:"SeismicPolarityID,omitempty"`
+	// It specifies if the seismic is as acquired, or has been manipulated by a process or                                                      
+	// workflow before arriving at its current state.                                                                                           
+	SeismicProcessingStageTypeID                                                                 *string                                        `json:"SeismicProcessingStageTypeID,omitempty"`
+	// ID of the Seismic Stacking Type                                                                                                          
+	SeismicStackingTypeID                                                                        *string                                        `json:"SeismicStackingTypeID,omitempty"`
+	// The dimensionality of trace data sets (not as acquired but as in the dataset), such as                                                   
+	// 2D, 3D, 4D.                                                                                                                              
+	SeismicTraceDataDimensionalityTypeID                                                         *string                                        `json:"SeismicTraceDataDimensionalityTypeID,omitempty"`
+	// The observed wave mode type in this trace data set (P, Sv, etc).                                                                         
+	SeismicWaveTypeID                                                                            *string                                        `json:"SeismicWaveTypeID,omitempty"`
+	// Indicates how much the data has been shifted from the Vertical Datum (seismic reference                                                  
+	// datum) in the domain and units of SeismicDomainType and in the sense that a positive                                                     
+	// number causes a sample to move downward in physical space (lower elevation).                                                             
+	ShiftApplied                                                                                 *float64                                       `json:"ShiftApplied,omitempty"`
+	// Post-stack: The stacking angle range maximum used during processing of this trace data                                                   
+	// set.                                                                                                                                     
+	StackAngleRangeMax                                                                           *float64                                       `json:"StackAngleRangeMax,omitempty"`
+	// Post-stack: The stacking angle range minimum used during processing of this trace data                                                   
+	// set.                                                                                                                                     
+	StackAngleRangeMin                                                                           *float64                                       `json:"StackAngleRangeMin,omitempty"`
+	// Post-stack: The stacking azimuth range maximum used during processing of this trace data                                                 
+	// set.                                                                                                                                     
+	StackAzimuthRangeMax                                                                         *float64                                       `json:"StackAzimuthRangeMax,omitempty"`
+	// Post-stack: The stacking azimuth range minimum used during processing of this trace data                                                 
+	// set.                                                                                                                                     
+	StackAzimuthRangeMin                                                                         *float64                                       `json:"StackAzimuthRangeMin,omitempty"`
+	// Post-stack: The stacking offset range maximum used during processing of this trace data                                                  
+	// set.                                                                                                                                     
+	StackOffsetRangeMax                                                                          *float64                                       `json:"StackOffsetRangeMax,omitempty"`
+	// Post-stack: The stacking offset range minimum used during processing of this trace data                                                  
+	// set.                                                                                                                                     
+	StackOffsetRangeMin                                                                          *float64                                       `json:"StackOffsetRangeMin,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                            
+	// SeismicDomainType to know if data is in time or depth.                                                                                   
+	StartVerticalIndex                                                                           *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// How many traces are in the volume                                                                                                        
+	TraceCount                                                                                   *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                     
+	TraceDomainUOM                                                                               *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                  
+	// according to SeismicDomainType.                                                                                                          
+	TraceLength                                                                                  *float64                                       `json:"TraceLength,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                            
+	VelocityModelID                                                                              *string                                        `json:"VelocityModelID,omitempty"`
+	// Datum value, the elevation of zero time/depth on the vertical axis in the domain of                                                      
+	// SeismicDomainType relative to the vertical reference datum used (usually MSL). Positive                                                  
+	// is upward from zero elevation to seismic datum).                                                                                         
+	VerticalDatumOffset                                                                          *float64                                       `json:"VerticalDatumOffset,omitempty"`
+	// Identifies a vertical reference datum type. E.g. mean sea level, ground level, mudline.                                                  
+	VerticalMeasurementTypeID                                                                    *string                                        `json:"VerticalMeasurementTypeID,omitempty"`
+	ExtensionProperties                                                                          map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// Processing Parameters to simply capture process history until full provenance model can
+// be implemented.
+type PurpleProcessingParameters struct {
+	// Processing Parameter Type                                                                
+	ProcessingParameterTypeID                                                           *string `json:"ProcessingParameterTypeID,omitempty"`
+	// The quantity for the processing parameter. May include units, ordering, and other        
+	// descriptions.                                                                            
+	ProcessingParameterValue                                                            *string `json:"ProcessingParameterValue,omitempty"`
+}
+
+// A single logical post stack dataset containing seismic samples related to a 2D section.
+type SeismicPostStackTrace2DSection struct {
+	// The access control tags associated with this entity.                                                                          
+	ACL                                                                                          AccessControlList                   `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                            
+	// derived.                                                                                                                      
+	Ancestry                                                                                     *ParentList                         `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                      
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                         
+	CreateTime                                                                                   *time.Time                          `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                       
+	// System.                                                                                                                       
+	CreateUser                                                                                   *string                             `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPostStackTrace2DSectionData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                        
+	// version.                                                                                                                      
+	ID                                                                                           *string                             `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                  
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                      
+	// scheme follows the semantic versioning, https://semver.org/.                                                                  
+	Kind                                                                                         string                              `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                        
+	// legal tags is managed by the Compliance Service.                                                                              
+	Legal                                                                                        LegalMetaData                       `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                       
+	// definitions.                                                                                                                  
+	Meta                                                                                         []FrameOfReferenceMetaDataItem      `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                      
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                             
+	ModifyTime                                                                                   *time.Time                          `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                    
+	ModifyUser                                                                                   *string                             `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                       
+	// as keys and values.                                                                                                           
+	Tags                                                                                         map[string]string                   `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                               
+	Version                                                                                      *int64                              `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPostStackTrace2DSectionData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                         
+	ExistenceKind                                                                               *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                  
+	ResourceCurationStatus                                                                      *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                          
+	ResourceHomeRegionID                                                                        *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                       
+	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                        
+	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                          
+	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                          
+	// organization, agency, system, internal team, or individual. For informational purposes                                                  
+	// only, the list of sources is not governed.                                                                                              
+	Source                                                                                      *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                   
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                 
+	// suitable quality, any further change or versioning of a Certified record should be                                                      
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssuranceID                                                                        *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                               
+	// from the file, in the sense certain valuable information is generated during loading                                                    
+	// process (Artefact generation process). Examples include retrieving location data,                                                       
+	// performing an OCR which may result in the generation of artefacts which need to be                                                      
+	// preserved distinctly                                                                                                                    
+	Artefacts                                                                                   []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                     
+	Datasets                                                                                    []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                
+	// work-product-component. The references are formed as URI following                                                                      
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                               
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                      
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                
+	// the DDMS id.                                                                                                                            
+	DDMSDatasets                                                                                []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                               
+	// the search index.                                                                                                                       
+	IsDiscoverable                                                                              *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                 
+	// reflects the fact that the work product component is in an early stage and may be updated                                               
+	// before finalization.                                                                                                                    
+	IsExtendedLoad                                                                              *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                               
+	// known (it should include all the identifiers).                                                                                          
+	NameAliases                                                                                 []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                 
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                      
+	// quality, any further change or versioning of a Certified record should be carefully                                                     
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                  
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                        
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssurances                                                                         []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                    
+	// entity.                                                                                                                                 
+	AuthorIDs                                                                                   []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                  
+	// (ex. well planning, exploration).                                                                                                       
+	BusinessActivities                                                                          []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                    
+	// loading (e.g. publication date).                                                                                                        
+	CreationDateTime                                                                            *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                      
+	// captures thoughts of creator about the wpc.                                                                                             
+	Description                                                                                 *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                
+	// types or multiple values of the same type.                                                                                              
+	GeoContexts                                                                                 []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                    
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                    
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                   
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                               
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                   
+	LineageAssertions                                                                           []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                    
+	Name                                                                                        *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                
+	// (location of the subject matter).                                                                                                       
+	SpatialArea                                                                                 *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                  
+	// (location of the subject matter).                                                                                                       
+	SpatialPoint                                                                                *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                             
+	SubmitterName                                                                               *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                          
+	Tags                                                                                        []string                                       `json:"Tags,omitempty"`
+	// Minimum and maximum ranges parsed from trace headers for any additional parameters                                                      
+	AdditionalTraceHeaderRanges                                                                 []PurpleTraceHeaderRangeSummary                `json:"AdditionalTraceHeaderRanges,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                     
+	Contracts                                                                                   []string                                       `json:"Contracts,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                             
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	EndVerticalIndex                                                                            *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// First Common Mid Point                                                                                                                  
+	FirstCMP                                                                                    *float64                                       `json:"FirstCMP,omitempty"`
+	// The shotpoint that came before all others                                                                                               
+	FirstShotPoint                                                                              *float64                                       `json:"FirstShotPoint,omitempty"`
+	// Coordinate reference system of positions in trace header, which matches what is described                                               
+	// in BinGrid but is repeated here for convenience and in case bin grid is not defined.  In                                                
+	// case of conflict with Bin Grid, this value applies to the coordinates as written into                                                   
+	// CMPX, CMPY headers. Nevertheless, Bin Grid should be used for mapping purposes.                                                         
+	HorizontalCRSID                                                                             *string                                        `json:"HorizontalCRSID,omitempty"`
+	// Last Common Mid Point                                                                                                                   
+	LastCMP                                                                                     *float64                                       `json:"LastCMP,omitempty"`
+	// The last shotpoint represented by the data                                                                                              
+	LastShotPoint                                                                               *float64                                       `json:"LastShotPoint,omitempty"`
+	// Polygon showing the coverage of live traces in the trace dataset                                                                        
+	LiveTraceOutline                                                                            *AbstractSpatialLocation                       `json:"LiveTraceOutline,omitempty"`
+	// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point                                                
+	// etc.                                                                                                                                    
+	Precision                                                                                   *FluffyPrecision                               `json:"Precision,omitempty"`
+	// For a 2D line section, SRN of the Seismic2DInterpretationSet which can be considered the                                                
+	// master for the area and of which this trace dataset is a privileged member.  It defines                                                 
+	// the set of trace datasets of a particular cohesive set of 2D processing geometries in a                                                 
+	// survey area that form the best set for interpretation (not an acquisition survey).                                                      
+	Preferred2DInterpretationSetID                                                              *string                                        `json:"Preferred2DInterpretationSetID,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMax                                                                           *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMin                                                                           *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Number of samples in the vertical direction.                                                                                            
+	SampleCount                                                                                 *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                     
+	SampleInterval                                                                              *float64                                       `json:"SampleInterval,omitempty"`
+	// 2D line name or survey name for the 2D group                                                                                            
+	Seismic2DName                                                                               *string                                        `json:"Seismic2DName,omitempty"`
+	// Reference to Seismic Line Geometry for 2D seismic processing which describes the node                                                   
+	// positions of the processed bin centers.  These are indexed from the trace file using CMP                                                
+	// (not trace number).                                                                                                                     
+	SeismicLineGeometryID                                                                       *string                                        `json:"SeismicLineGeometryID,omitempty"`
+	// The PostStack Processing Product that this section is related to.                                                                       
+	SeismicPostStackProcessingProductID                                                         *string                                        `json:"SeismicPostStackProcessingProductID,omitempty"`
+	// The dimensionality of trace data sets (not as acquired but as in the dataset), such as                                                  
+	// 2D, 3D, 4D.                                                                                                                             
+	SeismicTraceDataDimensionalityTypeID                                                        *string                                        `json:"SeismicTraceDataDimensionalityTypeID,omitempty"`
+	// Defines the sorting order of the trace data as stored in the file(s).                                                                   
+	SortOrderID                                                                                 *string                                        `json:"SortOrderID,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                           
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	StartVerticalIndex                                                                          *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// Character metadata from headers inside file, such as the EBCDIC header of SEGY.  This is                                                
+	// an array to capture each stanza separately.                                                                                             
+	TextualFileHeader                                                                           []string                                       `json:"TextualFileHeader,omitempty"`
+	// The contents positions the SeismicTraceData record in context of one or more time series.                                               
+	// This is to be used for time lapse or 4D SeismicTraceData. This structure is optional and                                                
+	// absent for SeismicTraceData not part of a time series.                                                                                  
+	TimeLapseAssociations                                                                       []AbstractTimeSeriesLink                       `json:"TimeLapseAssociations,omitempty"`
+	// How many traces are in the volume                                                                                                       
+	TraceCount                                                                                  *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                    
+	TraceDomainUOM                                                                              *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                 
+	// according to SeismicDomainType.                                                                                                         
+	TraceLength                                                                                 *float64                                       `json:"TraceLength,omitempty"`
+	// The SRN of a file within the WPC that shows the relationship between trace index and CMP                                                
+	// number if the trace data file CMP header is unreliable (for 2D).                                                                        
+	TraceRelationFileID                                                                         *string                                        `json:"TraceRelationFileID,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                           
+	VelocityModelID                                                                             *string                                        `json:"VelocityModelID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// Minimum and maximum ranges parsed from trace headers for any additional parameters
+type PurpleTraceHeaderRangeSummary struct {
+	// Relationship to a reference value for a name of a property header such as INLINE, CDPX.        
+	KeyName                                                                                   *string `json:"KeyName,omitempty"`
+	// Maximum value parsed from trace headers                                                        
+	Maximum                                                                                   *string `json:"Maximum,omitempty"`
+	// Minimum value parsed from trace headers                                                        
+	Minimum                                                                                   *string `json:"Minimum,omitempty"`
+}
+
+// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point
+// etc.
+type FluffyPrecision struct {
+	// SRN of a reference value for binary data types, such as INT, UINT, FLOAT, IBM_FLOAT,        
+	// ASCII, EBCDIC.                                                                              
+	WordFormat                                                                             *string `json:"WordFormat,omitempty"`
+	// Size of the word in bytes.                                                                  
+	WordWidth                                                                              *int64  `json:"WordWidth,omitempty"`
+}
+
+// Defines the link between a work-product-component (likely a representation in the RESQML
+// sense) and a time series work-product-component holding the entire list of time steps in
+// a series.
+//
+// Allows to link the geometry of the WellboreMarkerSet to a particular index of a time
+// series. This is particularly useful for intervals referring to fluid contacts where the
+// topology and geometry varies against the time.
+//
+// Allows to link the geometry of the WellboreMarkerSet to a particular index of a time
+// series. This is particularly useful for markers referring to fluid contacts where the
+// topology and geometry varies against the time.
+type AbstractTimeSeriesLink struct {
+	// Index of the timestamp of the representation in the associated TimeSeries       
+	TimeIndex                                                                   int64  `json:"TimeIndex"`
+	// Time series the representation is associated to                                 
+	TimeSeriesID                                                                string `json:"TimeSeriesID"`
+}
+
+// A single logical post stack dataset containing seismic samples related to a 3D volume.
+type SeismicPostStackTrace3DVolume struct {
+	// The access control tags associated with this entity.                                                                         
+	ACL                                                                                          AccessControlList                  `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                           
+	// derived.                                                                                                                     
+	Ancestry                                                                                     *ParentList                        `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                     
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	CreateTime                                                                                   *time.Time                         `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                      
+	// System.                                                                                                                      
+	CreateUser                                                                                   *string                            `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPostStackTrace3DVolumeData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                       
+	// version.                                                                                                                     
+	ID                                                                                           *string                            `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                 
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                     
+	// scheme follows the semantic versioning, https://semver.org/.                                                                 
+	Kind                                                                                         string                             `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                       
+	// legal tags is managed by the Compliance Service.                                                                             
+	Legal                                                                                        LegalMetaData                      `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                      
+	// definitions.                                                                                                                 
+	Meta                                                                                         []FrameOfReferenceMetaDataItem     `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                     
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                            
+	ModifyTime                                                                                   *time.Time                         `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                   
+	ModifyUser                                                                                   *string                            `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                      
+	// as keys and values.                                                                                                          
+	Tags                                                                                         map[string]string                  `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                              
+	Version                                                                                      *int64                             `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPostStackTrace3DVolumeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                         
+	ExistenceKind                                                                               *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                  
+	ResourceCurationStatus                                                                      *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                          
+	ResourceHomeRegionID                                                                        *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                       
+	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                        
+	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                          
+	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                          
+	// organization, agency, system, internal team, or individual. For informational purposes                                                  
+	// only, the list of sources is not governed.                                                                                              
+	Source                                                                                      *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                   
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                 
+	// suitable quality, any further change or versioning of a Certified record should be                                                      
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssuranceID                                                                        *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                               
+	// from the file, in the sense certain valuable information is generated during loading                                                    
+	// process (Artefact generation process). Examples include retrieving location data,                                                       
+	// performing an OCR which may result in the generation of artefacts which need to be                                                      
+	// preserved distinctly                                                                                                                    
+	Artefacts                                                                                   []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                     
+	Datasets                                                                                    []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                
+	// work-product-component. The references are formed as URI following                                                                      
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                               
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                      
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                
+	// the DDMS id.                                                                                                                            
+	DDMSDatasets                                                                                []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                               
+	// the search index.                                                                                                                       
+	IsDiscoverable                                                                              *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                 
+	// reflects the fact that the work product component is in an early stage and may be updated                                               
+	// before finalization.                                                                                                                    
+	IsExtendedLoad                                                                              *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                               
+	// known (it should include all the identifiers).                                                                                          
+	NameAliases                                                                                 []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                 
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                      
+	// quality, any further change or versioning of a Certified record should be carefully                                                     
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                  
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                        
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssurances                                                                         []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                    
+	// entity.                                                                                                                                 
+	AuthorIDs                                                                                   []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                  
+	// (ex. well planning, exploration).                                                                                                       
+	BusinessActivities                                                                          []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                    
+	// loading (e.g. publication date).                                                                                                        
+	CreationDateTime                                                                            *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                      
+	// captures thoughts of creator about the wpc.                                                                                             
+	Description                                                                                 *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                
+	// types or multiple values of the same type.                                                                                              
+	GeoContexts                                                                                 []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                    
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                    
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                   
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                               
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                   
+	LineageAssertions                                                                           []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                    
+	Name                                                                                        *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                
+	// (location of the subject matter).                                                                                                       
+	SpatialArea                                                                                 *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                  
+	// (location of the subject matter).                                                                                                       
+	SpatialPoint                                                                                *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                             
+	SubmitterName                                                                               *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                          
+	Tags                                                                                        []string                                       `json:"Tags,omitempty"`
+	// Minimum and maximum ranges parsed from trace headers for any additional parameters                                                      
+	AdditionalTraceHeaderRanges                                                                 []FluffyTraceHeaderRangeSummary                `json:"AdditionalTraceHeaderRanges,omitempty"`
+	// Reference to the WPC which describes the node positions of the processed bin centers.                                                   
+	// These are indexed from the trace file using inline and crossline.                                                                       
+	BinGridID                                                                                   *string                                        `json:"BinGridID,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                     
+	Contracts                                                                                   []string                                       `json:"Contracts,omitempty"`
+	// Sampling interval of crosslines in this dataset (difference in labels between neighboring                                               
+	// crosslines).                                                                                                                            
+	CrosslineIncrement                                                                          *float64                                       `json:"CrosslineIncrement,omitempty"`
+	// Largest Xline/Cross line/Bin Value                                                                                                      
+	CrosslineMax                                                                                *float64                                       `json:"CrosslineMax,omitempty"`
+	// Smallest Xline/Cross line/Bin Value                                                                                                     
+	CrosslineMin                                                                                *float64                                       `json:"CrosslineMin,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                             
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	EndVerticalIndex                                                                            *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// Coordinate reference system of positions in trace header, which matches what is described                                               
+	// in BinGrid but is repeated here for convenience and in case bin grid is not defined.  In                                                
+	// case of conflict with Bin Grid, this value applies to the coordinates as written into                                                   
+	// CMPX, CMPY headers. Nevertheless, Bin Grid should be used for mapping purposes.                                                         
+	HorizontalCRSID                                                                             *string                                        `json:"HorizontalCRSID,omitempty"`
+	// Sampling interval of inlines in this dataset (difference in labels between neighboring                                                  
+	// inlines).                                                                                                                               
+	InlineIncrement                                                                             *float64                                       `json:"InlineIncrement,omitempty"`
+	// Largest Inline/Line/Track value                                                                                                         
+	InlineMax                                                                                   *float64                                       `json:"InlineMax,omitempty"`
+	// Smallest Inline/Line/Track value                                                                                                        
+	InlineMin                                                                                   *float64                                       `json:"InlineMin,omitempty"`
+	// Polygon showing the coverage of live traces in the trace dataset                                                                        
+	LiveTraceOutline                                                                            *AbstractSpatialLocation                       `json:"LiveTraceOutline,omitempty"`
+	// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point                                                
+	// etc.                                                                                                                                    
+	Precision                                                                                   *TentacledPrecision                            `json:"Precision,omitempty"`
+	// For a 3D volume (including linear subsets), the id of the Seismic3DInterpretationSet                                                    
+	// which can be considered the master for the area and of which this trace dataset is a                                                    
+	// privileged member.  It defines the set of trace datasets of a particular bin grid that                                                  
+	// form the best set for interpretation (not an acquisition survey).                                                                       
+	Preferred3DInterpretationSetID                                                              *string                                        `json:"Preferred3DInterpretationSetID,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMax                                                                           *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMin                                                                           *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Number of samples in the vertical direction.                                                                                            
+	SampleCount                                                                                 *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                     
+	SampleInterval                                                                              *float64                                       `json:"SampleInterval,omitempty"`
+	// ID of the nature of the vertical axis in the trace data set, usually Depth or Time.                                                     
+	SeismicDomainTypeID                                                                         *string                                        `json:"SeismicDomainTypeID,omitempty"`
+	// The PostStack Processing Product that this volume is related to.                                                                        
+	SeismicPostStackProcessingProductID                                                         *string                                        `json:"SeismicPostStackProcessingProductID,omitempty"`
+	// Defines the sorting order of the trace data as stored in the file(s).                                                                   
+	SortOrderID                                                                                 *string                                        `json:"SortOrderID,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                           
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	StartVerticalIndex                                                                          *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// Character metadata from headers inside file, such as the EBCDIC header of SEGY.  This is                                                
+	// an array to capture each stanza separately.                                                                                             
+	TextualFileHeader                                                                           []string                                       `json:"TextualFileHeader,omitempty"`
+	// The contents positions the SeismicTraceData record in context of one or more time series.                                               
+	// This is to be used for time lapse or 4D SeismicTraceData. This structure is optional and                                                
+	// absent for SeismicTraceData not part of a time series.                                                                                  
+	TimeLapseAssociations                                                                       []AbstractTimeSeriesLink                       `json:"TimeLapseAssociations,omitempty"`
+	// How many traces are in the volume                                                                                                       
+	TraceCount                                                                                  *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                    
+	TraceDomainUOM                                                                              *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                 
+	// according to SeismicDomainType.                                                                                                         
+	TraceLength                                                                                 *float64                                       `json:"TraceLength,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                           
+	VelocityModelID                                                                             *string                                        `json:"VelocityModelID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// Minimum and maximum ranges parsed from trace headers for any additional parameters
+type FluffyTraceHeaderRangeSummary struct {
+	// Relationship to a reference value for a name of a property header such as INLINE, CDPX.        
+	KeyName                                                                                   *string `json:"KeyName,omitempty"`
+	// Maximum value parsed from trace headers                                                        
+	Maximum                                                                                   *string `json:"Maximum,omitempty"`
+	// Minimum value parsed from trace headers                                                        
+	Minimum                                                                                   *string `json:"Minimum,omitempty"`
+}
+
+// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point
+// etc.
+type TentacledPrecision struct {
+	// SRN of a reference value for binary data types, such as INT, UINT, FLOAT, IBM_FLOAT,        
+	// ASCII, EBCDIC.                                                                              
+	WordFormat                                                                             *string `json:"WordFormat,omitempty"`
+	// Size of the word in bytes.                                                                  
+	WordWidth                                                                              *int64  `json:"WordWidth,omitempty"`
+}
+
+// A singular pre-stack output from a seismic processing project, encompassing one or many
+// sections and/or volumes.
+type SeismicPreStackProcessingProduct struct {
+	// The access control tags associated with this entity.                                                                            
+	ACL                                                                                          AccessControlList                     `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                              
+	// derived.                                                                                                                        
+	Ancestry                                                                                     *ParentList                           `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                        
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                           
+	CreateTime                                                                                   *time.Time                            `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                         
+	// System.                                                                                                                         
+	CreateUser                                                                                   *string                               `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPreStackProcessingProductData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                          
+	// version.                                                                                                                        
+	ID                                                                                           *string                               `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                    
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                        
+	// scheme follows the semantic versioning, https://semver.org/.                                                                    
+	Kind                                                                                         string                                `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                          
+	// legal tags is managed by the Compliance Service.                                                                                
+	Legal                                                                                        LegalMetaData                         `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                         
+	// definitions.                                                                                                                    
+	Meta                                                                                         []FrameOfReferenceMetaDataItem        `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                        
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                               
+	ModifyTime                                                                                   *time.Time                            `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                      
+	ModifyUser                                                                                   *string                               `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                         
+	// as keys and values.                                                                                                             
+	Tags                                                                                         map[string]string                     `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                                 
+	Version                                                                                      *int64                                `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPreStackProcessingProductData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                          
+	ExistenceKind                                                                                *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                   
+	ResourceCurationStatus                                                                       *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                           
+	ResourceHomeRegionID                                                                         *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                        
+	ResourceHostRegionIDs                                                                        []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                         
+	ResourceLifecycleStatus                                                                      *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                           
+	ResourceSecurityClassification                                                               *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                           
+	// organization, agency, system, internal team, or individual. For informational purposes                                                   
+	// only, the list of sources is not governed.                                                                                               
+	Source                                                                                       *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                    
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                  
+	// suitable quality, any further change or versioning of a Certified record should be                                                       
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                 
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                 
+	// Technical Assurance values are not intended to be used for the identification of a single                                                
+	// "preferred" or "definitive" record by comparison with other records.                                                                     
+	TechnicalAssuranceID                                                                         *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                                
+	// from the file, in the sense certain valuable information is generated during loading                                                     
+	// process (Artefact generation process). Examples include retrieving location data,                                                        
+	// performing an OCR which may result in the generation of artefacts which need to be                                                       
+	// preserved distinctly                                                                                                                     
+	Artefacts                                                                                    []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                      
+	Datasets                                                                                     []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                 
+	// work-product-component. The references are formed as URI following                                                                       
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                                
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                       
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                 
+	// the DDMS id.                                                                                                                             
+	DDMSDatasets                                                                                 []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                                
+	// the search index.                                                                                                                        
+	IsDiscoverable                                                                               *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                  
+	// reflects the fact that the work product component is in an early stage and may be updated                                                
+	// before finalization.                                                                                                                     
+	IsExtendedLoad                                                                               *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                                
+	// known (it should include all the identifiers).                                                                                           
+	NameAliases                                                                                  []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                  
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                       
+	// quality, any further change or versioning of a Certified record should be carefully                                                      
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                   
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                         
+	// Technical Assurance values are not intended to be used for the identification of a single                                                
+	// "preferred" or "definitive" record by comparison with other records.                                                                     
+	TechnicalAssurances                                                                          []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                     
+	// entity.                                                                                                                                  
+	AuthorIDs                                                                                    []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                   
+	// (ex. well planning, exploration).                                                                                                        
+	BusinessActivities                                                                           []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                     
+	// loading (e.g. publication date).                                                                                                         
+	CreationDateTime                                                                             *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                       
+	// captures thoughts of creator about the wpc.                                                                                              
+	Description                                                                                  *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                 
+	// types or multiple values of the same type.                                                                                               
+	GeoContexts                                                                                  []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                     
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                     
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                    
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                                
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                    
+	LineageAssertions                                                                            []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                     
+	Name                                                                                         *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                 
+	// (location of the subject matter).                                                                                                        
+	SpatialArea                                                                                  *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                   
+	// (location of the subject matter).                                                                                                        
+	SpatialPoint                                                                                 *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                              
+	SubmitterName                                                                                *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                           
+	Tags                                                                                         []string                                       `json:"Tags,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                      
+	ContractIDs                                                                                  []string                                       `json:"ContractIDs,omitempty"`
+	// Actual nominal fold of the trace data set as processed, expressed as the mode in                                                         
+	// percentage points (60 fold = 6000%).                                                                                                     
+	CoveragePercent                                                                              *float64                                       `json:"CoveragePercent,omitempty"`
+	// References to the volume, volumes, and sections that represent the definitive collection.                                                
+	// Generally will be the highest fidelity and largest coverage.                                                                             
+	DefinitiveProducts                                                                           []string                                       `json:"DefinitiveProducts,omitempty"`
+	// Indicates if the volume is a product of the difference between 4D surveys                                                                
+	Difference                                                                                   *bool                                          `json:"Difference,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                              
+	// SeismicDomainType to know if data is in time or depth.                                                                                   
+	EndVerticalIndex                                                                             *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// Pre-stack: the type of gathers in this dataset.                                                                                          
+	GatherTypeID                                                                                 *string                                        `json:"GatherTypeID,omitempty"`
+	// Pre-stack: Sets of trace angle ranges contained within this data set.                                                                    
+	PreStackAngleRanges                                                                          []PreStackAngleRangeElement                    `json:"PreStackAngleRanges,omitempty"`
+	// Pre-stack: Sets of trace azimuth ranges contained within this data set.                                                                  
+	PreStackAzimuthRanges                                                                        []PreStackAzimuthRangeElement                  `json:"PreStackAzimuthRanges,omitempty"`
+	// Pre-stack: Sets of trace offset ranges contained within this data set.                                                                   
+	PreStackOffsetRanges                                                                         []PreStackOffsetRangeElement                   `json:"PreStackOffsetRanges,omitempty"`
+	// For most datasets, the acquisition project that generated the underlying field data.  For                                                
+	// merges, probably absent (see processing project for set of acquisition projects used in                                                  
+	// processing this dataset).                                                                                                                
+	PrincipalAcquisitionProjectID                                                                *string                                        `json:"PrincipalAcquisitionProjectID,omitempty"`
+	// Processing Parameters to simply capture process history until full provenance model can                                                  
+	// be implemented.                                                                                                                          
+	ProcessingParameters                                                                         []FluffyProcessingParameters                   `json:"ProcessingParameters,omitempty"`
+	// The processing project from which this trace dataset was produced.  Absent for field data.                                               
+	ProcessingProjectID                                                                          *string                                        `json:"ProcessingProjectID,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                 
+	RangeAmplitudeMax                                                                            *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                 
+	RangeAmplitudeMin                                                                            *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Value used to produce vertical static shifts in data                                                                                     
+	ReplacementVelocity                                                                          *float64                                       `json:"ReplacementVelocity,omitempty"`
+	// Number of samples in the vertical direction.                                                                                             
+	SampleCount                                                                                  *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                      
+	SampleInterval                                                                               *float64                                       `json:"SampleInterval,omitempty"`
+	// ID of the Seismic Trace Data Type                                                                                                        
+	SeismicAttributeTypeID                                                                       *string                                        `json:"SeismicAttributeTypeID,omitempty"`
+	// ID of the nature of the vertical axis in the trace data set, usually Depth or Time.                                                      
+	SeismicDomainTypeID                                                                          *string                                        `json:"SeismicDomainTypeID,omitempty"`
+	// ID of the Seismic Filtering Type                                                                                                         
+	SeismicFilteringTypeID                                                                       *string                                        `json:"SeismicFilteringTypeID,omitempty"`
+	// ID of the Seismic Migration Data Type                                                                                                    
+	SeismicMigrationTypeID                                                                       *string                                        `json:"SeismicMigrationTypeID,omitempty"`
+	// Reference to the reference-data--SeismicPhase value describing the wavelet phase as                                                      
+	// estimated/processed for this SeismicTraceData instance.                                                                                  
+	SeismicPhaseID                                                                               *string                                        `json:"SeismicPhaseID,omitempty"`
+	// Reference to the reference-data--SeismicPolarity value describing the polarity for this                                                  
+	// SeismicTraceData instance.                                                                                                               
+	SeismicPolarityID                                                                            *string                                        `json:"SeismicPolarityID,omitempty"`
+	// It specifies if the seismic is as acquired, or has been manipulated by a process or                                                      
+	// workflow before arriving at its current state.                                                                                           
+	SeismicProcessingStageTypeID                                                                 *string                                        `json:"SeismicProcessingStageTypeID,omitempty"`
+	// ID of the Seismic Stacking Type                                                                                                          
+	SeismicStackingTypeID                                                                        *string                                        `json:"SeismicStackingTypeID,omitempty"`
+	// The dimensionality of trace data sets (not as acquired but as in the dataset), such as                                                   
+	// 2D, 3D, 4D.                                                                                                                              
+	SeismicTraceDataDimensionalityTypeID                                                         *string                                        `json:"SeismicTraceDataDimensionalityTypeID,omitempty"`
+	// The observed wave mode type in this trace data set (P, Sv, etc).                                                                         
+	SeismicWaveTypeID                                                                            *string                                        `json:"SeismicWaveTypeID,omitempty"`
+	// Indicates how much the data has been shifted from the Vertical Datum (seismic reference                                                  
+	// datum) in the domain and units of SeismicDomainType and in the sense that a positive                                                     
+	// number causes a sample to move downward in physical space (lower elevation).                                                             
+	ShiftApplied                                                                                 *float64                                       `json:"ShiftApplied,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                            
+	// SeismicDomainType to know if data is in time or depth.                                                                                   
+	StartVerticalIndex                                                                           *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// How many traces are in the volume                                                                                                        
+	TraceCount                                                                                   *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                     
+	TraceDomainUOM                                                                               *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                  
+	// according to SeismicDomainType.                                                                                                          
+	TraceLength                                                                                  *float64                                       `json:"TraceLength,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                            
+	VelocityModelID                                                                              *string                                        `json:"VelocityModelID,omitempty"`
+	// Datum value, the elevation of zero time/depth on the vertical axis in the domain of                                                      
+	// SeismicDomainType relative to the vertical reference datum used (usually MSL). Positive                                                  
+	// is upward from zero elevation to seismic datum).                                                                                         
+	VerticalDatumOffset                                                                          *float64                                       `json:"VerticalDatumOffset,omitempty"`
+	// Identifies a vertical reference datum type. E.g. mean sea level, ground level, mudline.                                                  
+	VerticalMeasurementTypeID                                                                    *string                                        `json:"VerticalMeasurementTypeID,omitempty"`
+	ExtensionProperties                                                                          map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// A range container carrying minimum/maximum angle values.
+type PreStackAngleRangeElement struct {
+	// The maximum angle value.         
+	Maximum                    *float64 `json:"Maximum,omitempty"`
+	// The minimum angle value.         
+	Minimum                    *float64 `json:"Minimum,omitempty"`
+}
+
+// A range container carrying minimum/maximum angle values.
+type PreStackAzimuthRangeElement struct {
+	// The maximum angle value.         
+	Maximum                    *float64 `json:"Maximum,omitempty"`
+	// The minimum angle value.         
+	Minimum                    *float64 `json:"Minimum,omitempty"`
+}
+
+// A range container carrying minimum/maximum angle values.
+type PreStackOffsetRangeElement struct {
+	// The maximum length value.         
+	Maximum                     *float64 `json:"Maximum,omitempty"`
+	// The minimum length value.         
+	Minimum                     *float64 `json:"Minimum,omitempty"`
+}
+
+// Processing Parameters to simply capture process history until full provenance model can
+// be implemented.
+type FluffyProcessingParameters struct {
+	// Processing Parameter Type                                                                
+	ProcessingParameterTypeID                                                           *string `json:"ProcessingParameterTypeID,omitempty"`
+	// The quantity for the processing parameter. May include units, ordering, and other        
+	// descriptions.                                                                            
+	ProcessingParameterValue                                                            *string `json:"ProcessingParameterValue,omitempty"`
+}
+
+// A single logical prestack dataset containing seismic samples related to a 2D section.
+type SeismicPreStackTrace2DSection struct {
+	// The access control tags associated with this entity.                                                                         
+	ACL                                                                                          AccessControlList                  `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                           
+	// derived.                                                                                                                     
+	Ancestry                                                                                     *ParentList                        `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                     
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                        
+	CreateTime                                                                                   *time.Time                         `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                      
+	// System.                                                                                                                      
+	CreateUser                                                                                   *string                            `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPreStackTrace2DSectionData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                       
+	// version.                                                                                                                     
+	ID                                                                                           *string                            `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                 
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                     
+	// scheme follows the semantic versioning, https://semver.org/.                                                                 
+	Kind                                                                                         string                             `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                       
+	// legal tags is managed by the Compliance Service.                                                                             
+	Legal                                                                                        LegalMetaData                      `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                      
+	// definitions.                                                                                                                 
+	Meta                                                                                         []FrameOfReferenceMetaDataItem     `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                     
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                            
+	ModifyTime                                                                                   *time.Time                         `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                   
+	ModifyUser                                                                                   *string                            `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                      
+	// as keys and values.                                                                                                          
+	Tags                                                                                         map[string]string                  `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                              
+	Version                                                                                      *int64                             `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPreStackTrace2DSectionData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                         
+	ExistenceKind                                                                               *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                  
+	ResourceCurationStatus                                                                      *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                          
+	ResourceHomeRegionID                                                                        *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                       
+	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                        
+	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                          
+	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                          
+	// organization, agency, system, internal team, or individual. For informational purposes                                                  
+	// only, the list of sources is not governed.                                                                                              
+	Source                                                                                      *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                   
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                 
+	// suitable quality, any further change or versioning of a Certified record should be                                                      
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssuranceID                                                                        *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                               
+	// from the file, in the sense certain valuable information is generated during loading                                                    
+	// process (Artefact generation process). Examples include retrieving location data,                                                       
+	// performing an OCR which may result in the generation of artefacts which need to be                                                      
+	// preserved distinctly                                                                                                                    
+	Artefacts                                                                                   []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                     
+	Datasets                                                                                    []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                
+	// work-product-component. The references are formed as URI following                                                                      
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                               
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                      
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                
+	// the DDMS id.                                                                                                                            
+	DDMSDatasets                                                                                []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                               
+	// the search index.                                                                                                                       
+	IsDiscoverable                                                                              *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                 
+	// reflects the fact that the work product component is in an early stage and may be updated                                               
+	// before finalization.                                                                                                                    
+	IsExtendedLoad                                                                              *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                               
+	// known (it should include all the identifiers).                                                                                          
+	NameAliases                                                                                 []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                 
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                      
+	// quality, any further change or versioning of a Certified record should be carefully                                                     
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                  
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                        
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssurances                                                                         []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                    
+	// entity.                                                                                                                                 
+	AuthorIDs                                                                                   []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                  
+	// (ex. well planning, exploration).                                                                                                       
+	BusinessActivities                                                                          []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                    
+	// loading (e.g. publication date).                                                                                                        
+	CreationDateTime                                                                            *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                      
+	// captures thoughts of creator about the wpc.                                                                                             
+	Description                                                                                 *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                
+	// types or multiple values of the same type.                                                                                              
+	GeoContexts                                                                                 []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                    
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                    
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                   
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                               
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                   
+	LineageAssertions                                                                           []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                    
+	Name                                                                                        *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                
+	// (location of the subject matter).                                                                                                       
+	SpatialArea                                                                                 *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                  
+	// (location of the subject matter).                                                                                                       
+	SpatialPoint                                                                                *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                             
+	SubmitterName                                                                               *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                          
+	Tags                                                                                        []string                                       `json:"Tags,omitempty"`
+	// Minimum and maximum ranges parsed from trace headers for any additional parameters                                                      
+	AdditionalTraceHeaderRanges                                                                 []TentacledTraceHeaderRangeSummary             `json:"AdditionalTraceHeaderRanges,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                     
+	ContractIDs                                                                                 []string                                       `json:"ContractIDs,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                             
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	EndVerticalIndex                                                                            *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// First Common Mid Point                                                                                                                  
+	FirstCMP                                                                                    *float64                                       `json:"FirstCMP,omitempty"`
+	// First Offset Index                                                                                                                      
+	FirstOffset                                                                                 *float64                                       `json:"FirstOffset,omitempty"`
+	// The shotpoint that came before all others                                                                                               
+	FirstShotPoint                                                                              *float64                                       `json:"FirstShotPoint,omitempty"`
+	// Coordinate reference system of positions in trace header, which matches what is described                                               
+	// in BinGrid but is repeated here for convenience and in case bin grid is not defined.  In                                                
+	// case of conflict with Bin Grid, this value applies to the coordinates as written into                                                   
+	// CMPX, CMPY headers. Nevertheless, Bin Grid should be used for mapping purposes.                                                         
+	HorizontalCRSID                                                                             *string                                        `json:"HorizontalCRSID,omitempty"`
+	// Last Common Mid Point                                                                                                                   
+	LastCMP                                                                                     *float64                                       `json:"LastCMP,omitempty"`
+	// Last Offset Index                                                                                                                       
+	LastOffset                                                                                  *float64                                       `json:"LastOffset,omitempty"`
+	// The last shotpoint represented by the data                                                                                              
+	LastShotPoint                                                                               *float64                                       `json:"LastShotPoint,omitempty"`
+	// Polygon or lines showing the coverage of live traces in the trace dataset                                                               
+	LiveTraceOutline                                                                            *AbstractSpatialLocation                       `json:"LiveTraceOutline,omitempty"`
+	// Maximum Angle Value                                                                                                                     
+	MaxAngle                                                                                    *float64                                       `json:"MaxAngle,omitempty"`
+	// Maximum Azimuth Value                                                                                                                   
+	MaxAzimuth                                                                                  *float64                                       `json:"MaxAzimuth,omitempty"`
+	// Minimum Angle Value                                                                                                                     
+	MinAngle                                                                                    *float64                                       `json:"MinAngle,omitempty"`
+	// Minimum Azimuth Value                                                                                                                   
+	MinAzimuth                                                                                  *float64                                       `json:"MinAzimuth,omitempty"`
+	// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point                                                
+	// etc.                                                                                                                                    
+	Precision                                                                                   *StickyPrecision                               `json:"Precision,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMax                                                                           *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMin                                                                           *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Number of samples in the vertical direction.                                                                                            
+	SampleCount                                                                                 *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                     
+	SampleInterval                                                                              *float64                                       `json:"SampleInterval,omitempty"`
+	// 2D line name or survey name for the 2D group                                                                                            
+	Seismic2DName                                                                               *string                                        `json:"Seismic2DName,omitempty"`
+	// ID of the nature of the vertical axis in the trace data set, usually Depth or Time.                                                     
+	SeismicDomainTypeID                                                                         *string                                        `json:"SeismicDomainTypeID,omitempty"`
+	// Reference to Seismic Line Geometry for 2D seismic processing which describes the node                                                   
+	// positions of the processed bin centers.  These are indexed from the trace file using CMP                                                
+	// (not trace number).                                                                                                                     
+	SeismicLineGeometryID                                                                       *string                                        `json:"SeismicLineGeometryID,omitempty"`
+	// The PreStack Processing Product that this section is related to.                                                                        
+	SeismicPreStackProcessingProductID                                                          *string                                        `json:"SeismicPreStackProcessingProductID,omitempty"`
+	// Defines the sorting order of the trace data as stored in the file(s).                                                                   
+	SortOrderID                                                                                 *string                                        `json:"SortOrderID,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                           
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	StartVerticalIndex                                                                          *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// Character metadata from headers inside file, such as the EBCDIC header of SEGY.  This is                                                
+	// an array to capture each stanza separately.                                                                                             
+	TextualFileHeader                                                                           []string                                       `json:"TextualFileHeader,omitempty"`
+	// The contents positions the SeismicTraceData record in context of one or more time series.                                               
+	// This is to be used for time lapse or 4D SeismicTraceData. This structure is optional and                                                
+	// absent for SeismicTraceData not part of a time series.                                                                                  
+	TimeLapseAssociations                                                                       []AbstractTimeSeriesLink                       `json:"TimeLapseAssociations,omitempty"`
+	// How many traces are in the volume                                                                                                       
+	TraceCount                                                                                  *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                    
+	TraceDomainUOM                                                                              *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                 
+	// according to SeismicDomainType.                                                                                                         
+	TraceLength                                                                                 *float64                                       `json:"TraceLength,omitempty"`
+	// The SRN of a file within the WPC that shows the relationship between trace index and CMP                                                
+	// number if the trace data file CMP header is unreliable (for 2D).                                                                        
+	TraceRelationFileID                                                                         *string                                        `json:"TraceRelationFileID,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                           
+	VelocityModelID                                                                             *string                                        `json:"VelocityModelID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// Minimum and maximum ranges parsed from trace headers for any additional parameters
+type TentacledTraceHeaderRangeSummary struct {
+	// Relationship to a reference value for a name of a property header such as INLINE, CDPX.        
+	KeyName                                                                                   *string `json:"KeyName,omitempty"`
+	// Maximum value parsed from trace headers                                                        
+	Maximum                                                                                   *string `json:"Maximum,omitempty"`
+	// Minimum value parsed from trace headers                                                        
+	Minimum                                                                                   *string `json:"Minimum,omitempty"`
+}
+
+// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point
+// etc.
+type StickyPrecision struct {
+	// SRN of a reference value for binary data types, such as INT, UINT, FLOAT, IBM_FLOAT,        
+	// ASCII, EBCDIC.                                                                              
+	WordFormat                                                                             *string `json:"WordFormat,omitempty"`
+	// Size of the word in bytes.                                                                  
+	WordWidth                                                                              *int64  `json:"WordWidth,omitempty"`
+}
+
+// A single logical pre-stack dataset containing seismic samples related to a 3D volume.
+type SeismicPreStackTrace3DVolume struct {
+	// The access control tags associated with this entity.                                                                        
+	ACL                                                                                          AccessControlList                 `json:"acl"`
+	// The links to data, which constitute the inputs, from which this record instance is                                          
+	// derived.                                                                                                                    
+	Ancestry                                                                                     *ParentList                       `json:"ancestry,omitempty"`
+	// Timestamp of the time at which initial version of this OSDU resource object was created.                                    
+	// Set by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                       
+	CreateTime                                                                                   *time.Time                        `json:"createTime,omitempty"`
+	// The user reference, which created the first version of this resource object. Set by the                                     
+	// System.                                                                                                                     
+	CreateUser                                                                                   *string                           `json:"createUser,omitempty"`
+	Data                                                                                         *SeismicPreStackTrace3DVolumeData `json:"data,omitempty"`
+	// Previously called ResourceID or SRN which identifies this OSDU resource object without                                      
+	// version.                                                                                                                    
+	ID                                                                                           *string                           `json:"id,omitempty"`
+	// The schema identification for the OSDU resource object following the pattern                                                
+	// {Namespace}:{Source}:{Type}:{VersionMajor}.{VersionMinor}.{VersionPatch}. The versioning                                    
+	// scheme follows the semantic versioning, https://semver.org/.                                                                
+	Kind                                                                                         string                            `json:"kind"`
+	// The entity's legal tags and compliance status. The actual contents associated with the                                      
+	// legal tags is managed by the Compliance Service.                                                                            
+	Legal                                                                                        LegalMetaData                     `json:"legal"`
+	// The Frame of Reference meta data section linking the named properties to self-contained                                     
+	// definitions.                                                                                                                
+	Meta                                                                                         []FrameOfReferenceMetaDataItem    `json:"meta,omitempty"`
+	// Timestamp of the time at which this version of the OSDU resource object was created. Set                                    
+	// by the System. The value is a combined date-time string in ISO-8601 given in UTC.                                           
+	ModifyTime                                                                                   *time.Time                        `json:"modifyTime,omitempty"`
+	// The user reference, which created this version of this resource object. Set by the System.                                  
+	ModifyUser                                                                                   *string                           `json:"modifyUser,omitempty"`
+	// A generic dictionary of string keys mapping to string value. Only strings are permitted                                     
+	// as keys and values.                                                                                                         
+	Tags                                                                                         map[string]string                 `json:"tags,omitempty"`
+	// The version number of this OSDU resource; set by the framework.                                                             
+	Version                                                                                      *int64                            `json:"version,omitempty"`
+}
+
+// Common resources to be injected at root 'data' level for every entity, which is
+// persistable in Storage. The insertion is performed by the OsduSchemaComposer script.
+//
+// Generic reference object containing the universal group-type properties of a Work Product
+// Component for inclusion in data type specific Work Product Component objects
+//
+// Generic reference object containing the universal properties of a Work Product Component
+// for inclusion in data type specific Work Product Component objects
+type SeismicPreStackTrace3DVolumeData struct {
+	// Where does this data resource sit in the cradle-to-grave span of its existence?                                                         
+	ExistenceKind                                                                               *string                                        `json:"ExistenceKind,omitempty"`
+	// Describes the current Curation status.                                                                                                  
+	ResourceCurationStatus                                                                      *string                                        `json:"ResourceCurationStatus,omitempty"`
+	// The name of the home [cloud environment] region for this OSDU resource object.                                                          
+	ResourceHomeRegionID                                                                        *string                                        `json:"ResourceHomeRegionID,omitempty"`
+	// The name of the host [cloud environment] region(s) for this OSDU resource object.                                                       
+	ResourceHostRegionIDs                                                                       []string                                       `json:"ResourceHostRegionIDs,omitempty"`
+	// Describes the current Resource Lifecycle status.                                                                                        
+	ResourceLifecycleStatus                                                                     *string                                        `json:"ResourceLifecycleStatus,omitempty"`
+	// Classifies the security level of the resource.                                                                                          
+	ResourceSecurityClassification                                                              *string                                        `json:"ResourceSecurityClassification,omitempty"`
+	// The entity that produced the record, or from which it is received; could be an                                                          
+	// organization, agency, system, internal team, or individual. For informational purposes                                                  
+	// only, the list of sources is not governed.                                                                                              
+	Source                                                                                      *string                                        `json:"Source,omitempty"`
+	// DEPRECATED: Describes a record's overall suitability for general business consumption                                                   
+	// based on data quality. Clarifications: Since Certified is the highest classification of                                                 
+	// suitable quality, any further change or versioning of a Certified record should be                                                      
+	// carefully considered and justified. If a Technical Assurance value is not populated then                                                
+	// one can assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssuranceID                                                                        *string                                        `json:"TechnicalAssuranceID,omitempty"`
+	// An array of Artefacts - each artefact has a Role, Resource tuple. An artefact is distinct                                               
+	// from the file, in the sense certain valuable information is generated during loading                                                    
+	// process (Artefact generation process). Examples include retrieving location data,                                                       
+	// performing an OCR which may result in the generation of artefacts which need to be                                                      
+	// preserved distinctly                                                                                                                    
+	Artefacts                                                                                   []AbstractGridRepresentationArtefact           `json:"Artefacts,omitempty"`
+	// The record id, which identifies this OSDU File or dataset resource.                                                                     
+	Datasets                                                                                    []string                                       `json:"Datasets,omitempty"`
+	// An array of references to content in Domain Data Management Services represented by this                                                
+	// work-product-component. The references are formed as URI following                                                                      
+	// https://www.rfc-editor.org/rfc/rfc3986#page-16. This property is exclusively populated by                                               
+	// DDMSs. If a work-product-component is represented in more than one DDMS, DDMSs are                                                      
+	// obliged to find the specific reference by inspecting the URI's authority values matching                                                
+	// the DDMS id.                                                                                                                            
+	DDMSDatasets                                                                                []string                                       `json:"DDMSDatasets,omitempty"`
+	// A flag that indicates if the work product component is searchable, which means covered in                                               
+	// the search index.                                                                                                                       
+	IsDiscoverable                                                                              *bool                                          `json:"IsDiscoverable,omitempty"`
+	// A flag that indicates if the work product component is undergoing an extended load.  It                                                 
+	// reflects the fact that the work product component is in an early stage and may be updated                                               
+	// before finalization.                                                                                                                    
+	IsExtendedLoad                                                                              *bool                                          `json:"IsExtendedLoad,omitempty"`
+	// Alternative names, including historical, by which this work-product-component is/has been                                               
+	// known (it should include all the identifiers).                                                                                          
+	NameAliases                                                                                 []AbstractAliasNames                           `json:"NameAliases,omitempty"`
+	// Describes a record's overall suitability for general business consumption based on data                                                 
+	// quality. Clarifications: Since Certified is the highest classification of suitable                                                      
+	// quality, any further change or versioning of a Certified record should be carefully                                                     
+	// considered and justified. If a Technical Assurance value is not populated then one can                                                  
+	// assume the data has not been evaluated or its quality is unknown (=Unevaluated).                                                        
+	// Technical Assurance values are not intended to be used for the identification of a single                                               
+	// "preferred" or "definitive" record by comparison with other records.                                                                    
+	TechnicalAssurances                                                                         []AbstractGridRepresentationTechnicalAssurance `json:"TechnicalAssurances,omitempty"`
+	// Array of Authors' names of the work product component.  Could be a person or company                                                    
+	// entity.                                                                                                                                 
+	AuthorIDs                                                                                   []string                                       `json:"AuthorIDs,omitempty"`
+	// Array of business processes/workflows that the work product component has been through                                                  
+	// (ex. well planning, exploration).                                                                                                       
+	BusinessActivities                                                                          []string                                       `json:"BusinessActivities,omitempty"`
+	// Date that a resource (work  product component here) is formed outside of OSDU before                                                    
+	// loading (e.g. publication date).                                                                                                        
+	CreationDateTime                                                                            *time.Time                                     `json:"CreationDateTime,omitempty"`
+	// Description.  Summary of the work product component.  Not the same as Remark which                                                      
+	// captures thoughts of creator about the wpc.                                                                                             
+	Description                                                                                 *string                                        `json:"Description,omitempty"`
+	// List of geographic entities which provide context to the WPC.  This may include multiple                                                
+	// types or multiple values of the same type.                                                                                              
+	GeoContexts                                                                                 []AbstractGeoContext                           `json:"GeoContexts,omitempty"`
+	// Defines relationships with other objects (any kind of Resource) upon which this work                                                    
+	// product component depends.  The assertion is directed only from the asserting WPC to                                                    
+	// ancestor objects, not children.  It should not be used to refer to files or artefacts                                                   
+	// within the WPC -- the association within the WPC is sufficient and Artefacts are actually                                               
+	// children of the main WPC file. They should be recorded in the data.Artefacts[] array.                                                   
+	LineageAssertions                                                                           []LineageAssertion                             `json:"LineageAssertions,omitempty"`
+	// Name                                                                                                                                    
+	Name                                                                                        *string                                        `json:"Name,omitempty"`
+	// A polygon boundary that reflects the locale of the content of the work product component                                                
+	// (location of the subject matter).                                                                                                       
+	SpatialArea                                                                                 *AbstractSpatialLocation                       `json:"SpatialArea,omitempty"`
+	// A centroid point that reflects the locale of the content of the work product component                                                  
+	// (location of the subject matter).                                                                                                       
+	SpatialPoint                                                                                *AbstractSpatialLocation                       `json:"SpatialPoint,omitempty"`
+	// Name of the person that first submitted the work product component to OSDU.                                                             
+	SubmitterName                                                                               *string                                        `json:"SubmitterName,omitempty"`
+	// Array of key words to identify the work product, especially to help in search.                                                          
+	Tags                                                                                        []string                                       `json:"Tags,omitempty"`
+	// Minimum and maximum ranges parsed from trace headers for any additional parameters                                                      
+	AdditionalTraceHeaderRanges                                                                 []StickyTraceHeaderRangeSummary                `json:"AdditionalTraceHeaderRanges,omitempty"`
+	// Reference to the WPC which describes the node positions of the processed bin centers.                                                   
+	// These are indexed from the trace file using inline and crossline.                                                                       
+	BinGridID                                                                                   *string                                        `json:"BinGridID,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                     
+	ContractIDs                                                                                 []string                                       `json:"ContractIDs,omitempty"`
+	// Sampling interval of crosslines in this dataset (difference in labels between neighboring                                               
+	// crosslines).                                                                                                                            
+	CrosslineIncrement                                                                          *float64                                       `json:"CrosslineIncrement,omitempty"`
+	// Largest Xline/Cross line/Bin Value                                                                                                      
+	CrosslineMax                                                                                *float64                                       `json:"CrosslineMax,omitempty"`
+	// Smallest Xline/Cross line/Bin Value                                                                                                     
+	CrosslineMin                                                                                *float64                                       `json:"CrosslineMin,omitempty"`
+	// Indicates if the volume is a product of the difference between 4D surveys                                                               
+	Difference                                                                                  *bool                                          `json:"Difference,omitempty"`
+	// The sample axis value in the vertical dimension at which the data ends. Use                                                             
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	EndVerticalIndex                                                                            *float64                                       `json:"EndVerticalIndex,omitempty"`
+	// First Offset Index                                                                                                                      
+	FirstOffset                                                                                 *float64                                       `json:"FirstOffset,omitempty"`
+	// Coordinate reference system of positions in trace header, which matches what is described                                               
+	// in BinGrid but is repeated here for convenience and in case bin grid is not defined.  In                                                
+	// case of conflict with Bin Grid, this value applies to the coordinates as written into                                                   
+	// CMPX, CMPY headers. Nevertheless, Bin Grid should be used for mapping purposes.                                                         
+	HorizontalCRSID                                                                             *string                                        `json:"HorizontalCRSID,omitempty"`
+	// Sampling interval of inlines in this dataset (difference in labels between neighboring                                                  
+	// inlines).                                                                                                                               
+	InlineIncrement                                                                             *float64                                       `json:"InlineIncrement,omitempty"`
+	// Largest Inline/Line/Track value                                                                                                         
+	InlineMax                                                                                   *float64                                       `json:"InlineMax,omitempty"`
+	// Smallest Inline/Line/Track value                                                                                                        
+	InlineMin                                                                                   *float64                                       `json:"InlineMin,omitempty"`
+	// Last Offset Index                                                                                                                       
+	LastOffset                                                                                  *float64                                       `json:"LastOffset,omitempty"`
+	// Polygon showing the coverage of live traces in the trace dataset                                                                        
+	LiveTraceOutline                                                                            *AbstractSpatialLocation                       `json:"LiveTraceOutline,omitempty"`
+	// Maximum Angle Value                                                                                                                     
+	MaxAngle                                                                                    *float64                                       `json:"MaxAngle,omitempty"`
+	// Maximum Azimuth Value                                                                                                                   
+	MaxAzimuth                                                                                  *float64                                       `json:"MaxAzimuth,omitempty"`
+	// Minimum Angle Value                                                                                                                     
+	MinAngle                                                                                    *float64                                       `json:"MinAngle,omitempty"`
+	// Minimum Azimuth Value                                                                                                                   
+	MinAzimuth                                                                                  *float64                                       `json:"MinAzimuth,omitempty"`
+	// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point                                                
+	// etc.                                                                                                                                    
+	Precision                                                                                   *IndigoPrecision                               `json:"Precision,omitempty"`
+	// The actual maximum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMax                                                                           *float64                                       `json:"RangeAmplitudeMax,omitempty"`
+	// The actual minimum amplitude value found in the dataset.                                                                                
+	RangeAmplitudeMin                                                                           *float64                                       `json:"RangeAmplitudeMin,omitempty"`
+	// Number of samples in the vertical direction.                                                                                            
+	SampleCount                                                                                 *int64                                         `json:"SampleCount,omitempty"`
+	// Vertical sampling interval of data.                                                                                                     
+	SampleInterval                                                                              *float64                                       `json:"SampleInterval,omitempty"`
+	// ID of the nature of the vertical axis in the trace data set, usually Depth or Time.                                                     
+	SeismicDomainTypeID                                                                         *string                                        `json:"SeismicDomainTypeID,omitempty"`
+	// The PreStack Processing Product that this volume is related to.                                                                         
+	SeismicPreStackProcessingProductID                                                          *string                                        `json:"SeismicPreStackProcessingProductID,omitempty"`
+	// Defines the sorting order of the trace data as stored in the file(s).                                                                   
+	SortOrderID                                                                                 *string                                        `json:"SortOrderID,omitempty"`
+	// The sample axis value in the vertical dimension at which the data starts. Use                                                           
+	// SeismicDomainType to know if data is in time or depth.                                                                                  
+	StartVerticalIndex                                                                          *float64                                       `json:"StartVerticalIndex,omitempty"`
+	// Character metadata from headers inside file, such as the EBCDIC header of SEGY.  This is                                                
+	// an array to capture each stanza separately.                                                                                             
+	TextualFileHeader                                                                           []string                                       `json:"TextualFileHeader,omitempty"`
+	// The contents positions the SeismicTraceData record in context of one or more time series.                                               
+	// This is to be used for time lapse or 4D SeismicTraceData. This structure is optional and                                                
+	// absent for SeismicTraceData not part of a time series.                                                                                  
+	TimeLapseAssociations                                                                       []AbstractTimeSeriesLink                       `json:"TimeLapseAssociations,omitempty"`
+	// How many traces are in the volume                                                                                                       
+	TraceCount                                                                                  *int64                                         `json:"TraceCount,omitempty"`
+	// UOM for vertical trace domain values                                                                                                    
+	TraceDomainUOM                                                                              *string                                        `json:"TraceDomainUOM,omitempty"`
+	// Maximum trace length calculated using depth or time start and end points as appropriate                                                 
+	// according to SeismicDomainType.                                                                                                         
+	TraceLength                                                                                 *float64                                       `json:"TraceLength,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                           
+	VelocityModelID                                                                             *string                                        `json:"VelocityModelID,omitempty"`
+	ExtensionProperties                                                                         map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
+}
+
+// Minimum and maximum ranges parsed from trace headers for any additional parameters
+type StickyTraceHeaderRangeSummary struct {
+	// Relationship to a reference value for a name of a property header such as INLINE, CDPX.        
+	KeyName                                                                                   *string `json:"KeyName,omitempty"`
+	// Maximum value parsed from trace headers                                                        
+	Maximum                                                                                   *string `json:"Maximum,omitempty"`
+	// Minimum value parsed from trace headers                                                        
+	Minimum                                                                                   *string `json:"Minimum,omitempty"`
+}
+
+// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point
+// etc.
+type IndigoPrecision struct {
+	// SRN of a reference value for binary data types, such as INT, UINT, FLOAT, IBM_FLOAT,        
+	// ASCII, EBCDIC.                                                                              
+	WordFormat                                                                             *string `json:"WordFormat,omitempty"`
+	// Size of the word in bytes.                                                                  
+	WordWidth                                                                              *int64  `json:"WordWidth,omitempty"`
+}
+
 // A single logical dataset containing seismic samples.
 type SeismicTraceData struct {
 	// The access control tags associated with this entity.                                                                     
@@ -16509,9 +18066,13 @@ type SeismicTraceDataData struct {
 	SubmitterName                                                                                *string                                        `json:"SubmitterName,omitempty"`
 	// Array of key words to identify the work product, especially to help in search.                                                           
 	Tags                                                                                         []string                                       `json:"Tags,omitempty"`
+	// Minimum and maximum ranges parsed from trace headers for any additional parameters                                                       
+	AdditionalTraceHeaderRanges                                                                  []IndigoTraceHeaderRangeSummary                `json:"AdditionalTraceHeaderRanges,omitempty"`
 	// Reference to the WPC which describes the node positions of the processed bin centers.                                                    
 	// These are indexed from the trace file using inline and crossline.                                                                        
 	BinGridID                                                                                    *string                                        `json:"BinGridID,omitempty"`
+	// References to applicable agreements in external contract database system of record.                                                      
+	Contracts                                                                                    []string                                       `json:"Contracts,omitempty"`
 	// Actual nominal fold of the trace data set as processed, expressed as the mode in                                                         
 	// percentage points (60 fold = 6000%).                                                                                                     
 	CoveragePercent                                                                              *float64                                       `json:"CoveragePercent,omitempty"`
@@ -16572,7 +18133,7 @@ type SeismicTraceDataData struct {
 	Polarity                                                                                     *string                                        `json:"Polarity,omitempty"`
 	// Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point                                                 
 	// etc.                                                                                                                                     
-	Precision                                                                                    *FluffyPrecision                               `json:"Precision,omitempty"`
+	Precision                                                                                    *IndecentPrecision                             `json:"Precision,omitempty"`
 	// For a 2D line section, SRN of the Seismic2DInterpretationSet which can be considered the                                                 
 	// master for the area and of which this trace dataset is a privileged member.  It defines                                                  
 	// the set of trace datasets of a particular cohesive set of 2D processing geometries in a                                                  
@@ -16589,7 +18150,7 @@ type SeismicTraceDataData struct {
 	PrincipalAcquisitionProjectID                                                                *string                                        `json:"PrincipalAcquisitionProjectID,omitempty"`
 	// Processing Parameters to simply capture process history until full provenance model can                                                  
 	// be implemented.                                                                                                                          
-	ProcessingParameters                                                                         []PurpleProcessingParameters                   `json:"ProcessingParameters,omitempty"`
+	ProcessingParameters                                                                         []TentacledProcessingParameters                `json:"ProcessingParameters,omitempty"`
 	// The processing project from which this trace dataset was produced.  Absent for field data.                                               
 	ProcessingProjectID                                                                          *string                                        `json:"ProcessingProjectID,omitempty"`
 	// The actual maximum amplitude value found in the dataset.                                                                                 
@@ -16662,7 +18223,7 @@ type SeismicTraceDataData struct {
 	// set.                                                                                                                                     
 	StackOffsetRangeMin                                                                          *float64                                       `json:"StackOffsetRangeMin,omitempty"`
 	// Pre-stack: Sets of trace offset ranges contained within this data set.                                                                   
-	StackOffsetRanges                                                                            []LengthRange                                  `json:"StackOffsetRanges,omitempty"`
+	StackOffsetRanges                                                                            []StackOffsetRangeElement                      `json:"StackOffsetRanges,omitempty"`
 	// The sample axis value in the vertical dimension at which Depth formatted data starts. Use                                                
 	// SeismicDomainType to know which of time or depth pairs is the actual range vs. what is                                                   
 	// estimated.                                                                                                                               
@@ -16693,6 +18254,8 @@ type SeismicTraceDataData struct {
 	// The SRN of a file within the WPC that shows the relationship between trace index and CMP                                                 
 	// number if the trace data file CMP header is unreliable (for 2D).                                                                         
 	TraceRelationFileID                                                                          *string                                        `json:"TraceRelationFileID,omitempty"`
+	// The velocity model used in the creation of this trace dataset                                                                            
+	VelocityModelID                                                                              *string                                        `json:"VelocityModelID,omitempty"`
 	// Datum value, the elevation of zero time/depth on the vertical axis in the domain of                                                      
 	// SeismicDomainType relative to the vertical reference datum used (usually MSL). Positive                                                  
 	// is upward from zero elevation to seismic datum).                                                                                         
@@ -16702,9 +18265,19 @@ type SeismicTraceDataData struct {
 	ExtensionProperties                                                                          map[string]interface{}                         `json:"ExtensionProperties,omitempty"`
 }
 
+// Minimum and maximum ranges parsed from trace headers for any additional parameters
+type IndigoTraceHeaderRangeSummary struct {
+	// Relationship to a reference value for a name of a property header such as INLINE, CDPX.        
+	KeyName                                                                                   *string `json:"KeyName,omitempty"`
+	// Maximum value parsed from trace headers                                                        
+	Maximum                                                                                   *string `json:"Maximum,omitempty"`
+	// Minimum value parsed from trace headers                                                        
+	Minimum                                                                                   *string `json:"Minimum,omitempty"`
+}
+
 // Sample data format in terms of sample value precision 8bit Integer, 16bit Floating Point
 // etc.
-type FluffyPrecision struct {
+type IndecentPrecision struct {
 	// SRN of a reference value for binary data types, such as INT, UINT, FLOAT, IBM_FLOAT,        
 	// ASCII, EBCDIC.                                                                              
 	WordFormat                                                                             *string `json:"WordFormat,omitempty"`
@@ -16714,7 +18287,7 @@ type FluffyPrecision struct {
 
 // Processing Parameters to simply capture process history until full provenance model can
 // be implemented.
-type PurpleProcessingParameters struct {
+type TentacledProcessingParameters struct {
 	// Processing Parameter Type                                                                
 	ProcessingParameterTypeID                                                           *string `json:"ProcessingParameterTypeID,omitempty"`
 	// The quantity for the processing parameter. May include units, ordering, and other        
@@ -16739,7 +18312,7 @@ type StackAzimuthRangeElement struct {
 }
 
 // A range container carrying minimum/maximum angle values.
-type LengthRange struct {
+type StackOffsetRangeElement struct {
 	// The maximum length value.         
 	Maximum                     *float64 `json:"Maximum,omitempty"`
 	// The minimum length value.         
@@ -16756,24 +18329,6 @@ type TimeLapse struct {
 	TimeIndex                                                                                 *int64  `json:"TimeIndex,omitempty"`
 	// The relationship to a TimeSeries work-product-component.                                       
 	TimeSeriesID                                                                              *string `json:"TimeSeriesID,omitempty"`
-}
-
-// Defines the link between a work-product-component (likely a representation in the RESQML
-// sense) and a time series work-product-component holding the entire list of time steps in
-// a series.
-//
-// Allows to link the geometry of the WellboreMarkerSet to a particular index of a time
-// series. This is particularly useful for intervals referring to fluid contacts where the
-// topology and geometry varies against the time.
-//
-// Allows to link the geometry of the WellboreMarkerSet to a particular index of a time
-// series. This is particularly useful for markers referring to fluid contacts where the
-// topology and geometry varies against the time.
-type AbstractTimeSeriesLink struct {
-	// Index of the timestamp of the representation in the associated TimeSeries       
-	TimeIndex                                                                   int64  `json:"TimeIndex"`
-	// Time series the representation is associated to                                 
-	TimeSeriesID                                                                string `json:"TimeSeriesID"`
 }
 
 // Soil Gas Monitoring is a type of environmental monitoring. Environment monitoring
